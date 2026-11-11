@@ -76,11 +76,33 @@
     "youtubeUrl": "",
     "backgroundVideoUrl": ""
   },
+  "ads": {
+    "enabled": true,
+    "provider": "google-adsense",
+    "clientId": "ca-pub-0000000000000000",
+    "slots": {
+      "homeHorizontal": "1234567890",
+      "sidebarBanner": "0987654321"
+    },
+    "adServerUrl": "",
+    "fallbackPromo": {
+      "badge": "GOOGLE ADS • PATROCINADO",
+      "title": "Comunidad Oficial Doraland • Eventos y Rangos",
+      "subtitle": "Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.",
+      "ctaText": "Unirse al Discord",
+      "ctaUrl": "https://discord.gg/nR9c4czkt7"
+    }
+  },
   "launcher": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "allowPremium": true,
     "allowOffline": true,
     "gameDataFolder": ".doraland",
-    "closeOnLaunch": false
+    "closeOnLaunch": false,
+    "defaultResolution": {
+      "width": 1280,
+      "height": 720,
+      "fullscreen": false
+    }
   }
 }

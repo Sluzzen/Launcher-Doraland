@@ -15,6 +15,14 @@ contextBridge.exposeInMainWorld('doraland', {
   getSettings: () => ipcRenderer.invoke('get-settings'),
   saveSettings: (s) => ipcRenderer.invoke('save-settings', s),
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
+  openGameFolder: () => ipcRenderer.invoke('open-game-folder'),
+
+  // Sistema de Skins (No Premium y Vista Previa)
+  getSkin: () => ipcRenderer.invoke('get-skin'),
+  selectSkinFile: () => ipcRenderer.invoke('select-skin-file'),
+  saveSkinData: (payload) => ipcRenderer.invoke('save-skin-data', payload),
+  importSkinByNick: (nick) => ipcRenderer.invoke('import-skin-by-nick', nick),
+  resetSkin: () => ipcRenderer.invoke('reset-skin'),
 
   // Autenticación
   authMicrosoft: () => ipcRenderer.invoke('auth-microsoft'),

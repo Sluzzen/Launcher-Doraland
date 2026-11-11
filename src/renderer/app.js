@@ -1,33 +1,103 @@
 /* ============================================================
-   APP.JS — Lógica del Renderer (Doraland Launcher)
+   APP.JS — Lógica del Renderer (Doraland Launcher v1.0.1)
+   Incluye:
+   - Navegación Moderna + Pantalla de Ajustes (Resolución, Cuenta Premium, RAM/JVM)
+   - Estudio de Skins para No Premium (Subida .PNG, Drag & Drop, Importación y Render en Canvas)
+   - Monetización con Google Ads (AdSense + Servidor de Anuncios + Fallback Patrocinado)
+   - Auto-actualizador Dual y Lanzador NeoForge 1.21.1
    ============================================================ */
 
 // ── ESTADO GLOBAL ─────────────────────────────────────────────
 let currentSession = null;
 let config = null;
+let currentSettings = {
+  ram: 6144,
+  resolutionWidth: 1280,
+  resolutionHeight: 720,
+  fullscreen: false,
+  closeOnLaunch: false,
+  hideOnLaunch: false,
+  autoConnect: true,
+  customJvmArgs: ''
+};
+let currentSkin = null; // { dataUrl, model: 'classic'|'slim', name }
+let loadedSkinImage = null;
 let isLaunching = false;
 let consoleOpen = false;
 
 // ── INICIALIZACIÓN ────────────────────────────────────────────
 async function init() {
+  initAmbientFireflies();
+
   config = await window.doraland.getConfig();
   currentSession = await window.doraland.getSession();
-  const settings = await window.doraland.getSettings();
+  const savedSettings = await window.doraland.getSettings();
+  currentSettings = { ...currentSettings, ...(savedSettings || {}) };
+  currentSkin = await window.doraland.getSkin();
 
   applyConfig(config);
-  applySettings(settings);
-  setupTitlebarButtons();
+  applySettingsToUI(currentSettings);
+  setupTitlebarAndNavigation();
   setupAuthTabs();
-  setupRamSlider(settings.ram, config);
+  setupRamAndSettingsControls();
+  setupSkinStudio();
+  setupGoogleAds(config?.ads);
   setupConsole();
   setupLaunchEvents();
   setupLauncherAutoUpdater();
 
+  await refreshSkinRenderer();
+
   if (currentSession) {
-    showHomeScreen();
+    showScreen('screenHome');
   } else {
-    showLoginScreen();
+    showScreen('screenLogin');
   }
+}
+
+// ── FONDO AMBIENTAL DE LUCIÉRNAGAS ────────────────────────────
+function initAmbientFireflies() {
+  const canvas = document.getElementById('ambientCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 34 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: 1.2 + Math.random() * 2.2,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: -0.15 - Math.random() * 0.4,
+    alpha: 0.2 + Math.random() * 0.6,
+    gold: Math.random() > 0.45
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y < -10) p.y = canvas.height + 10;
+      if (p.x < -10) p.x = canvas.width + 10;
+      if (p.x > canvas.width + 10) p.x = -10;
+
+      ctx.beginPath();
+      const color = p.gold ? `rgba(252, 211, 77, ${p.alpha})` : `rgba(74, 222, 128, ${p.alpha})`;
+      ctx.fillStyle = color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = color;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
 }
 
 // ── APLICAR CONFIGURACIÓN ──────────────────────────────────────
@@ -37,40 +107,100 @@ function applyConfig(cfg) {
   const mcVer = cfg.minecraft?.version || '1.21.1';
   const loaderName = cfg.activeLoader?.name || 'NeoForge';
   const loaderDisplay = cfg.activeLoader?.display || `${loaderName} ${mcVer}`;
+  const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
-  // Versión del launcher y del juego
-  safeText('launcherVersion', `v${cfg.launcher?.version || '1.0.0'}`);
+  safeText('launcherVersion', `v${cfg.launcher?.version || '1.0.1'}`);
   safeText('loaderBadge', `${loaderName} ${mcVer}`);
   safeText('playLoaderText', `${loaderName} ${mcVer}`);
-  safeText('serverIp', cfg.server?.ip || '');
-  safeText('playServerIp', cfg.server?.ip || '');
-  safeText('wbServerIp', cfg.server?.ip || '');
-  safeText('wbForgeVersion', `${loaderDisplay} (${mcVer})`);
+  safeText('serverIp', ip);
+  safeText('tbServerIp', ip);
+  safeText('playServerIp', ip);
+  safeText('wbServerIp', ip);
+  safeText('wbForgeVersion', `${loaderDisplay} • MC ${mcVer}`);
 
-  // Redes sociales
   buildSocialLinks(cfg.ui);
-
-  // Verificar estado del servidor (ping básico)
-  checkServerStatus(cfg.server?.ip, cfg.server?.port);
+  checkServerStatus(ip, cfg.server?.port);
 }
 
-function applySettings(settings) {
-  const slider = document.getElementById('ramSlider');
-  const closeToggle = document.getElementById('closeOnLaunch');
-  if (slider) {
-    slider.value = settings.ram || 6144;
-    updateRamDisplay(settings.ram || 6144);
-  }
-  if (closeToggle) closeToggle.checked = settings.closeOnLaunch || false;
-}
-
-// ── CONTROLES DE VENTANA ───────────────────────────────────────
-function setupTitlebarButtons() {
+// ── NAVEGACIÓN Y BARRA DE TÍTULO ───────────────────────────────
+function setupTitlebarAndNavigation() {
   document.getElementById('btnMinimize')?.addEventListener('click', () => window.doraland.minimize());
+  document.getElementById('btnMaximize')?.addEventListener('click', () => window.doraland.maximize());
   document.getElementById('btnClose')?.addEventListener('click', () => window.doraland.close());
+
+  // Copiar IP del servidor
+  const copyIpHandler = () => {
+    const ip = config?.server?.ip || 'doralandmc.holyhosting.club';
+    navigator.clipboard?.writeText(ip);
+    showNotification(`📋 IP copiada: ${ip}`, 'success');
+  };
+  document.getElementById('tbCopyIp')?.addEventListener('click', copyIpHandler);
+  document.getElementById('btnCopyIpSidebar')?.addEventListener('click', copyIpHandler);
+  document.getElementById('btnRefreshServer')?.addEventListener('click', () => {
+    checkServerStatus(config?.server?.ip, config?.server?.port);
+  });
+
+  // Botones de navegación en el sidebar
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.screen;
+      if (!currentSession && target === 'screenHome') {
+        showScreen('screenLogin');
+        return;
+      }
+      showScreen(target);
+    });
+  });
+
+  // Todos los accesos directos a Ajustes
+  const openSettings = () => showScreen('screenSettings');
+  document.getElementById('btnTopSettings')?.addEventListener('click', openSettings);
+  document.getElementById('btnQuickSettings')?.addEventListener('click', openSettings);
+  document.getElementById('btnLoginSettings')?.addEventListener('click', openSettings);
+  document.getElementById('btnHeroSettings')?.addEventListener('click', openSettings);
+  document.getElementById('btnDockSettings')?.addEventListener('click', openSettings);
+  document.getElementById('btnOpenResolutionSettings')?.addEventListener('click', openSettings);
+
+  // Todos los accesos directos al Estudio de Skin
+  const openSkinStudio = () => showScreen('screenSkin');
+  document.getElementById('btnQuickSkin')?.addEventListener('click', openSkinStudio);
+  document.getElementById('userAvatarClick')?.addEventListener('click', openSkinStudio);
+  document.getElementById('btnHeroSkin')?.addEventListener('click', openSkinStudio);
+  document.getElementById('btnHomeOpenSkinStudio')?.addEventListener('click', openSkinStudio);
+  document.getElementById('homeSkinCanvasWrap')?.addEventListener('click', openSkinStudio);
+
+  // Botón abrir carpeta .doraland desde el Hero
+  document.getElementById('btnHeroFolder')?.addEventListener('click', () => {
+    window.doraland.openGameFolder();
+  });
+
+  // Botones "Volver al Inicio"
+  document.querySelectorAll('.btn-back-home').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (currentSession) showScreen('screenHome');
+      else showScreen('screenLogin');
+    });
+  });
 }
 
-// ── TABS DE AUTENTICACIÓN ──────────────────────────────────────
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId)?.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.screen === screenId);
+  });
+
+  updateUserCard(currentSession);
+  updateSettingsAccountBox(currentSession);
+
+  if (screenId === 'screenHome') {
+    safeText('wbUsername', currentSession?.name || 'Jugador');
+    setupPlayButton();
+  }
+}
+
+// ── TABS DE AUTENTICACIÓN (LOGIN) ──────────────────────────────
 function setupAuthTabs() {
   const tabs = document.querySelectorAll('.auth-tab');
   tabs.forEach(tab => {
@@ -83,38 +213,39 @@ function setupAuthTabs() {
     });
   });
 
-  // Botones de autenticación
   document.getElementById('btnMicrosoft')?.addEventListener('click', loginMicrosoft);
   document.getElementById('btnOfflineLogin')?.addEventListener('click', loginOffline);
 
-  // Enter en el campo de nickname
   document.getElementById('inputNickname')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loginOffline();
   });
 
-  // Validación en tiempo real del nickname
   document.getElementById('inputNickname')?.addEventListener('input', (e) => {
     validateNickname(e.target.value, false);
   });
 
-  // Botón de logout
+  document.getElementById('btnLoginPickSkin')?.addEventListener('click', async () => {
+    await pickCustomSkinFile();
+  });
+
   document.getElementById('btnLogout')?.addEventListener('click', logout);
 }
 
 // ── LOGIN MICROSOFT (PREMIUM) ──────────────────────────────────
 async function loginMicrosoft() {
   const btn = document.getElementById('btnMicrosoft');
+  const settingsBtn = document.getElementById('btnSettingsPremiumLogin');
   const loading = document.getElementById('premiumLoading');
   const loadingText = document.getElementById('premiumLoadingText');
 
-  btn.disabled = true;
-  loading.classList.add('show');
-  loadingText.textContent = 'Abriendo Microsoft...';
+  if (btn) btn.disabled = true;
+  if (settingsBtn) settingsBtn.disabled = true;
+  loading?.classList.add('show');
+  if (loadingText) loadingText.textContent = 'Abriendo ventana oficial de Microsoft...';
 
   try {
-    // Escuchar actualizaciones del flujo OAuth
     window.doraland.onAuthUpdate((update) => {
-      if (update?.title) loadingText.textContent = update.title;
+      if (update?.title && loadingText) loadingText.textContent = update.title;
     });
 
     const result = await window.doraland.authMicrosoft();
@@ -126,15 +257,16 @@ async function loginMicrosoft() {
 
     if (result && result.session) {
       currentSession = result.session;
-      showHomeScreen();
-      showNotification('✅ ¡Sesión iniciada con Microsoft!', 'success');
+      await refreshSkinRenderer();
+      showScreen('screenHome');
+      showNotification(`✅ ¡Conectado como ${currentSession.name} (Premium Microsoft)!`, 'success');
     }
   } catch (err) {
-    console.error('Error login Microsoft:', err);
     showNotification('❌ Error: ' + (err.message || 'Error de conexión con Microsoft'), 'error');
   } finally {
-    btn.disabled = false;
-    loading.classList.remove('show');
+    if (btn) btn.disabled = false;
+    if (settingsBtn) settingsBtn.disabled = false;
+    loading?.classList.remove('show');
     window.doraland.removeAllListeners('auth-update');
   }
 }
@@ -147,30 +279,34 @@ async function loginOffline() {
   if (!validateNickname(username, true)) return;
 
   const btn = document.getElementById('btnOfflineLogin');
-  btn.disabled = true;
-  btn.textContent = 'Conectando...';
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Conectando...';
+  }
 
   try {
     const result = await window.doraland.authOffline(username);
 
     if (result && result.error) {
-      document.getElementById('nicknameError').textContent = result.error;
+      safeText('nicknameError', result.error);
       return;
     }
 
     if (result && result.session) {
       currentSession = result.session;
-      showHomeScreen();
-      showNotification('✅ ¡Entraste como ' + username + '!', 'success');
+      await refreshSkinRenderer();
+      showScreen('screenHome');
+      showNotification(`✅ ¡Bienvenido a Doraland, ${username}!`, 'success');
     } else {
-      document.getElementById('nicknameError').textContent = 'No se pudo obtener la sesión.';
+      safeText('nicknameError', 'No se pudo iniciar la sesión offline.');
     }
   } catch (err) {
-    console.error('Error al iniciar sesión offline:', err);
-    document.getElementById('nicknameError').textContent = 'Error: ' + (err.message || 'Error de conexión');
+    safeText('nicknameError', 'Error: ' + (err.message || 'Error de conexión'));
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Continuar como No Premium';
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Entrar como No Premium →';
+    }
   }
 }
 
@@ -187,51 +323,31 @@ function validateNickname(value, showErrors) {
     return false;
   }
   if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-    if (showErrors) errorEl.textContent = 'Solo letras, números y _ (guión bajo).';
+    if (showErrors) errorEl.textContent = 'Solo letras, números y guión bajo (_).';
     return false;
   }
   errorEl.textContent = '';
   return true;
 }
 
-// ── CERRAR SESIÓN ──────────────────────────────────────────────
 async function logout() {
   await window.doraland.clearSession();
   currentSession = null;
-  showLoginScreen();
+  showScreen('screenLogin');
 }
 
-// ── PANTALLAS ──────────────────────────────────────────────────
-function showLoginScreen() {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screenLogin')?.classList.add('active');
-  updateUserCard(null);
-}
-
-function showHomeScreen() {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screenHome')?.classList.add('active');
-  updateUserCard(currentSession);
-
-  // Nombre en el banner de bienvenida
-  const name = currentSession?.name || 'Jugador';
-  safeText('wbUsername', name);
-
-  // Configurar botón play
-  setupPlayButton();
-}
-
-// ── CARD DE USUARIO ────────────────────────────────────────────
+// ── TARJETA DE USUARIO Y ESTADO DE CUENTA EN AJUSTES ──────────
 function updateUserCard(session) {
   const nameEl = document.getElementById('userName');
   const typeEl = document.getElementById('userType');
-  const avatarEl = document.getElementById('userAvatar');
   const logoutBtn = document.getElementById('btnLogout');
 
   if (!session) {
     if (nameEl) nameEl.textContent = 'Sin sesión';
-    if (typeEl) typeEl.textContent = '';
-    if (avatarEl) avatarEl.src = '';
+    if (typeEl) {
+      typeEl.textContent = 'Inicia sesión';
+      typeEl.style.color = 'var(--text-muted)';
+    }
     if (logoutBtn) logoutBtn.style.display = 'none';
     return;
   }
@@ -239,28 +355,109 @@ function updateUserCard(session) {
   if (nameEl) nameEl.textContent = session.name || 'Jugador';
   if (logoutBtn) logoutBtn.style.display = 'flex';
 
-  // Determinar tipo de cuenta
   const isPremium = session.meta?.type === 'msa';
   if (typeEl) {
-    typeEl.textContent = isPremium ? '⭐ Premium' : '👤 No Premium';
-    typeEl.style.color = isPremium ? 'var(--gold)' : 'var(--text-muted)';
-  }
-
-  // Avatar de Minecraft
-  if (avatarEl && session.name) {
-    avatarEl.src = `https://mc-heads.net/avatar/${session.name}/36`;
-    avatarEl.onerror = () => {
-      avatarEl.src = 'https://mc-heads.net/avatar/Steve/36';
-    };
+    typeEl.textContent = isPremium ? '⭐ Cuenta Premium' : '👤 No Premium';
+    typeEl.style.color = isPremium ? 'var(--gold-light)' : 'var(--green-neon)';
   }
 }
 
-// ── RAM SLIDER ─────────────────────────────────────────────────
-async function setupRamSlider(currentRam, cfg) {
-  const slider = document.getElementById('ramSlider');
-  if (!slider) return;
+function updateSettingsAccountBox(session) {
+  const nameEl = document.getElementById('settingsAccountName');
+  const typeEl = document.getElementById('settingsAccountType');
+  const premBtn = document.getElementById('btnSettingsPremiumLogin');
 
-  let safeMax = cfg?.minecraft?.maxRamMb || 16384;
+  if (!session) {
+    if (nameEl) nameEl.textContent = 'Sin sesión iniciada';
+    if (typeEl) typeEl.textContent = 'Inicia sesión como Premium o No Premium';
+    if (premBtn) premBtn.querySelector('span').textContent = 'Iniciar sesión con Microsoft (Premium)';
+    return;
+  }
+
+  const isPremium = session.meta?.type === 'msa';
+  if (nameEl) nameEl.textContent = session.name;
+  if (typeEl) {
+    typeEl.textContent = isPremium
+      ? `⭐ Cuenta Oficial Microsoft Premium • UUID: ${session.uuid?.slice(0, 12)}...`
+      : '👤 Cuenta No Premium (Offline) • Puedes subir tu Skin .PNG o cambiar a Premium';
+  }
+  if (premBtn) {
+    premBtn.querySelector('span').textContent = isPremium
+      ? 'Cambiar de Cuenta Microsoft Premium'
+      : 'Cambiar a Cuenta Premium (Microsoft)';
+  }
+}
+
+// ── AJUSTES: RESOLUCIÓN, RAM, LAUNCHER SETTINGS ───────────────
+function applySettingsToUI(s) {
+  const ram = s.ram || 6144;
+  const resW = s.resolutionWidth || 1280;
+  const resH = s.resolutionHeight || 720;
+  const full = Boolean(s.fullscreen);
+
+  // Sliders de RAM
+  const homeSlider = document.getElementById('ramSlider');
+  const setSlider = document.getElementById('settingsRamSlider');
+  if (homeSlider) {
+    homeSlider.value = ram;
+    updateSliderFill(homeSlider);
+  }
+  if (setSlider) {
+    setSlider.value = ram;
+    updateSliderFill(setSlider);
+  }
+  updateRamDisplay(ram);
+
+  // Resolución
+  const inputW = document.getElementById('inputResWidth');
+  const inputH = document.getElementById('inputResHeight');
+  const presetSel = document.getElementById('selectResPreset');
+  if (inputW) inputW.value = resW;
+  if (inputH) inputH.value = resH;
+
+  if (presetSel) {
+    const key = `${resW}x${resH}`;
+    const hasOption = Array.from(presetSel.options).some(o => o.value === key);
+    presetSel.value = hasOption ? key : 'custom';
+  }
+
+  // Toggles
+  const closeHome = document.getElementById('closeOnLaunch');
+  const closeSet = document.getElementById('settingsCloseOnLaunch');
+  const fullQuick = document.getElementById('quickFullscreen');
+  const fullSet = document.getElementById('settingsFullscreen');
+  const hideSet = document.getElementById('settingsHideOnLaunch');
+  const autoConnSet = document.getElementById('settingsAutoConnect');
+  const jvmInput = document.getElementById('inputCustomJvm');
+
+  if (closeHome) closeHome.checked = Boolean(s.closeOnLaunch);
+  if (closeSet) closeSet.checked = Boolean(s.closeOnLaunch);
+  if (fullQuick) fullQuick.checked = full;
+  if (fullSet) fullSet.checked = full;
+  if (hideSet) hideSet.checked = Boolean(s.hideOnLaunch);
+  if (autoConnSet) autoConnSet.checked = s.autoConnect !== false;
+  if (jvmInput) jvmInput.value = s.customJvmArgs || '';
+
+  updateResolutionBadges(resW, resH, full);
+}
+
+function updateResolutionBadges(w, h, full) {
+  const label = full ? 'Pantalla Completa' : `${w}×${h}`;
+  safeText('heroResBadge', label);
+  safeText('playResText', label);
+}
+
+async function persistSettings(partial = {}) {
+  currentSettings = { ...currentSettings, ...partial };
+  applySettingsToUI(currentSettings);
+  await window.doraland.saveSettings(currentSettings);
+}
+
+async function setupRamAndSettingsControls() {
+  const homeSlider = document.getElementById('ramSlider');
+  const setSlider = document.getElementById('settingsRamSlider');
+
+  let safeMax = config?.minecraft?.maxRamMb || 16384;
   try {
     const sys = await window.doraland.getSystemInfo();
     if (sys && sys.safeMaxRamMb) {
@@ -268,69 +465,547 @@ async function setupRamSlider(currentRam, cfg) {
     }
   } catch {}
 
-  const min = cfg?.minecraft?.minRamMb || 2048;
-  slider.min = min;
-  slider.max = safeMax;
-  slider.value = Math.min(safeMax, Math.max(min, currentRam));
+  const min = config?.minecraft?.minRamMb || 2048;
+  [homeSlider, setSlider].forEach(sl => {
+    if (!sl) return;
+    sl.min = min;
+    sl.max = safeMax;
+    sl.value = Math.min(safeMax, Math.max(min, currentSettings.ram || 6144));
+    updateSliderFill(sl);
+  });
+  safeText('ramMaxLabel', `${Math.round(safeMax / 1024)} GB`);
+  updateRamDisplay(currentSettings.ram || 6144);
 
-  updateRamDisplay(slider.value);
-  updateSliderFill(slider);
-
-  slider.addEventListener('input', async () => {
-    const val = parseInt(slider.value);
+  homeSlider?.addEventListener('input', () => {
+    const val = parseInt(homeSlider.value);
+    if (setSlider) { setSlider.value = val; updateSliderFill(setSlider); }
     updateRamDisplay(val);
-    updateSliderFill(slider);
-    await window.doraland.saveSettings({
-      ram: val,
-      closeOnLaunch: document.getElementById('closeOnLaunch')?.checked || false
-    });
+    updateSliderFill(homeSlider);
+  });
+  homeSlider?.addEventListener('change', () => {
+    persistSettings({ ram: parseInt(homeSlider.value) });
   });
 
-  document.getElementById('closeOnLaunch')?.addEventListener('change', async (e) => {
-    await window.doraland.saveSettings({
-      ram: parseInt(slider.value),
-      closeOnLaunch: e.target.checked
-    });
+  setSlider?.addEventListener('input', () => {
+    const val = parseInt(setSlider.value);
+    if (homeSlider) { homeSlider.value = val; updateSliderFill(homeSlider); }
+    updateRamDisplay(val);
+    updateSliderFill(setSlider);
+  });
+  setSlider?.addEventListener('change', () => {
+    persistSettings({ ram: parseInt(setSlider.value) });
+  });
+
+  // Preajustes de resolución
+  const presetSel = document.getElementById('selectResPreset');
+  const inputW = document.getElementById('inputResWidth');
+  const inputH = document.getElementById('inputResHeight');
+
+  presetSel?.addEventListener('change', () => {
+    if (presetSel.value === 'custom') return;
+    const [w, h] = presetSel.value.split('x').map(Number);
+    if (w && h) {
+      persistSettings({ resolutionWidth: w, resolutionHeight: h });
+    }
+  });
+
+  const onManualResChange = () => {
+    const w = Math.min(7680, Math.max(640, parseInt(inputW?.value) || 1280));
+    const h = Math.min(4320, Math.max(480, parseInt(inputH?.value) || 720));
+    persistSettings({ resolutionWidth: w, resolutionHeight: h });
+  };
+  inputW?.addEventListener('change', onManualResChange);
+  inputH?.addEventListener('change', onManualResChange);
+
+  // Toggles sincronizados
+  document.getElementById('closeOnLaunch')?.addEventListener('change', (e) => {
+    persistSettings({ closeOnLaunch: e.target.checked });
+  });
+  document.getElementById('settingsCloseOnLaunch')?.addEventListener('change', (e) => {
+    persistSettings({ closeOnLaunch: e.target.checked });
+  });
+  document.getElementById('quickFullscreen')?.addEventListener('change', (e) => {
+    persistSettings({ fullscreen: e.target.checked });
+  });
+  document.getElementById('settingsFullscreen')?.addEventListener('change', (e) => {
+    persistSettings({ fullscreen: e.target.checked });
+  });
+  document.getElementById('settingsHideOnLaunch')?.addEventListener('change', (e) => {
+    persistSettings({ hideOnLaunch: e.target.checked });
+  });
+  document.getElementById('settingsAutoConnect')?.addEventListener('change', (e) => {
+    persistSettings({ autoConnect: e.target.checked });
+  });
+  document.getElementById('inputCustomJvm')?.addEventListener('change', (e) => {
+    persistSettings({ customJvmArgs: e.target.value.trim() });
+  });
+
+  // Botones de cuenta en Ajustes (Premium Minecraft / Cambiar cuenta)
+  document.getElementById('btnSettingsPremiumLogin')?.addEventListener('click', () => {
+    loginMicrosoft();
+  });
+
+  document.getElementById('btnSettingsSwitchAccount')?.addEventListener('click', () => {
+    showScreen('screenLogin');
+  });
+
+  document.getElementById('btnSettingsOpenFolder')?.addEventListener('click', () => {
+    window.doraland.openGameFolder();
+  });
+
+  document.getElementById('btnSettingsCheckUpdate')?.addEventListener('click', async () => {
+    showNotification('🔍 Verificando actualizaciones en GitHub...', 'info');
+    const res = await window.doraland.checkLauncherUpdate();
+    if (res && !res.updateAvailable) {
+      showNotification(`✅ Estás en la última versión (v${config?.launcher?.version || '1.0.1'}).`, 'success');
+    }
+  });
+
+  document.getElementById('btnSaveAllSettings')?.addEventListener('click', async () => {
+    const w = Math.min(7680, Math.max(640, parseInt(inputW?.value) || 1280));
+    const h = Math.min(4320, Math.max(480, parseInt(inputH?.value) || 720));
+    const jvm = document.getElementById('inputCustomJvm')?.value?.trim() || '';
+    await persistSettings({ resolutionWidth: w, resolutionHeight: h, customJvmArgs: jvm });
+    showNotification('💾 ¡Ajustes guardados correctamente!', 'success');
   });
 }
 
 function updateRamDisplay(mb) {
   const gb = (mb / 1024).toFixed(mb % 1024 === 0 ? 0 : 1);
   safeText('ramValue', `${gb} GB`);
+  safeText('settingsRamValue', `${gb} GB`);
 }
 
 function updateSliderFill(slider) {
+  if (!slider) return;
   const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
   slider.style.setProperty('--pct', `${pct}%`);
 }
 
-// ── BOTÓN JUGAR ────────────────────────────────────────────────
+// ── ESTUDIO DE SKINS (NO PREMIUM PNG + RENDER CANVAS) ─────────
+function setupSkinStudio() {
+  document.getElementById('btnStudioSelectFile')?.addEventListener('click', pickCustomSkinFile);
+  document.getElementById('btnHomeUploadSkin')?.addEventListener('click', pickCustomSkinFile);
+
+  // Selector de modelo (Clásico 4px / Slim 3px)
+  const btnClassic = document.getElementById('btnModelClassic');
+  const btnSlim = document.getElementById('btnModelSlim');
+
+  const setModel = async (model) => {
+    btnClassic?.classList.toggle('active', model === 'classic');
+    btnSlim?.classList.toggle('active', model === 'slim');
+    if (currentSkin && currentSkin.dataUrl) {
+      const res = await window.doraland.saveSkinData({
+        dataUrl: currentSkin.dataUrl,
+        model,
+        name: currentSkin.name
+      });
+      if (res?.skin) currentSkin = res.skin;
+    } else {
+      currentSkin = { ...(currentSkin || {}), model };
+    }
+    await refreshSkinRenderer();
+  };
+
+  btnClassic?.addEventListener('click', () => setModel('classic'));
+  btnSlim?.addEventListener('click', () => setModel('slim'));
+
+  // Toggle capa exterior 3D
+  document.getElementById('skinShowOuterLayer')?.addEventListener('change', () => {
+    renderAllSkinCanvases();
+  });
+
+  // Importar por Nickname
+  document.getElementById('btnImportSkinNick')?.addEventListener('click', async () => {
+    const input = document.getElementById('inputSkinNick');
+    const nick = input?.value?.trim() || '';
+    if (!nick) {
+      showNotification('⚠️ Escribe un nickname de Minecraft primero.', 'error');
+      return;
+    }
+    const btn = document.getElementById('btnImportSkinNick');
+    if (btn) { btn.disabled = true; btn.textContent = '...'; }
+    try {
+      const res = await window.doraland.importSkinByNick(nick);
+      if (res?.error) {
+        showNotification('❌ ' + res.error, 'error');
+      } else if (res?.skin) {
+        currentSkin = res.skin;
+        await refreshSkinRenderer();
+        showNotification(`🎨 ¡Skin de ${nick} importada y aplicada!`, 'success');
+      }
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Importar'; }
+    }
+  });
+
+  // Restablecer skin
+  document.getElementById('btnResetSkin')?.addEventListener('click', async () => {
+    await window.doraland.resetSkin();
+    currentSkin = null;
+    loadedSkinImage = null;
+    await refreshSkinRenderer();
+    showNotification('🔄 Skin restablecida al modelo por defecto.', 'info');
+  });
+
+  // Drag & Drop de archivo PNG en el escenario de Skin
+  const dropZone = document.getElementById('skinDropZone');
+  if (dropZone) {
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer?.files?.[0];
+      if (!file || !file.name.toLowerCase().endsWith('.png')) {
+        showNotification('⚠️ Por favor suelta un archivo en formato .PNG.', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const res = await window.doraland.saveSkinData({
+          dataUrl: reader.result,
+          model: currentSkin?.model || 'classic',
+          name: file.name
+        });
+        if (res?.error) {
+          showNotification('❌ ' + res.error, 'error');
+        } else if (res?.skin) {
+          currentSkin = res.skin;
+          await refreshSkinRenderer();
+          showNotification(`✅ Skin "${file.name}" cargada y lista para jugar.`, 'success');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+}
+
+async function pickCustomSkinFile() {
+  const res = await window.doraland.selectSkinFile();
+  if (res?.canceled) return;
+  if (res?.error) {
+    showNotification('❌ ' + res.error, 'error');
+    return;
+  }
+  if (res?.skin) {
+    currentSkin = res.skin;
+    await refreshSkinRenderer();
+    showNotification(`🎨 ¡Skin "${currentSkin.name}" aplicada correctamente!`, 'success');
+  }
+}
+
+function loadImageElement(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+async function refreshSkinRenderer() {
+  const model = currentSkin?.model || 'classic';
+  document.getElementById('btnModelClassic')?.classList.toggle('active', model === 'classic');
+  document.getElementById('btnModelSlim')?.classList.toggle('active', model === 'slim');
+
+  if (currentSkin && currentSkin.dataUrl) {
+    safeText('skinCurrentName', `Skin activa: ${currentSkin.name || 'Personalizada.png'}`);
+    safeText('homeSkinBadge', 'Personalizada');
+    safeText('loginSkinStatus', `✅ ${currentSkin.name || 'Skin lista'}`);
+    try {
+      loadedSkinImage = await loadImageElement(currentSkin.dataUrl);
+      renderAllSkinCanvases();
+      return;
+    } catch {}
+  }
+
+  // Si no hay skin subida localmente, intentar cargar la skin online del jugador actual
+  safeText('loginSkinStatus', 'Sin skin personalizada aún');
+  if (currentSession?.name) {
+    safeText('skinCurrentName', `Skin de ${currentSession.name}`);
+    safeText('homeSkinBadge', currentSession.meta?.type === 'msa' ? 'Premium' : 'Estándar');
+    try {
+      loadedSkinImage = await loadImageElement(`https://mc-heads.net/skin/${encodeURIComponent(currentSession.name)}`);
+      renderAllSkinCanvases();
+      return;
+    } catch {}
+  }
+
+  loadedSkinImage = null;
+  safeText('skinCurrentName', 'Skin por defecto (Explorador Doraland)');
+  safeText('homeSkinBadge', 'Por defecto');
+  renderAllSkinCanvases();
+}
+
+function renderAllSkinCanvases() {
+  const showOuter = document.getElementById('skinShowOuterLayer')?.checked !== false;
+  const slim = currentSkin?.model === 'slim';
+
+  const homeCanvas = document.getElementById('homeSkinCanvas');
+  const frontCanvas = document.getElementById('studioSkinFront');
+  const backCanvas = document.getElementById('studioSkinBack');
+  const avatarCanvas = document.getElementById('sidebarAvatarCanvas');
+  const avatarImg = document.getElementById('userAvatar');
+
+  if (homeCanvas) drawMinecraftCharacter(homeCanvas, loadedSkinImage, 'front', showOuter, slim);
+  if (frontCanvas) drawMinecraftCharacter(frontCanvas, loadedSkinImage, 'front', showOuter, slim);
+  if (backCanvas) drawMinecraftCharacter(backCanvas, loadedSkinImage, 'back', showOuter, slim);
+
+  if (avatarCanvas && avatarImg) {
+    if (loadedSkinImage) {
+      avatarCanvas.style.display = 'block';
+      avatarImg.style.display = 'none';
+      drawMinecraftHeadAvatar(avatarCanvas, loadedSkinImage, showOuter);
+    } else {
+      avatarCanvas.style.display = 'block';
+      avatarImg.style.display = 'none';
+      drawMinecraftHeadAvatar(avatarCanvas, null, true);
+    }
+  }
+}
+
+function drawMinecraftHeadAvatar(canvas, skinImg, showOuter = true) {
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (skinImg) {
+    ctx.drawImage(skinImg, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+    if (showOuter) {
+      ctx.drawImage(skinImg, 40, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+    }
+  } else {
+    // Avatar pixelado estilo Doraland cuando está offline
+    ctx.fillStyle = '#15803D';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#D29B6E';
+    ctx.fillRect(4, 6, 30, 28);
+    ctx.fillStyle = '#4A2E1B';
+    ctx.fillRect(4, 4, 30, 9);
+    ctx.fillStyle = '#22C55E';
+    ctx.fillRect(9, 17, 6, 5);
+    ctx.fillRect(23, 17, 6, 5);
+  }
+}
+
+function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = true, slim = false) {
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Escala en píxeles por unidad de modelo (modelo total: 16 unidades de ancho x 32 unidades de alto)
+  const scale = Math.min(Math.floor(canvas.width / 18), Math.floor(canvas.height / 34));
+  const ox = Math.floor((canvas.width - 16 * scale) / 2);
+  const oy = Math.floor((canvas.height - 32 * scale) / 2);
+  const armW = slim ? 3 : 4;
+  const leftArmX = slim ? 1 : 0;
+  const rightArmX = 12;
+
+  if (!skinImg) {
+    // Render estilizado por defecto (Explorador de Doraland) si no hay imagen cargada
+    // Cabeza
+    ctx.fillStyle = '#4A2E1B';
+    ctx.fillRect(ox + 4 * scale, oy + 0 * scale, 8 * scale, 8 * scale);
+    ctx.fillStyle = '#D8A074';
+    ctx.fillRect(ox + 4 * scale, oy + (view === 'front' ? 2 : 5) * scale, 8 * scale, (view === 'front' ? 6 : 3) * scale);
+    if (view === 'front') {
+      ctx.fillStyle = '#22C55E';
+      ctx.fillRect(ox + 5 * scale, oy + 4 * scale, 2 * scale, 1 * scale);
+      ctx.fillRect(ox + 9 * scale, oy + 4 * scale, 2 * scale, 1 * scale);
+    }
+    // Torso (Túnica verde/dorada Doraland)
+    ctx.fillStyle = '#15803D';
+    ctx.fillRect(ox + 4 * scale, oy + 8 * scale, 8 * scale, 12 * scale);
+    ctx.fillStyle = '#F59E0B';
+    ctx.fillRect(ox + 4 * scale, oy + 17 * scale, 8 * scale, 2 * scale);
+    // Brazos
+    ctx.fillStyle = '#166534';
+    ctx.fillRect(ox + leftArmX * scale, oy + 8 * scale, armW * scale, 9 * scale);
+    ctx.fillRect(ox + rightArmX * scale, oy + 8 * scale, armW * scale, 9 * scale);
+    ctx.fillStyle = '#D8A074';
+    ctx.fillRect(ox + leftArmX * scale, oy + 17 * scale, armW * scale, 3 * scale);
+    ctx.fillRect(ox + rightArmX * scale, oy + 17 * scale, armW * scale, 3 * scale);
+    // Piernas
+    ctx.fillStyle = '#1E293B';
+    ctx.fillRect(ox + 4 * scale, oy + 20 * scale, 4 * scale, 12 * scale);
+    ctx.fillRect(ox + 8 * scale, oy + 20 * scale, 4 * scale, 12 * scale);
+    return;
+  }
+
+  const isLegacy64x32 = skinImg.height === 32;
+
+  const part = (sx, sy, sw, sh, dx, dy, dw = sw, dh = sh) => {
+    ctx.drawImage(skinImg, sx, sy, sw, sh, ox + dx * scale, oy + dy * scale, dw * scale, dh * scale);
+  };
+
+  if (view === 'front') {
+    // Cabeza base + Sombrero 3D
+    part(8, 8, 8, 8, 4, 0);
+    if (showOuter) part(40, 8, 8, 8, 3.75, -0.25, 8.5, 8.5);
+
+    // Torso + Chaqueta
+    part(20, 20, 8, 12, 4, 8);
+    if (showOuter && !isLegacy64x32) part(20, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
+
+    // Brazo Derecho (a la izquierda del visor)
+    part(44, 20, armW, 12, leftArmX, 8);
+    if (showOuter && !isLegacy64x32) part(44, 36, armW, 12, leftArmX - 0.15, 7.85, armW + 0.3, 12.3);
+
+    // Brazo Izquierdo (a la derecha del visor)
+    if (isLegacy64x32) {
+      part(44, 20, armW, 12, rightArmX, 8);
+    } else {
+      part(36, 52, armW, 12, rightArmX, 8);
+      if (showOuter) part(52, 52, armW, 12, rightArmX - 0.15, 7.85, armW + 0.3, 12.3);
+    }
+
+    // Pierna Derecha
+    part(4, 20, 4, 12, 4, 20);
+    if (showOuter && !isLegacy64x32) part(4, 36, 4, 12, 3.85, 19.85, 4.3, 12.3);
+
+    // Pierna Izquierda
+    if (isLegacy64x32) {
+      part(4, 20, 4, 12, 8, 20);
+    } else {
+      part(20, 52, 4, 12, 8, 20);
+      if (showOuter) part(4, 52, 4, 12, 7.85, 19.85, 4.3, 12.3);
+    }
+  } else {
+    // VISTA TRASERA
+    part(24, 8, 8, 8, 4, 0);
+    if (showOuter) part(56, 8, 8, 8, 3.75, -0.25, 8.5, 8.5);
+
+    part(32, 20, 8, 12, 4, 8);
+    if (showOuter && !isLegacy64x32) part(32, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
+
+    // Brazos traseros
+    const rArmBackX = slim ? 51 : 52;
+    const lArmBackX = slim ? 43 : 44;
+    if (isLegacy64x32) {
+      part(rArmBackX, 20, armW, 12, leftArmX, 8);
+      part(rArmBackX, 20, armW, 12, rightArmX, 8);
+    } else {
+      part(lArmBackX, 52, armW, 12, leftArmX, 8);
+      part(rArmBackX, 20, armW, 12, rightArmX, 8);
+    }
+
+    // Piernas traseras
+    if (isLegacy64x32) {
+      part(12, 20, 4, 12, 4, 20);
+      part(12, 20, 4, 12, 8, 20);
+    } else {
+      part(28, 52, 4, 12, 4, 20);
+      part(12, 20, 4, 12, 8, 20);
+    }
+  }
+}
+
+// ── MONETIZACIÓN CON GOOGLE ADS (ADSENSE + FALLBACK) ──────────
+function setupGoogleAds(adsCfg) {
+  const homeSlot = document.getElementById('adSlotHome');
+  const sideSlot = document.getElementById('adSlotSidebar');
+
+  if (adsCfg && adsCfg.enabled === false) {
+    if (homeSlot) homeSlot.style.display = 'none';
+    if (sideSlot) sideSlot.style.display = 'none';
+    return;
+  }
+
+  const promo = adsCfg?.fallbackPromo || {};
+  const ctaUrl = promo.ctaUrl || config?.ui?.discordUrl || 'https://discord.gg/nR9c4czkt7';
+
+  safeText('adHomeBadge', promo.badge || 'GOOGLE ADS • ESPACIO PATROCINADO');
+  safeText('adHomeTitle', promo.title || 'Comunidad Oficial Doraland • Eventos y Rangos');
+  safeText('adHomeSubtitle', promo.subtitle || 'Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.');
+  safeText('adHomeCta', promo.ctaText || 'Unirse al Discord');
+
+  const openPromo = () => window.doraland.openExternal(ctaUrl);
+  document.getElementById('adHomeCta')?.addEventListener('click', openPromo);
+  document.getElementById('adSidebarCta')?.addEventListener('click', openPromo);
+
+  // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX)
+  const clientId = adsCfg?.clientId || '';
+  const hasRealAdSense = clientId.startsWith('ca-pub-') && !clientId.includes('0000000000');
+
+  if (hasRealAdSense) {
+    try {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(clientId)}`;
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+
+      const mountHome = document.getElementById('adHomeMount');
+      if (mountHome && adsCfg?.slots?.homeHorizontal) {
+        const ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.display = 'block';
+        ins.dataset.adClient = clientId;
+        ins.dataset.adSlot = adsCfg.slots.homeHorizontal;
+        ins.dataset.adFormat = 'horizontal';
+        mountHome.prepend(ins);
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch {}
+  }
+
+  // Rotador de anuncios patrocinados al pulsar ↻
+  const promos = [
+    {
+      title: promo.title || 'Comunidad Oficial Doraland • Eventos y Rangos',
+      sub: promo.subtitle || 'Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.',
+      cta: promo.ctaText || 'Unirse al Discord',
+      icon: '💎'
+    },
+    {
+      title: 'Personaliza tu Personaje en Doraland',
+      sub: 'Usa el Estudio de Skin integrado y más de 1,510 Emotes de Emotecraft en el servidor.',
+      cta: 'Explorar Discord',
+      icon: '✨'
+    }
+  ];
+  let promoIdx = 0;
+  document.getElementById('btnRefreshAds')?.addEventListener('click', () => {
+    promoIdx = (promoIdx + 1) % promos.length;
+    const p = promos[promoIdx];
+    safeText('adHomeTitle', p.title);
+    safeText('adHomeSubtitle', p.sub);
+    safeText('adHomeCta', p.cta);
+  });
+}
+
+// ── BOTÓN JUGAR Y LANZAMIENTO ──────────────────────────────────
 function setupPlayButton() {
   const btn = document.getElementById('btnPlay');
   if (!btn) return;
-  btn.onclick = null;
-  btn.addEventListener('click', startGame);
+  btn.onclick = startGame;
 }
 
 async function startGame() {
   if (isLaunching) return;
 
   if (!currentSession) {
-    showNotification('⚠️ Por favor inicia sesión primero.', 'error');
-    showLoginScreen();
+    showNotification('⚠️ Inicia sesión primero para entrar al servidor.', 'error');
+    showScreen('screenLogin');
     return;
   }
 
   isLaunching = true;
   setPlayButtonState('launching');
 
-  const ram = parseInt(document.getElementById('ramSlider')?.value || '4096');
-
-  logToConsole('🚀 Iniciando proceso de juego para Doraland...', 'info');
-  logToConsole(`📂 RAM solicitada: ${(ram/1024).toFixed(1)} GB`, 'info');
+  const ram = parseInt(currentSettings.ram || 6144);
+  logToConsole('🚀 Iniciando Doraland Launcher v1.0.1...', 'info');
+  logToConsole(`📊 RAM: ${(ram / 1024).toFixed(1)} GB • Resolución: ${currentSettings.fullscreen ? 'Pantalla Completa' : `${currentSettings.resolutionWidth}x${currentSettings.resolutionHeight}`}`, 'info');
 
   showProgressSection(true);
-  updateProgress(0, 'Verificando entorno...');
+  updateProgress(0, 'Verificando entorno y actualizaciones...');
 
   try {
     const result = await window.doraland.launchGame({ session: currentSession, ram });
@@ -350,7 +1025,6 @@ async function startGame() {
   }
 }
 
-// ── EVENTOS DEL LANZADOR ───────────────────────────────────────
 function setupLaunchEvents() {
   window.doraland.onLaunchLog((data) => {
     logToConsole(data.msg || '', data.type || 'debug');
@@ -368,7 +1042,7 @@ function setupLaunchEvents() {
     const loaderLabel = data.loader || config?.activeLoader?.display || 'NeoForge 1.21.1';
     if (data.status === 'launched') {
       setPlayButtonState('running');
-      updateProgress(100, `¡Minecraft (${loaderLabel}) iniciado!`);
+      updateProgress(100, `¡Minecraft (${loaderLabel}) en ejecución!`);
       logToConsole(`✅ ¡Minecraft (${loaderLabel}) iniciado correctamente!`, 'info');
     } else if (data.status === 'error') {
       isLaunching = false;
@@ -376,10 +1050,6 @@ function setupLaunchEvents() {
       showProgressSection(false);
       showNotification('❌ ' + data.message, 'error');
       logToConsole('❌ ERROR: ' + data.message, 'error');
-
-      if (data.message && data.message.includes('Java 21')) {
-        logToConsole('🔗 Descarga Java 21 oficial aquí: https://adoptium.net/temurin/releases/?version=21', 'warn');
-      }
     }
   });
 
@@ -397,17 +1067,15 @@ function setPlayButtonState(state) {
 
   const states = {
     ready:     { text: '¡JUGAR EN DORALAND!', disabled: false },
-    launching: { text: '⚙️ Iniciando...', disabled: true },
-    running:   { text: '🎮 Jugando en Doraland...', disabled: true }
+    launching: { text: '⚙️ PREPARANDO E INICIANDO...', disabled: true },
+    running:   { text: '🎮 JUGANDO EN DORALAND...', disabled: true }
   };
 
   const s = states[state] || states.ready;
   btn.disabled = s.disabled;
-  btn.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>${s.text}`;
-  if (state === 'running') btn.innerHTML = s.text;
+  btn.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>${s.text}</span>`;
 }
 
-// ── PROGRESO ───────────────────────────────────────────────────
 function showProgressSection(show) {
   const section = document.getElementById('progressSection');
   if (section) section.style.display = show ? 'block' : 'none';
@@ -451,28 +1119,20 @@ function logToConsole(msg, type = 'debug') {
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
 
-  // Límite de líneas para evitar memory leak
   const lines = output.querySelectorAll('.console-line');
   if (lines.length > 500) lines[0].remove();
 }
 
-// ── VERIFICACIÓN DE SERVIDOR ────────────────────────────────────
+// ── ESTADO DEL SERVIDOR ────────────────────────────────────────
 async function checkServerStatus(ip, port) {
   const dot = document.getElementById('statusDot');
+  const tbDot = document.getElementById('tbStatusDot');
   const label = document.getElementById('statusLabel');
   const players = document.getElementById('statusPlayers');
-  const serverIpEl = document.getElementById('serverIp');
 
-  if (serverIpEl) serverIpEl.textContent = ip || '';
-  if (!ip) {
-    dot?.setAttribute('class', 'status-dot offline');
-    if (label) label.textContent = 'Sin configurar';
-    return;
-  }
-
+  if (!ip) return;
   if (label) label.textContent = 'Verificando...';
 
-  // Usamos la API pública de Minecraft server para verificación
   try {
     const url = `https://api.mcstatus.io/v2/status/java/${ip}${port && port !== 25565 ? ':' + port : ''}`;
     const resp = await fetch(url, { signal: AbortSignal.timeout(5000) });
@@ -480,16 +1140,18 @@ async function checkServerStatus(ip, port) {
       const data = await resp.json();
       if (data.online) {
         dot?.setAttribute('class', 'status-dot online');
-        if (label) label.textContent = 'En línea';
-        if (players) players.textContent = `${data.players?.online || 0} / ${data.players?.max || 0} jugadores`;
-      } else {
-        throw new Error('offline');
+        if (tbDot) tbDot.style.background = 'var(--green-bright)';
+        if (label) label.textContent = 'Servidor En Línea';
+        if (players) players.textContent = `${data.players?.online || 0} / ${data.players?.max || 0} jugadores activos`;
+        return;
       }
-    } else { throw new Error('no-response'); }
+    }
+    throw new Error('offline');
   } catch {
     dot?.setAttribute('class', 'status-dot offline');
-    if (label) label.textContent = 'Sin conexión';
-    if (players) players.textContent = 'No verificado';
+    if (tbDot) tbDot.style.background = '#EF4444';
+    if (label) label.textContent = 'Fuera de línea / Mantenimiento';
+    if (players) players.textContent = ip;
   }
 }
 
@@ -499,17 +1161,17 @@ function buildSocialLinks(ui) {
   if (!container || !ui) return;
 
   const links = [
-    { key: 'discordUrl', label: 'Discord', class: 'discord', icon: '💬' },
-    { key: 'websiteUrl', label: 'Web', class: '', icon: '🌐' },
-    { key: 'youtubeUrl', label: 'YouTube', class: '', icon: '▶️' }
+    { key: 'discordUrl', label: 'Discord Oficial', icon: '💬' },
+    { key: 'websiteUrl', label: 'Sitio Web', icon: '🌐' },
+    { key: 'youtubeUrl', label: 'YouTube', icon: '▶️' }
   ];
 
   container.innerHTML = '';
-  links.forEach(({ key, label, class: cls, icon }) => {
+  links.forEach(({ key, label, icon }) => {
     if (!ui[key]) return;
     const a = document.createElement('a');
     a.href = '#';
-    a.className = `social-btn ${cls}`;
+    a.className = 'social-btn';
     a.innerHTML = `${icon} ${label}`;
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -519,20 +1181,19 @@ function buildSocialLinks(ui) {
   });
 }
 
-// ── NOTIFICACIONES ─────────────────────────────────────────────
+// ── NOTIFICACIONES FLOTANTES ───────────────────────────────────
 function showNotification(msg, type = 'info') {
-  // Crear notificación flotante
   const notif = document.createElement('div');
   notif.style.cssText = `
     position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-    background: ${type === 'error' ? '#1a0a0a' : '#0A1A0D'};
-    border: 1px solid ${type === 'error' ? '#EF4444' : 'var(--green-bright)'};
+    background: ${type === 'error' ? 'rgba(28, 10, 10, 0.95)' : 'rgba(10, 26, 15, 0.95)'};
+    border: 1px solid ${type === 'error' ? '#EF4444' : 'var(--gold)'};
     color: ${type === 'error' ? '#FCA5A5' : 'var(--text-primary)'};
-    padding: 12px 18px; border-radius: 8px;
-    font-size: 13px; font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    animation: slideIn 0.3s ease;
-    max-width: 320px; word-break: break-word;
+    padding: 12px 18px; border-radius: 10px;
+    font-size: 12.5px; font-weight: 700;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.65);
+    backdrop-filter: blur(12px);
+    max-width: 340px; word-break: break-word;
   `;
   notif.textContent = msg;
   document.body.appendChild(notif);
@@ -541,28 +1202,8 @@ function showNotification(msg, type = 'info') {
     notif.style.opacity = '0';
     notif.style.transition = 'opacity 0.3s';
     setTimeout(() => notif.remove(), 300);
-  }, 4000);
+  }, 3800);
 }
-
-// ── UTILIDADES ─────────────────────────────────────────────────
-function safeText(id, text) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = text;
-}
-
-function capitalize(str) {
-  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-}
-
-// Animación de entrada del logo
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
-  }
-`;
-document.head.appendChild(style);
 
 // ── AUTO-UPDATER DEL LAUNCHER ─────────────────────────────────
 function setupLauncherAutoUpdater() {
@@ -609,6 +1250,14 @@ function setupLauncherAutoUpdater() {
   });
 }
 
-// ── ARRANQUE ───────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', init);
+// ── UTILIDADES ─────────────────────────────────────────────────
+function safeText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
 
+function capitalize(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+document.addEventListener('DOMContentLoaded', init);

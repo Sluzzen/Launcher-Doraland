@@ -6,7 +6,7 @@
 // 4. Gestor multimotor dinámico (NeoForge, Forge, Fabric, Quilt, Híbridos, Plugins y Vanilla)
 // 5. Suite completa de protecciones, validaciones e integridad
 
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const https = require('https');
@@ -132,16 +132,38 @@ const DEFAULT_CONFIG = {
     githubRepo: "Launcher-Doraland"
   },
   ui: {
-    discordUrl: "",
+    discordUrl: "https://discord.gg/nR9c4czkt7",
     websiteUrl: "",
     youtubeUrl: ""
   },
+  ads: {
+    enabled: true,
+    provider: "google-adsense",
+    clientId: "ca-pub-0000000000000000",
+    slots: {
+      homeHorizontal: "1234567890",
+      sidebarBanner: "0987654321"
+    },
+    adServerUrl: "",
+    fallbackPromo: {
+      badge: "GOOGLE ADS • PATROCINADO",
+      title: "Comunidad Oficial Doraland • Eventos y Rangos",
+      subtitle: "Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.",
+      ctaText: "Unirse al Discord",
+      ctaUrl: "https://discord.gg/nR9c4czkt7"
+    }
+  },
   launcher: {
-    version: "1.0.0",
+    version: "1.0.1",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
-    closeOnLaunch: false
+    closeOnLaunch: false,
+    defaultResolution: {
+      width: 1280,
+      height: 720,
+      fullscreen: false
+    }
   }
 };
 
@@ -229,6 +251,12 @@ function loadConfig() {
         mods: { ...DEFAULT_CONFIG.mods, ...(parsed.mods || {}) },
         updates: { ...DEFAULT_CONFIG.updates, ...(parsed.updates || {}) },
         ui: { ...DEFAULT_CONFIG.ui, ...(parsed.ui || {}) },
+        ads: {
+          ...DEFAULT_CONFIG.ads,
+          ...(parsed.ads || {}),
+          slots: { ...DEFAULT_CONFIG.ads.slots, ...(parsed.ads?.slots || {}) },
+          fallbackPromo: { ...DEFAULT_CONFIG.ads.fallbackPromo, ...(parsed.ads?.fallbackPromo || {}) }
+        },
         launcher: { ...DEFAULT_CONFIG.launcher, ...(parsed.launcher || {}) }
       };
     } else {
@@ -518,13 +546,13 @@ function createWindow() {
   appendLauncherLog('=== Iniciando Doraland Launcher ===');
 
   mainWindow = new BrowserWindow({
-    width: 1020,
-    height: 670,
-    minWidth: 920,
-    minHeight: 620,
+    width: 1120,
+    height: 720,
+    minWidth: 980,
+    minHeight: 640,
     frame: false,
     transparent: false,
-    backgroundColor: '#0D1310',
+    backgroundColor: '#070D09',
     resizable: true,
     show: false,
     icon: path.join(__dirname, '..', 'assets', 'logo.png'),
@@ -649,10 +677,17 @@ ipcMain.handle('get-settings', () => {
   const safeMaxMb = Math.max(2048, totalMb - 1536);
   const savedRam = getStore().get('ram', cfg?.minecraft?.recommendedRamMb || 6144);
   const clampedRam = Math.min(safeMaxMb, Math.max(2048, savedRam));
+  const defRes = cfg?.launcher?.defaultResolution || { width: 1280, height: 720, fullscreen: false };
 
   return {
     ram: clampedRam,
-    closeOnLaunch: getStore().get('closeOnLaunch', false)
+    resolutionWidth: getStore().get('resolutionWidth', defRes.width || 1280),
+    resolutionHeight: getStore().get('resolutionHeight', defRes.height || 720),
+    fullscreen: getStore().get('fullscreen', Boolean(defRes.fullscreen)),
+    closeOnLaunch: getStore().get('closeOnLaunch', false),
+    hideOnLaunch: getStore().get('hideOnLaunch', false),
+    autoConnect: getStore().get('autoConnect', cfg?.server?.autoConnect !== false),
+    customJvmArgs: getStore().get('customJvmArgs', '')
   };
 });
 
@@ -660,13 +695,258 @@ ipcMain.handle('save-settings', (_, settings) => {
   if (settings && typeof settings === 'object') {
     const totalMb = Math.round(os.totalmem() / 1024 / 1024);
     const safeMaxMb = Math.max(2048, totalMb - 1536);
-    const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(settings.ram) || 6144));
-
-    getStore().set('ram', safeRam);
-    getStore().set('closeOnLaunch', Boolean(settings.closeOnLaunch));
+    if (settings.ram !== undefined) {
+      const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(settings.ram) || 6144));
+      getStore().set('ram', safeRam);
+    }
+    if (settings.resolutionWidth !== undefined) {
+      const w = Math.min(7680, Math.max(640, parseInt(settings.resolutionWidth) || 1280));
+      getStore().set('resolutionWidth', w);
+    }
+    if (settings.resolutionHeight !== undefined) {
+      const h = Math.min(4320, Math.max(480, parseInt(settings.resolutionHeight) || 720));
+      getStore().set('resolutionHeight', h);
+    }
+    if (settings.fullscreen !== undefined) {
+      getStore().set('fullscreen', Boolean(settings.fullscreen));
+    }
+    if (settings.closeOnLaunch !== undefined) {
+      getStore().set('closeOnLaunch', Boolean(settings.closeOnLaunch));
+    }
+    if (settings.hideOnLaunch !== undefined) {
+      getStore().set('hideOnLaunch', Boolean(settings.hideOnLaunch));
+    }
+    if (settings.autoConnect !== undefined) {
+      getStore().set('autoConnect', Boolean(settings.autoConnect));
+    }
+    if (settings.customJvmArgs !== undefined) {
+      getStore().set('customJvmArgs', String(settings.customJvmArgs || '').trim());
+    }
     return true;
   }
   return false;
+});
+
+ipcMain.handle('open-game-folder', async () => {
+  const cfg = loadConfig();
+  const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+  await fs.ensureDir(gameDir);
+  await shell.openPath(gameDir);
+  return { success: true, path: gameDir };
+});
+
+// ============================================================================
+// 5.1 SISTEMA DE SKINS PARA JUGADORES NO PREMIUM (OFFLINE) Y PREVIEW
+// ============================================================================
+function isValidPngBuffer(buf) {
+  if (!Buffer.isBuffer(buf) || buf.length < 68) return false;
+  return buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47;
+}
+
+async function applyCustomSkinToGameDir(skinObj, username = 'Player') {
+  try {
+    const cfg = loadConfig();
+    const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+    await fs.ensureDir(gameDir);
+
+    const rpDir = path.join(gameDir, 'resourcepacks', 'DoralandCustomSkin');
+
+    if (!skinObj || !skinObj.dataUrl) {
+      if (fs.existsSync(rpDir)) {
+        await fs.remove(rpDir);
+      }
+      return;
+    }
+
+    const base64Part = String(skinObj.dataUrl).replace(/^data:image\/png;base64,/i, '');
+    const pngBuf = Buffer.from(base64Part, 'base64');
+    if (!isValidPngBuffer(pngBuf)) return;
+
+    const cleanName = String(username || 'Player').replace(/[^a-zA-Z0-9_]/g, '') || 'Player';
+
+    // 1. Guardar en carpetas estándar de mods de skins (skins/, CustomSkinLoader, etc.)
+    const skinsDir = path.join(gameDir, 'skins');
+    const cslDir = path.join(gameDir, 'CustomSkinLoader', 'LocalSkin', 'skins');
+    await fs.ensureDir(skinsDir);
+    await fs.ensureDir(cslDir);
+    await fs.writeFile(path.join(skinsDir, `${cleanName}.png`), pngBuf);
+    await fs.writeFile(path.join(cslDir, `${cleanName}.png`), pngBuf);
+
+    // 2. Generar ResourcePack nativo 1.21.1 para que la skin se vea en el cliente inmediatamente sin requerir mods extra
+    const wideDir = path.join(rpDir, 'assets', 'minecraft', 'textures', 'entity', 'player', 'wide');
+    const slimDir = path.join(rpDir, 'assets', 'minecraft', 'textures', 'entity', 'player', 'slim');
+    await fs.ensureDir(wideDir);
+    await fs.ensureDir(slimDir);
+
+    await fs.writeJson(path.join(rpDir, 'pack.mcmeta'), {
+      pack: {
+        pack_format: 34,
+        supported_formats: [15, 48],
+        description: `Skin Personalizada de ${cleanName} (Doraland Launcher)`
+      }
+    }, { spaces: 2 });
+
+    const defaultActors = ['steve', 'alex', 'ari', 'efe', 'kai', 'makena', 'noor', 'sunny', 'zuri'];
+    for (const actor of defaultActors) {
+      await fs.writeFile(path.join(wideDir, `${actor}.png`), pngBuf);
+      await fs.writeFile(path.join(slimDir, `${actor}.png`), pngBuf);
+    }
+
+    // 3. Activar automáticamente el paquete en options.txt de Minecraft 1.21.1
+    const optionsPath = path.join(gameDir, 'options.txt');
+    const packEntry = '"file/DoralandCustomSkin"';
+    if (fs.existsSync(optionsPath)) {
+      let content = await fs.readFile(optionsPath, 'utf8');
+      if (content.includes('resourcePacks:[')) {
+        content = content.replace(/resourcePacks:\[(.*?)\]/, (match, inner) => {
+          if (inner.includes('DoralandCustomSkin')) return match;
+          const trimmed = inner.trim();
+          return trimmed.length > 0
+            ? `resourcePacks:[${trimmed},${packEntry}]`
+            : `resourcePacks:[${packEntry}]`;
+        });
+      } else {
+        content += `\nresourcePacks:["vanilla",${packEntry}]\n`;
+      }
+      await fs.writeFile(optionsPath, content, 'utf8');
+    } else {
+      await fs.writeFile(optionsPath, `resourcePacks:["vanilla",${packEntry}]\n`, 'utf8');
+    }
+  } catch (err) {
+    appendLauncherLog(`Aviso aplicando skin personalizada: ${err.message}`);
+  }
+}
+
+ipcMain.handle('get-skin', () => {
+  return getStore().get('customSkin', null);
+});
+
+ipcMain.handle('select-skin-file', async () => {
+  try {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      title: 'Seleccionar Skin de Minecraft (.PNG)',
+      filters: [{ name: 'Skin de Minecraft (PNG)', extensions: ['png'] }],
+      properties: ['openFile']
+    });
+
+    if (result.canceled || !result.filePaths || result.filePaths.length === 0) {
+      return { canceled: true };
+    }
+
+    const filePath = result.filePaths[0];
+    const stat = await fs.stat(filePath);
+    if (stat.size > 2 * 1024 * 1024) {
+      return { error: 'El archivo PNG es demasiado grande (máximo 2 MB).' };
+    }
+
+    const buf = await fs.readFile(filePath);
+    if (!isValidPngBuffer(buf)) {
+      return { error: 'El archivo seleccionado no es una imagen PNG válida.' };
+    }
+
+    const existing = getStore().get('customSkin', null);
+    const skinObj = {
+      dataUrl: `data:image/png;base64,${buf.toString('base64')}`,
+      model: existing?.model || 'classic',
+      name: path.basename(filePath),
+      updatedAt: Date.now()
+    };
+
+    getStore().set('customSkin', skinObj);
+    const session = getStore().get('session', null);
+    await applyCustomSkinToGameDir(skinObj, session?.name || 'Player');
+    appendLauncherLog(`Skin personalizada cargada desde archivo: ${skinObj.name}`);
+    return { success: true, skin: skinObj };
+  } catch (err) {
+    return { error: err.message || 'Error al cargar el archivo de skin.' };
+  }
+});
+
+ipcMain.handle('save-skin-data', async (_, payload) => {
+  try {
+    if (!payload || !payload.dataUrl) {
+      return { error: 'Datos de skin no válidos.' };
+    }
+    const base64Part = String(payload.dataUrl).replace(/^data:image\/png;base64,/i, '');
+    const buf = Buffer.from(base64Part, 'base64');
+    if (!isValidPngBuffer(buf)) {
+      return { error: 'El archivo proporcionado no es un PNG válido.' };
+    }
+
+    const skinObj = {
+      dataUrl: `data:image/png;base64,${buf.toString('base64')}`,
+      model: payload.model === 'slim' ? 'slim' : 'classic',
+      name: payload.name || 'skin_personalizada.png',
+      updatedAt: Date.now()
+    };
+
+    getStore().set('customSkin', skinObj);
+    const session = getStore().get('session', null);
+    await applyCustomSkinToGameDir(skinObj, session?.name || 'Player');
+    return { success: true, skin: skinObj };
+  } catch (err) {
+    return { error: err.message };
+  }
+});
+
+ipcMain.handle('import-skin-by-nick', async (_, nickname) => {
+  const cleanNick = String(nickname || '').trim();
+  if (!/^[a-zA-Z0-9_]{3,16}$/.test(cleanNick)) {
+    return { error: 'Introduce un nickname válido de Minecraft (3 a 16 caracteres).' };
+  }
+
+  function downloadBuffer(url) {
+    return new Promise((resolve, reject) => {
+      https.get(url, { headers: { 'User-Agent': 'DoralandLauncher' } }, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          return downloadBuffer(res.headers.location).then(resolve).catch(reject);
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return reject(new Error(`HTTP ${res.statusCode}`));
+        }
+        const chunks = [];
+        res.on('data', d => chunks.push(d));
+        res.on('end', () => resolve(Buffer.concat(chunks)));
+      }).on('error', reject);
+    });
+  }
+
+  try {
+    let buf;
+    try {
+      buf = await downloadBuffer(`https://mc-heads.net/skin/${encodeURIComponent(cleanNick)}`);
+    } catch {
+      buf = await downloadBuffer(`https://minotar.net/skin/${encodeURIComponent(cleanNick)}`);
+    }
+
+    if (!isValidPngBuffer(buf)) {
+      return { error: `No se encontró una skin PNG válida para "${cleanNick}".` };
+    }
+
+    const existing = getStore().get('customSkin', null);
+    const skinObj = {
+      dataUrl: `data:image/png;base64,${buf.toString('base64')}`,
+      model: existing?.model || 'classic',
+      name: `Skin de ${cleanNick}.png`,
+      sourceNick: cleanNick,
+      updatedAt: Date.now()
+    };
+
+    getStore().set('customSkin', skinObj);
+    const session = getStore().get('session', null);
+    await applyCustomSkinToGameDir(skinObj, session?.name || cleanNick);
+    appendLauncherLog(`Skin importada del jugador: ${cleanNick}`);
+    return { success: true, skin: skinObj };
+  } catch (err) {
+    return { error: `No se pudo descargar la skin de "${cleanNick}". Verifica el nombre o tu conexión.` };
+  }
+});
+
+ipcMain.handle('reset-skin', async () => {
+  getStore().delete('customSkin');
+  await applyCustomSkinToGameDir(null);
+  return { success: true };
 });
 
 ipcMain.on('open-external', (_, url) => {
@@ -1484,6 +1764,13 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     // 1. Sincronizar overrides del modpack (config/, defaultconfigs/, shaderpacks/, FancyMenu)
     await syncOverridesProtected(gameDir, cfg, event);
 
+    // 1.1 Aplicar skin personalizada si el jugador No Premium (o usuario) subió una skin
+    const savedSkin = getStore().get('customSkin', null);
+    if (savedSkin && savedSkin.dataUrl) {
+      await applyCustomSkinToGameDir(savedSkin, session.name);
+      event.sender.send('launch-log', { type: 'info', msg: `🎨 Skin personalizada aplicada para ${session.name} (${savedSkin.name || 'PNG'}).` });
+    }
+
     // 2. Sincronizar mods (remoto o local según config)
     if (cfg.mods?.enabled) {
       await syncModsProtected(gameDir, cfg, event);
@@ -1497,10 +1784,20 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(ram) || cfg.minecraft?.recommendedRamMb || 6144));
     const minRam = Math.max(1024, Math.floor(safeRam / 2));
 
-    event.sender.send('launch-log', { type: 'info', msg: `📊 Asignando RAM: ${safeRam}MB (Mínimo: ${minRam}MB)` });
+    const resW = Math.min(7680, Math.max(640, parseInt(getStore().get('resolutionWidth', 1280)) || 1280));
+    const resH = Math.min(4320, Math.max(480, parseInt(getStore().get('resolutionHeight', 720)) || 720));
+    const isFullscreen = Boolean(getStore().get('fullscreen', false));
+    const userJvmStr = String(getStore().get('customJvmArgs', '') || '').trim();
+    const userJvmList = userJvmStr ? userJvmStr.split(/\s+/).filter(Boolean) : [];
+
+    event.sender.send('launch-log', {
+      type: 'info',
+      msg: `📊 Asignando RAM: ${safeRam}MB (Mínimo: ${minRam}MB) • Resolución: ${isFullscreen ? 'Pantalla Completa' : `${resW}x${resH}`}`
+    });
 
     const jvmArgs = [
       ...(cfg.minecraft?.jvmArgs || []),
+      ...userJvmList,
       ...(loaderSetup.extraJvmArgs || [])
     ];
 
@@ -1541,6 +1838,11 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
         max: `${safeRam}M`,
         min: `${minRam}M`
       },
+      window: {
+        width: resW,
+        height: resH,
+        fullscreen: isFullscreen
+      },
       javaPath: javaCheck.path,
       customArgs: jvmArgs,
       overrides
@@ -1555,7 +1857,8 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     }
 
     // Auto-conexión al servidor en Minecraft 1.21.1 (QuickPlay Multiplayer)
-    if (cfg.server?.autoConnect !== false && cfg.server?.ip) {
+    const autoConnectPref = getStore().get('autoConnect', cfg.server?.autoConnect !== false);
+    if (autoConnectPref && cfg.server?.ip) {
       const cleanIp = String(cfg.server.ip).replace(/[^a-zA-Z0-9.-]/g, '');
       const cleanPort = parseInt(cfg.server.port) || 25565;
       opts.quickPlay = {
@@ -1573,7 +1876,12 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
 
     launcher.on('close', (code) => {
       isGameRunning = false;
-      event.sender.send('launch-close', code);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        if (!mainWindow.isVisible()) mainWindow.show();
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+      }
+      event?.sender?.send('launch-close', code);
       appendLauncherLog(`Minecraft cerrado con código: ${code}`);
     });
 
@@ -1583,6 +1891,8 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
 
     if (getStore().get('closeOnLaunch', false)) {
       setTimeout(() => app.quit(), 2500);
+    } else if (getStore().get('hideOnLaunch', false)) {
+      setTimeout(() => mainWindow?.minimize(), 2000);
     }
   } catch (err) {
     isGameRunning = false;
