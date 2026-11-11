@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doraland Ad Slot — Sidebar</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: transparent;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #F0FDF4;
+    }
+    .ad-wrap {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    }
+    .title { font-size: 11px; font-weight: 800; color: #F0FDF4; }
+    .sub { font-size: 10px; color: #9CC2A5; line-height: 1.3; }
+    .cta {
+      margin-top: 3px; align-self: flex-start;
+      background: linear-gradient(135deg, #F59E0B, #B45309);
+      color: #111; text-decoration: none;
+      padding: 4px 10px; border-radius: 5px;
+      font-size: 10px; font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div class="ad-wrap" id="adSidebarRoot">
+    <div class="title">Discord Oficial Doraland</div>
+    <div class="sub">Eventos, soporte y comunidad activa de Minecraft 1.21.1.</div>
+    <a class="cta" href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener">Unirse Ahora →</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const client = params.get('client') || 'ca-pub-0000000000000000';
+    const slot = params.get('slot') || '0987654321';
+
+    if (client.startsWith('ca-pub-') && !client.includes('0000000000')) {
+      const s = document.createElement('script');
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
+      document.head.appendChild(s);
+
+      const ins = document.createElement('ins');
+      ins.className = 'adsbygoogle';
+      ins.style.display = 'inline-block';
+      ins.style.width = '100%';
+      ins.style.height = '75px';
+      ins.dataset.adClient = client;
+      ins.dataset.adSlot = slot;
+
+      const root = document.getElementById('adSidebarRoot');
+      root.innerHTML = '';
+      root.appendChild(ins);
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>

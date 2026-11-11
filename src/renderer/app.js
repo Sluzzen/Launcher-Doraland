@@ -930,11 +930,32 @@ function setupGoogleAds(adsCfg) {
   document.getElementById('adHomeCta')?.addEventListener('click', openPromo);
   document.getElementById('adSidebarCta')?.addEventListener('click', openPromo);
 
-  // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX)
+  // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX) o Web de Ads (adServerUrl)
   const clientId = adsCfg?.clientId || '';
   const hasRealAdSense = clientId.startsWith('ca-pub-') && !clientId.includes('0000000000');
+  const homeAdUrl = adsCfg?.adServerUrl || '';
+  const sideAdUrl = adsCfg?.sidebarAdServerUrl || '';
 
-  if (hasRealAdSense) {
+  if (homeAdUrl && hasRealAdSense) {
+    // Cargar iframe desde la web oficial (GitHub Pages / Dominio propio) con soporte completo AdSense
+    fetch(homeAdUrl, { method: 'HEAD', signal: AbortSignal.timeout(4000) })
+      .then(res => {
+        if (!res.ok) return;
+        const mountHome = document.getElementById('adHomeMount');
+        if (mountHome) {
+          const qs = `?client=${encodeURIComponent(clientId)}&slot=${encodeURIComponent(adsCfg?.slots?.homeHorizontal || '')}`;
+          mountHome.innerHTML = `<iframe src="${homeAdUrl}${qs}" style="width:100%;height:62px;border:none;overflow:hidden;border-radius:8px;" scrolling="no"></iframe>`;
+        }
+        if (sideAdUrl) {
+          const mountSide = document.getElementById('adSidebarMount');
+          if (mountSide) {
+            const qsSide = `?client=${encodeURIComponent(clientId)}&slot=${encodeURIComponent(adsCfg?.slots?.sidebarBanner || '')}`;
+            mountSide.innerHTML = `<iframe src="${sideAdUrl}${qsSide}" style="width:100%;height:80px;border:none;overflow:hidden;border-radius:6px;" scrolling="no"></iframe>`;
+          }
+        }
+      })
+      .catch(() => {});
+  } else if (hasRealAdSense) {
     try {
       const script = document.createElement('script');
       script.async = true;

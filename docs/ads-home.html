@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doraland Ad Slot — Home</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: transparent;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #F0FDF4;
+    }
+    .ad-wrap {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .fallback-banner {
+      width: 100%;
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+    .icon { font-size: 22px; }
+    .info { flex: 1; min-width: 0; }
+    .title { font-size: 12px; font-weight: 800; color: #FCD34D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sub { font-size: 10.5px; color: #9CC2A5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cta {
+      background: linear-gradient(135deg, #FCD34D, #F59E0B);
+      color: #111; text-decoration: none;
+      padding: 6px 12px; border-radius: 6px;
+      font-size: 11px; font-weight: 900;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="ad-wrap" id="adRoot">
+    <div class="fallback-banner" id="fallbackBanner">
+      <div class="icon">💎</div>
+      <div class="info">
+        <div class="title">Comunidad Oficial Doraland • Eventos y Rangos</div>
+        <div class="sub">Únete al Discord oficial para sorteos, soporte y novedades del servidor.</div>
+      </div>
+      <a class="cta" href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener">Unirse al Discord</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const client = params.get('client') || 'ca-pub-0000000000000000';
+    const slot = params.get('slot') || '1234567890';
+
+    if (client.startsWith('ca-pub-') && !client.includes('0000000000')) {
+      const s = document.createElement('script');
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
+      document.head.appendChild(s);
+
+      const ins = document.createElement('ins');
+      ins.className = 'adsbygoogle';
+      ins.style.display = 'inline-block';
+      ins.style.width = '100%';
+      ins.style.height = '60px';
+      ins.dataset.adClient = client;
+      ins.dataset.adSlot = slot;
+
+      const root = document.getElementById('adRoot');
+      root.innerHTML = '';
+      root.appendChild(ins);
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>
