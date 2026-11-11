@@ -109,7 +109,6 @@ function applyConfig(cfg) {
   const loaderDisplay = cfg.activeLoader?.display || `${loaderName} ${mcVer}`;
   const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
-  safeText('launcherVersion', `v${cfg.launcher?.version || '1.0.1'}`);
   safeText('loaderBadge', `${loaderName} ${mcVer}`);
   safeText('playLoaderText', `${loaderName} ${mcVer}`);
   safeText('serverIp', ip);
@@ -526,7 +525,7 @@ async function setupRamAndSettingsControls() {
     showNotification('🔍 Verificando actualizaciones en GitHub...', 'info');
     const res = await window.doraland.checkLauncherUpdate();
     if (res && !res.updateAvailable) {
-      showNotification(`✅ Estás en la última versión (v${config?.launcher?.version || '1.0.1'}).`, 'success');
+      showNotification('✅ Estás en la última versión del Launcher.', 'success');
     }
   });
 
@@ -971,7 +970,7 @@ async function startGame() {
   setPlayButtonState('launching');
 
   const ram = parseInt(currentSettings.ram || 6144);
-  logToConsole('🚀 Iniciando Doraland Launcher v1.0.1...', 'info');
+  logToConsole('🚀 Iniciando Doraland Launcher...', 'info');
   logToConsole(`📊 RAM: ${(ram / 1024).toFixed(1)} GB • Resolución: ${currentSettings.fullscreen ? 'Pantalla Completa' : `${currentSettings.resolutionWidth}x${currentSettings.resolutionHeight}`}`, 'info');
 
   showProgressSection(true);
@@ -1186,7 +1185,7 @@ function setupLauncherAutoUpdater() {
 
   window.doraland.onLauncherUpdateAvailable((data) => {
     banner.style.display = 'flex';
-    if (ubTitle) ubTitle.textContent = `¡Actualizando a la versión v${data.version}!`;
+    if (ubTitle) ubTitle.textContent = '¡Actualizando Doraland Launcher!';
     if (ubDesc) ubDesc.textContent = data.releaseNotes || 'Aplicando la última actualización del launcher automáticamente...';
     if (data.autoApplying) {
       ubBtn.disabled = true;
@@ -1208,7 +1207,7 @@ function setupLauncherAutoUpdater() {
 
   window.doraland.onLauncherUpdateDownloaded((data) => {
     banner.style.display = 'flex';
-    if (ubTitle) ubTitle.textContent = `¡Launcher actualizado a v${data.version}!`;
+    if (ubTitle) ubTitle.textContent = '¡Doraland Launcher actualizado!';
     if (ubDesc) ubDesc.textContent = data.autoRestart
       ? 'Reiniciando automáticamente en 2 segundos para aplicar los cambios...'
       : 'La nueva versión se descargó. Haz clic para reiniciar y aplicar.';

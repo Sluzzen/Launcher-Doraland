@@ -803,8 +803,7 @@
 
       <ul class="nav-links">
         <li><a href="#estadisticas">Estadísticas</a></li>
-        <li><a href="#launcher">Launcher v1.0.1</a></li>
-        <li><a href="#jugadores">Jugadores</a></li>
+        <li><a href="#launcher">Launcher</a></li>
         <li><a href="#staff">Staff Team</a></li>
         <li><a href="#discord">Discord</a></li>
       </ul>
@@ -831,7 +830,7 @@
 
         <h1>Vive la Aventura Definitiva en <span class="text-gold">Doraland</span></h1>
         <p>
-          Explora un mundo diseñado al detalle con <strong>149 mods sincronizados automáticamente</strong>, más de <strong>1,510 emotes de Emotecraft</strong>, shaders preconfigurados y nuestro propio Launcher con Estudio de Skins integrado.
+          Explora un mundo diseñado al detalle con mods sincronizados automáticamente, emotes, shaders preconfigurados y nuestro propio Launcher con Estudio de Skins integrado.
         </p>
 
         <div class="server-ip-bar" id="copyIpBox" title="Haz clic para copiar la IP del servidor">
@@ -842,7 +841,7 @@
 
         <div class="hero-buttons">
           <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
-            🚀 Descargar Doraland Launcher v1.0.1
+            🚀 Descargar Doraland Launcher
           </a>
           <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold">
             💬 Unirse al Discord Oficial
@@ -892,7 +891,7 @@
       <div class="section-header">
         <span class="section-tag">MÉTRICAS EN TIEMPO REAL</span>
         <h2 class="section-title">Estadísticas Generales de <span class="text-gold">Doraland</span></h2>
-        <p class="section-desc">Monitoreo en vivo del estado del servidor, jugadores activos y paquetes sincronizados en nuestro repositorio oficial.</p>
+        <p class="section-desc">Monitoreo en vivo del estado del servidor y jugadores activos.</p>
       </div>
 
       <div class="stats-grid">
@@ -908,20 +907,6 @@
           <div class="stat-value" id="statPlayersCount">0 / 100</div>
           <div class="stat-label">Jugadores en Línea</div>
           <div class="stat-sub">Capacidad dinámica activa</div>
-        </div>
-
-        <div class="stat-card">
-          <span class="stat-icon">📦</span>
-          <div class="stat-value">149 Mods</div>
-          <div class="stat-label">Modpack NeoForge 1.21.1</div>
-          <div class="stat-sub">Verificados con SHA-1 automático</div>
-        </div>
-
-        <div class="stat-card">
-          <span class="stat-icon">💃</span>
-          <div class="stat-value">1,510+</div>
-          <div class="stat-label">Emotes & Animaciones</div>
-          <div class="stat-sub">Emotecraft + Shaders incluidos</div>
         </div>
       </div>
     </section>
@@ -953,9 +938,6 @@
           </div>
           <div class="staff-subrole">Owner & Fundador General</div>
           <p class="staff-bio">Creador y director general del proyecto Doraland, coordinación de comunidad, eventos y visión del servidor.</p>
-          <div class="staff-actions">
-            <button class="btn-staff-mini" onclick="inspectPlayerSkin('Dacota10')">🔍 Ver Skin en Inspector</button>
-          </div>
         </article>
 
         <!-- 2. Yanah_ (Developer / Head Admin) -->
@@ -973,29 +955,23 @@
           </div>
           <div class="staff-subrole">Developer / Head Admin</div>
           <p class="staff-bio">Jefa de administración y desarrollo del servidor, gestión de balance, normativas, seguridad y experiencia in-game.</p>
-          <div class="staff-actions">
-            <button class="btn-staff-mini" onclick="inspectPlayerSkin('Yanah_')">🔍 Ver Skin en Inspector</button>
-          </div>
         </article>
 
-        <!-- 3. OnmiAzkeel (Developer / Mods Developer) -->
+        <!-- 3. OmniAzkeel (Developer / Mods Developer) -->
         <article class="staff-card">
           <span class="staff-role-pill role-mods">⚒️ DEVELOPER / MODS DEV</span>
           <div class="staff-skin-stage">
             <img class="staff-body-img"
-                 src="https://mc-heads.net/body/OnmiAzkeel/220"
-                 onerror="this.src='https://minotar.net/armor/body/OnmiAzkeel/200.png'"
-                 alt="Skin de OnmiAzkeel" />
+                 src="https://mc-heads.net/body/OmniAzkeel/220"
+                 onerror="this.src='https://minotar.net/armor/body/OmniAzkeel/200.png'"
+                 alt="Skin de OmniAzkeel" />
           </div>
           <div class="staff-head-Row">
-            <img class="staff-head-icon" src="https://mc-heads.net/avatar/OnmiAzkeel/48" alt="Avatar OnmiAzkeel" />
-            <h3 class="staff-name">OnmiAzkeel</h3>
+            <img class="staff-head-icon" src="https://mc-heads.net/avatar/OmniAzkeel/48" alt="Avatar OmniAzkeel" />
+            <h3 class="staff-name">OmniAzkeel</h3>
           </div>
           <div class="staff-subrole">Developer / Mods Developer</div>
-          <p class="staff-bio">Ingeniero del modpack NeoForge 1.21.1, optimización de los 149 mods, configuraciones personalizadas e integración de sistemas.</p>
-          <div class="staff-actions">
-            <button class="btn-staff-mini" onclick="inspectPlayerSkin('OnmiAzkeel')">🔍 Ver Skin en Inspector</button>
-          </div>
+          <p class="staff-bio">Ingeniero del modpack NeoForge 1.21.1, optimización de mods, configuraciones personalizadas e integración de sistemas.</p>
         </article>
 
         <!-- 4. SLuzzen (Developer / Web Developer) -->
@@ -1013,69 +989,20 @@
           </div>
           <div class="staff-subrole">Developer / Web & Launcher Dev</div>
           <p class="staff-bio">Desarrollador de Doraland Launcher, sistema de actualizaciones automáticas en GitHub, Estudio de Skins e infraestructura web.</p>
-          <div class="staff-actions">
-            <button class="btn-staff-mini" onclick="inspectPlayerSkin('SLuzzen')">🔍 Ver Skin en Inspector</button>
-          </div>
         </article>
 
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════
-         JUGADORES EN LÍNEA E INSPECTOR DE SKINS
-    ════════════════════════════════════════════ -->
-    <section class="section" id="jugadores">
-      <div class="section-header">
-        <span class="section-tag">COMUNIDAD Y AVATARES</span>
-        <h2 class="section-title">Jugadores Activos & <span class="text-gold">Visor de Skins</span></h2>
-        <p class="section-desc">Consulta quién está conectado ahora mismo en Doraland o busca cualquier cuenta de Minecraft para visualizar y descargar su Skin.</p>
-      </div>
-
-      <div class="players-panel">
-        <!-- Jugadores conectados en tiempo real -->
-        <div class="glass-panel">
-          <h3 class="panel-title">🟢 Jugadores Conectados en Doraland</h3>
-          <p style="font-size: 13px; color: var(--text-secondary);">Actualizado automáticamente desde <code>doralandmc.holyhosting.club</code></p>
-          <div class="online-players-list" id="onlinePlayersList">
-            <div class="player-chip">
-              <img src="https://mc-heads.net/avatar/Dacota10/32" alt="Dacota10" />
-              <span>Consultando servidor en vivo...</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Buscador e Inspector de Skins -->
-        <div class="glass-panel">
-          <h3 class="panel-title">🎨 Inspector y Descargador de Skins</h3>
-          <p style="font-size: 13px; color: var(--text-secondary);">Escribe cualquier Nickname de Minecraft para ver su Skin completa o descargar el `.PNG` para usarlo en el Launcher.</p>
-          <form class="skin-search-form" id="skinSearchForm">
-            <input type="text" class="skin-search-input" id="skinSearchInput" placeholder="Ej: SLuzzen, Dacota10, Yanah_, OnmiAzkeel..." maxlength="16" />
-            <button type="submit" class="btn btn-emerald">Buscar</button>
-          </form>
-
-          <div class="inspector-result">
-            <img id="inspectorBodyImg" class="inspector-body" src="https://mc-heads.net/body/SLuzzen/180" alt="Vista previa de Skin" />
-            <div>
-              <div style="font-size: 11px; font-weight: 800; color: var(--gold-light);">JUGADOR SELECCIONADO</div>
-              <div id="inspectorName" style="font-size: 20px; font-weight: 900; margin-bottom: 8px;">SLuzzen</div>
-              <a id="inspectorDownloadBtn" href="https://mc-heads.net/download/SLuzzen" target="_blank" rel="noopener" class="btn btn-outline" style="padding: 8px 14px; font-size: 12px;">
-                📥 Descargar Skin .PNG
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════
-         SECCIÓN DEL LAUNCHER OFICIAL v1.0.1
+         SECCIÓN DEL LAUNCHER OFICIAL
     ════════════════════════════════════════════ -->
     <section class="section" id="launcher">
       <div class="launcher-showcase">
         <div>
           <span class="section-tag">WINDOWS 10 / 11 (64-BIT)</span>
-          <h2 class="section-title">Doraland Launcher <span class="text-gold">v1.0.1</span></h2>
-          <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente NeoForge 21.1.250, los 149 mods, shaders y emotes sin que tengas que configurar nada manualmente.</p>
+          <h2 class="section-title">Doraland <span class="text-gold">Launcher</span></h2>
+          <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente NeoForge 21.1.250, todos los mods, shaders y emotes sin que tengas que configurar nada manualmente.</p>
 
           <ul class="feature-list">
             <li>✅ <strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium (Offline).</li>
@@ -1086,7 +1013,7 @@
 
           <div class="hero-buttons">
             <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
-              ⬇️ Descargar Instalador Setup (v1.0.1)
+              ⬇️ Descargar Instalador Setup
             </a>
             <a href="https://adoptium.net/temurin/releases/?version=21" target="_blank" rel="noopener" class="btn btn-outline">
               ☕ Descargar Java 21 Oficial
@@ -1120,7 +1047,7 @@
         <div class="afb-left">
           <span class="afb-icon">🚀</span>
           <div>
-            <div class="afb-title">¿Ya tienes instalado Doraland Launcher v1.0.1?</div>
+            <div class="afb-title">¿Ya tienes instalado Doraland Launcher?</div>
             <div class="afb-desc">Personaliza tu resolución, sube tu Skin .PNG y entra con un solo clic al servidor.</div>
           </div>
         </div>
@@ -1147,7 +1074,7 @@
   </main>
 
   <footer>
-    <p>© 2025 - 2026 <strong>Doraland Server & Launcher</strong> • Desarrollado por el Staff Team (Dacota10, Yanah_, OnmiAzkeel, SLuzzen).</p>
+    <p>© 2025 - 2026 <strong>Doraland Server & Launcher</strong> • Desarrollado por el Staff Team (Dacota10, Yanah_, OmniAzkeel, SLuzzen).</p>
     <p style="margin-top: 6px; font-size: 11px;">No afiliado oficialmente con Mojang AB o Microsoft.</p>
   </footer>
 
@@ -1202,11 +1129,10 @@
       }
     });
 
-    // 3. Consultar Estado del Servidor y Jugadores en Vivo
+    // 3. Consultar Estado del Servidor en Vivo
     async function fetchServerStatus() {
       const stateEl = document.getElementById('statServerState');
       const playersEl = document.getElementById('statPlayersCount');
-      const listEl = document.getElementById('onlinePlayersList');
       const dotEl = document.getElementById('heroStatusDot');
 
       try {
@@ -1217,25 +1143,6 @@
           stateEl.style.color = '#4ADE80';
           playersEl.textContent = `${data.players?.online || 0} / ${data.players?.max || 100}`;
           if (dotEl) dotEl.style.background = '#22C55E';
-
-          const sampleList = data.players?.list || [];
-          if (sampleList.length > 0) {
-            listEl.innerHTML = sampleList.map(p => {
-              const clean = p.name_clean || p.name_raw || 'Jugador';
-              return `
-                <div class="player-chip" onclick="inspectPlayerSkin('${clean}')" style="cursor:pointer">
-                  <img src="https://mc-heads.net/avatar/${encodeURIComponent(clean)}/32" alt="${clean}" />
-                  <span>${clean}</span>
-                </div>
-              `;
-            }).join('');
-          } else {
-            listEl.innerHTML = `
-              <div class="player-chip">
-                <span>🟢 Servidor abierto (${data.players?.online || 0} jugadores conectados)</span>
-              </div>
-            `;
-          }
         } else {
           throw new Error('offline');
         }
@@ -1244,57 +1151,10 @@
         stateEl.style.color = '#F59E0B';
         playersEl.textContent = '0 / 100';
         if (dotEl) dotEl.style.background = '#F59E0B';
-        listEl.innerHTML = `
-          <div class="player-chip" onclick="inspectPlayerSkin('Dacota10')" style="cursor:pointer">
-            <img src="https://mc-heads.net/avatar/Dacota10/32" alt="Dacota10" />
-            <span>Dacota10 (Owner)</span>
-          </div>
-          <div class="player-chip" onclick="inspectPlayerSkin('Yanah_')" style="cursor:pointer">
-            <img src="https://mc-heads.net/avatar/Yanah_/32" alt="Yanah_" />
-            <span>Yanah_ (Head Admin)</span>
-          </div>
-          <div class="player-chip" onclick="inspectPlayerSkin('OnmiAzkeel')" style="cursor:pointer">
-            <img src="https://mc-heads.net/avatar/OnmiAzkeel/32" alt="OnmiAzkeel" />
-            <span>OnmiAzkeel (Mods Dev)</span>
-          </div>
-          <div class="player-chip" onclick="inspectPlayerSkin('SLuzzen')" style="cursor:pointer">
-            <img src="https://mc-heads.net/avatar/SLuzzen/32" alt="SLuzzen" />
-            <span>SLuzzen (Web Dev)</span>
-          </div>
-        `;
       }
     }
     fetchServerStatus();
-
-    // 4. Inspector de Skins de Jugadores y Staff
-    function inspectPlayerSkin(username) {
-      const clean = String(username || 'SLuzzen').trim();
-      if (!clean) return;
-      const img = document.getElementById('inspectorBodyImg');
-      const nameEl = document.getElementById('inspectorName');
-      const dlBtn = document.getElementById('inspectorDownloadBtn');
-      const input = document.getElementById('skinSearchInput');
-
-      if (input) input.value = clean;
-      if (nameEl) nameEl.textContent = clean;
-      if (img) {
-        img.src = `https://mc-heads.net/body/${encodeURIComponent(clean)}/180`;
-        img.onerror = () => {
-          img.src = `https://minotar.net/armor/body/${encodeURIComponent(clean)}/180.png`;
-        };
-      }
-      if (dlBtn) {
-        dlBtn.href = `https://mc-heads.net/download/${encodeURIComponent(clean)}`;
-      }
-      document.getElementById('jugadores')?.scrollIntoView({ behavior: 'smooth' });
-    }
-    window.inspectPlayerSkin = inspectPlayerSkin;
-
-    document.getElementById('skinSearchForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const val = document.getElementById('skinSearchInput')?.value?.trim();
-      if (val) inspectPlayerSkin(val);
-    });
   </script>
 </body>
 </html>
+
