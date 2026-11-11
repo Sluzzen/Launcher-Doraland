@@ -18,12 +18,18 @@ let currentSettings = {
   closeOnLaunch: false,
   hideOnLaunch: false,
   autoConnect: true,
+  turboOptimize: true,
+  lowSpecUi: false,
   customJvmArgs: ''
 };
 let currentSkin = null; // { dataUrl, model: 'classic'|'slim', name }
 let loadedSkinImage = null;
 let isLaunching = false;
 let consoleOpen = false;
+let currentAddonCategory = 'mod'; // 'mod' | 'resourcepack' | 'shader'
+let userAddonsCache = { mods: [], resourcepacks: [], shaders: [] };
+let currentChangelogFilter = 'all';
+let cachedChangelogData = null;
 
 // ── INICIALIZACIÓN ────────────────────────────────────────────
 async function init() {
@@ -41,6 +47,8 @@ async function init() {
   setupAuthTabs();
   setupRamAndSettingsControls();
   setupSkinStudio();
+  setupAddonsCenter();
+  setupChangelog();
   setupGoogleAds(config?.ads);
   setupConsole();
   setupLaunchEvents();
@@ -79,6 +87,15 @@ function initAmbientFireflies() {
   }));
 
   function animate() {
+    // Optimización: pausar renderizado de fondo cuando la ventana está oculta, jugando o en Modo Ligero
+    if (document.hidden || isLaunching || currentSettings.lowSpecUi) {
+      if (currentSettings.lowSpecUi) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      setTimeout(() => requestAnimationFrame(animate), 650);
+      return;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const p of particles) {
       p.x += p.vx;
@@ -165,6 +182,10 @@ function showScreen(screenId) {
   if (screenId === 'screenHome') {
     safeText('wbUsername', currentSession?.name || 'Jugador');
     setupPlayButton();
+  } else if (screenId === 'screenAddons') {
+    refreshUserAddonsAndCatalog();
+  } else if (screenId === 'screenChangelog') {
+    loadAndRenderChangelog();
   }
 }
 
@@ -396,6 +417,8 @@ function applySettingsToUI(s) {
   const fullSet = document.getElementById('settingsFullscreen');
   const hideSet = document.getElementById('settingsHideOnLaunch');
   const autoConnSet = document.getElementById('settingsAutoConnect');
+  const turboSet = document.getElementById('settingsTurboOptimize');
+  const lowSpecSet = document.getElementById('settingsLowSpecUi');
   const jvmInput = document.getElementById('inputCustomJvm');
 
   if (closeHome) closeHome.checked = Boolean(s.closeOnLaunch);
@@ -404,6 +427,8 @@ function applySettingsToUI(s) {
   if (fullSet) fullSet.checked = full;
   if (hideSet) hideSet.checked = Boolean(s.hideOnLaunch);
   if (autoConnSet) autoConnSet.checked = s.autoConnect !== false;
+  if (turboSet) turboSet.checked = s.turboOptimize !== false;
+  if (lowSpecSet) lowSpecSet.checked = Boolean(s.lowSpecUi);
   if (jvmInput) jvmInput.value = s.customJvmArgs || '';
 
   updateResolutionBadges(resW, resH, full);
@@ -504,8 +529,36 @@ async function setupRamAndSettingsControls() {
   document.getElementById('settingsAutoConnect')?.addEventListener('change', (e) => {
     persistSettings({ autoConnect: e.target.checked });
   });
+  document.getElementById('settingsTurboOptimize')?.addEventListener('change', (e) => {
+    persistSettings({ turboOptimize: e.target.checked });
+  });
+  document.getElementById('settingsLowSpecUi')?.addEventListener('change', (e) => {
+    persistSettings({ lowSpecUi: e.target.checked });
+  });
   document.getElementById('inputCustomJvm')?.addEventListener('change', (e) => {
     persistSettings({ customJvmArgs: e.target.value.trim() });
+  });
+
+  // Optimizar y liberar caché del launcher
+  document.getElementById('btnSettingsOptimizeLauncher')?.addEventListener('click', async () => {
+    const btn = document.getElementById('btnSettingsOptimizeLauncher');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⚡ Optimizando...';
+    }
+    try {
+      const res = await window.doraland.optimizeLauncher();
+      if (res?.success) {
+        showNotification(`⚡ ¡Launcher optimizado! Se liberaron ${res.freedMb} MB de caché y archivos temporales.`, 'success');
+      } else {
+        showNotification('❌ ' + (res?.error || 'Error al optimizar'), 'error');
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = '⚡ Optimizar y Liberar Caché del Launcher';
+      }
+    }
   });
 
   // Botones de cuenta en Ajustes (Premium Minecraft / Cambiar cuenta)
@@ -1078,18 +1131,353 @@ function setupConsole() {
   });
 }
 
-function logToConsole(msg, type = 'debug') {
-  const output = document.getElementById('consoleOutput');
-  if (!output) return;
+let pendingConsoleLogs = [];
+let consoleFlushScheduled = false;
 
-  const line = document.createElement('span');
-  line.className = `console-line ${type}`;
-  line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-  output.appendChild(line);
+function logToConsole(msg, type = 'debug') {
+  pendingConsoleLogs.push({ msg, type, time: new Date().toLocaleTimeString() });
+  if (!consoleFlushScheduled) {
+    consoleFlushScheduled = true;
+    requestAnimationFrame(flushConsoleLogs);
+  }
+}
+
+function flushConsoleLogs() {
+  consoleFlushScheduled = false;
+  const output = document.getElementById('consoleOutput');
+  if (!output || pendingConsoleLogs.length === 0) {
+    pendingConsoleLogs = [];
+    return;
+  }
+
+  const batch = pendingConsoleLogs.splice(0, pendingConsoleLogs.length);
+  const frag = document.createDocumentFragment();
+  for (const item of batch) {
+    const line = document.createElement('span');
+    line.className = `console-line ${item.type}`;
+    line.textContent = `[${item.time}] ${item.msg}`;
+    frag.appendChild(line);
+  }
+  output.appendChild(frag);
   output.scrollTop = output.scrollHeight;
 
   const lines = output.querySelectorAll('.console-line');
-  if (lines.length > 500) lines[0].remove();
+  if (lines.length > 400) {
+    const excess = lines.length - 400;
+    for (let i = 0; i < excess; i++) lines[i].remove();
+  }
+}
+
+// ── CENTRO DE COMPLEMENTOS (MODS DE CLIENTE, RESOURCE PACKS, SHADERS) ──
+function setupAddonsCenter() {
+  document.querySelectorAll('.addon-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.addon-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentAddonCategory = tab.dataset.addonCat || 'mod';
+
+      const localBtn = document.getElementById('btnInstallLocalAddon');
+      if (localBtn) {
+        localBtn.textContent = currentAddonCategory === 'mod'
+          ? '📁 Instalar desde mi PC (.JAR)'
+          : '📁 Instalar desde mi PC (.ZIP)';
+      }
+
+      const searchInput = document.getElementById('addonSearchInput');
+      if (searchInput) {
+        searchInput.placeholder = currentAddonCategory === 'mod'
+          ? 'Buscar Mods de Cliente compatibles (NeoForge 1.21.1)...'
+          : currentAddonCategory === 'resourcepack'
+            ? 'Buscar Resource Packs compatibles (1.21.1)...'
+            : 'Buscar Shaders compatibles (Iris / Oculus)...';
+      }
+
+      renderUserInstalledAddons();
+      loadCatalogForCurrentCategory(searchInput?.value || '');
+    });
+  });
+
+  document.getElementById('btnAddonSearch')?.addEventListener('click', () => {
+    const q = document.getElementById('addonSearchInput')?.value || '';
+    loadCatalogForCurrentCategory(q);
+  });
+
+  document.getElementById('addonSearchInput')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      loadCatalogForCurrentCategory(e.target.value || '');
+    }
+  });
+
+  document.getElementById('btnInstallLocalAddon')?.addEventListener('click', async () => {
+    const res = await window.doraland.installLocalAddon(currentAddonCategory);
+    if (res?.canceled) return;
+    if (res?.error) {
+      showNotification('❌ ' + res.error, 'error');
+      return;
+    }
+    if (res?.success) {
+      await refreshUserAddonsAndCatalog();
+      showNotification(`✅ Se instalaron ${res.installed.length} archivo(s) correctamente.`, 'success');
+    }
+  });
+
+  document.getElementById('btnOpenAddonFolder')?.addEventListener('click', () => {
+    window.doraland.openAddonFolder(currentAddonCategory);
+  });
+}
+
+async function refreshUserAddonsAndCatalog() {
+  const res = await window.doraland.getUserAddons();
+  if (res?.success) {
+    userAddonsCache = {
+      mods: res.mods || [],
+      resourcepacks: res.resourcepacks || [],
+      shaders: res.shaders || []
+    };
+  }
+  renderUserInstalledAddons();
+  const q = document.getElementById('addonSearchInput')?.value || '';
+  await loadCatalogForCurrentCategory(q);
+}
+
+function getInstalledListByCategory(cat) {
+  if (cat === 'mod') return userAddonsCache.mods || [];
+  if (cat === 'resourcepack') return userAddonsCache.resourcepacks || [];
+  return userAddonsCache.shaders || [];
+}
+
+function renderUserInstalledAddons() {
+  const listEl = document.getElementById('userAddonsList');
+  const titleEl = document.getElementById('installedAddonsTitle');
+  if (!listEl) return;
+
+  const items = getInstalledListByCategory(currentAddonCategory);
+  const labelMap = {
+    mod: 'Mods de Cliente Instalados',
+    resourcepack: 'Resource Packs Instalados',
+    shader: 'Shaders Instalados'
+  };
+  if (titleEl) {
+    titleEl.textContent = `📦 Tus ${labelMap[currentAddonCategory] || 'Complementos'} (${items.length})`;
+  }
+
+  listEl.innerHTML = '';
+  if (items.length === 0) {
+    listEl.innerHTML = '<span class="empty-addon-note">No has instalado complementos adicionales en esta categoría todavía.</span>';
+    return;
+  }
+
+  for (const item of items) {
+    const pill = document.createElement('div');
+    pill.className = 'user-addon-pill';
+    pill.innerHTML = `
+      <div class="uap-info">
+        <span class="uap-title">${escapeHtml(item.title)}</span>
+        <span class="uap-meta">${escapeHtml(item.fileName)} • ${item.sizeKb} KB</span>
+      </div>
+      <button class="uap-remove" title="Quitar complemento">🗑️ Quitar</button>
+    `;
+    pill.querySelector('.uap-remove')?.addEventListener('click', async () => {
+      const delRes = await window.doraland.removeUserAddon({
+        category: currentAddonCategory,
+        fileName: item.fileName
+      });
+      if (delRes?.success) {
+        showNotification(`🗑️ "${item.title}" eliminado.`, 'info');
+        await refreshUserAddonsAndCatalog();
+      } else {
+        showNotification('❌ ' + (delRes?.error || 'No se pudo eliminar'), 'error');
+      }
+    });
+    listEl.appendChild(pill);
+  }
+}
+
+async function loadCatalogForCurrentCategory(query = '') {
+  const grid = document.getElementById('catalogAddonsGrid');
+  if (!grid) return;
+
+  grid.innerHTML = '<span class="empty-addon-note">Cargando catálogo compatible...</span>';
+  const res = await window.doraland.searchAddonsCatalog({
+    category: currentAddonCategory,
+    query
+  });
+
+  const items = res?.items || [];
+  grid.innerHTML = '';
+
+  if (items.length === 0) {
+    grid.innerHTML = '<span class="empty-addon-note">No se encontraron complementos compatibles con esa búsqueda.</span>';
+    return;
+  }
+
+  const installedList = getInstalledListByCategory(currentAddonCategory);
+
+  for (const item of items) {
+    const alreadyInstalled = installedList.some(inst =>
+      inst.title.toLowerCase() === item.title.toLowerCase() ||
+      inst.fileName.toLowerCase().includes(String(item.id || '').toLowerCase())
+    );
+
+    const card = document.createElement('div');
+    card.className = 'addon-card';
+    const iconHtml = item.iconUrl
+      ? `<img src="${escapeHtml(item.iconUrl)}" alt="" />`
+      : `<span>${item.icon || '🧩'}</span>`;
+
+    card.innerHTML = `
+      <div class="ac-top">
+        <div class="ac-icon">${iconHtml}</div>
+        <div>
+          <div class="ac-title">${escapeHtml(item.title)}</div>
+          <div class="ac-author">por ${escapeHtml(item.author || 'Creador')}</div>
+        </div>
+      </div>
+      <div class="ac-desc">${escapeHtml(item.description)}</div>
+      <div class="ac-footer">
+        <span class="ac-badge">${escapeHtml(item.badge || 'Compatible 1.21.1')}</span>
+        <button class="ac-install-btn" ${alreadyInstalled ? 'disabled' : ''}>
+          ${alreadyInstalled ? '✓ Instalado' : '⬇️ Instalar'}
+        </button>
+      </div>
+    `;
+
+    const btn = card.querySelector('.ac-install-btn');
+    if (btn && !alreadyInstalled) {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        btn.textContent = 'Instalando...';
+        const dlRes = await window.doraland.installRemoteAddon({
+          projectId: item.projectId,
+          title: item.title,
+          category: currentAddonCategory
+        });
+        if (dlRes?.success) {
+          showNotification(`✅ ¡"${item.title}" instalado en tu cliente Doraland!`, 'success');
+          await refreshUserAddonsAndCatalog();
+        } else {
+          btn.disabled = false;
+          btn.textContent = '⬇️ Instalar';
+          showNotification('❌ ' + (dlRes?.error || 'Error al instalar'), 'error');
+        }
+      });
+    }
+
+    grid.appendChild(card);
+  }
+}
+
+// ── CHANGELOG (LAUNCHER + MODS AGREGADOS, ACTUALIZADOS Y RETIRADOS) ──
+function setupChangelog() {
+  document.querySelectorAll('.cl-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cl-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentChangelogFilter = btn.dataset.clFilter || 'all';
+      renderChangelogEntries();
+    });
+  });
+}
+
+async function loadAndRenderChangelog() {
+  cachedChangelogData = await window.doraland.getChangelog();
+  renderChangelogEntries();
+}
+
+function renderChangelogEntries() {
+  const timeline = document.getElementById('changelogTimeline');
+  const diffContainer = document.getElementById('autoModDiffContainer');
+  if (!timeline) return;
+
+  const entries = cachedChangelogData?.entries || [];
+  const autoDiff = cachedChangelogData?.autoModDiff || null;
+
+  if (diffContainer) {
+    if (autoDiff && ((autoDiff.added?.length || 0) + (autoDiff.updated?.length || 0) + (autoDiff.removed?.length || 0) > 0)) {
+      diffContainer.style.display = 'block';
+      diffContainer.innerHTML = `
+        <div class="cl-card" style="border-left-color: var(--green-bright); margin-bottom: 12px;">
+          <div class="cl-header">
+            <div class="cl-title-wrap">
+              <span class="cl-ver-tag">AUTO-SYNC</span>
+              <span class="cl-title">Última Sincronización Automática del Modpack</span>
+            </div>
+            <span class="cl-date">${escapeHtml(autoDiff.date || '')}</span>
+          </div>
+          <div class="cl-groups">
+            ${autoDiff.added?.length ? `<div class="cl-group-box"><div class="cl-group-title added">➕ Mods Agregados (${autoDiff.added.length})</div><ul class="cl-list">${autoDiff.added.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+            ${autoDiff.updated?.length ? `<div class="cl-group-box"><div class="cl-group-title updated">🔄 Mods Actualizados (${autoDiff.updated.length})</div><ul class="cl-list">${autoDiff.updated.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+            ${autoDiff.removed?.length ? `<div class="cl-group-box"><div class="cl-group-title removed">➖ Mods Retirados (${autoDiff.removed.length})</div><ul class="cl-list">${autoDiff.removed.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+          </div>
+        </div>
+      `;
+    } else {
+      diffContainer.style.display = 'none';
+    }
+  }
+
+  timeline.innerHTML = '';
+  for (const entry of entries) {
+    const showLauncher = currentChangelogFilter === 'all' || currentChangelogFilter === 'launcher';
+    const showMods = currentChangelogFilter === 'all' || currentChangelogFilter === 'mods';
+
+    const launcherList = showLauncher ? (entry.launcherChanges || []) : [];
+    const addedList = showMods ? (entry.modsAdded || []) : [];
+    const updatedList = showMods ? (entry.modsUpdated || []) : [];
+    const removedList = showMods ? (entry.modsRemoved || []) : [];
+
+    if (!launcherList.length && !addedList.length && !updatedList.length && !removedList.length) {
+      continue;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'cl-card';
+    card.innerHTML = `
+      <div class="cl-header">
+        <div class="cl-title-wrap">
+          <span class="cl-ver-tag">ACTUALIZACIÓN</span>
+          <span class="cl-title">${escapeHtml(entry.title || 'Actualización Doraland')}</span>
+        </div>
+        <span class="cl-date">📅 ${escapeHtml(entry.date || '')}</span>
+      </div>
+      <div class="cl-summary">${escapeHtml(entry.summary || '')}</div>
+      <div class="cl-groups">
+        ${launcherList.length ? `
+          <div class="cl-group-box">
+            <div class="cl-group-title launcher">🚀 Novedades del Launcher</div>
+            <ul class="cl-list">${launcherList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+          </div>
+        ` : ''}
+        ${addedList.length ? `
+          <div class="cl-group-box">
+            <div class="cl-group-title added">➕ Mods Agregados</div>
+            <ul class="cl-list">${addedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+          </div>
+        ` : ''}
+        ${updatedList.length ? `
+          <div class="cl-group-box">
+            <div class="cl-group-title updated">🔄 Mods Actualizados</div>
+            <ul class="cl-list">${updatedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+          </div>
+        ` : ''}
+        ${removedList.length ? `
+          <div class="cl-group-box">
+            <div class="cl-group-title removed">➖ Mods Retirados</div>
+            <ul class="cl-list">${removedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+          </div>
+        ` : ''}
+      </div>
+    `;
+    timeline.appendChild(card);
+  }
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 // ── ESTADO DEL SERVIDOR ────────────────────────────────────────

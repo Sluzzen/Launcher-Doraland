@@ -51,10 +51,19 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <span>Inicio / Jugar</span>
         </button>
+        <button class="nav-item" id="navAddons" data-screen="screenAddons">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span>Mods & Shaders</span>
+          <span class="nav-badge">CLIENT</span>
+        </button>
         <button class="nav-item" id="navSkin" data-screen="screenSkin">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Mi Skin</span>
           <span class="nav-badge">PNG</span>
+        </button>
+        <button class="nav-item" id="navChangelog" data-screen="screenChangelog">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Changelog</span>
         </button>
         <button class="nav-item" id="navSettings" data-screen="screenSettings">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -528,6 +537,27 @@
               </div>
 
               <div class="settings-utilities-box">
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Optimización Turbo JVM & Red</span>
+                    <span class="trc-sub">Activa flags GC avanzadas, conexiones Keep-Alive y caché rápido de Java 21.</span>
+                  </div>
+                  <input type="checkbox" id="settingsTurboOptimize" class="toggle-input" checked />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Modo Ligero de Interfaz (0% GPU)</span>
+                    <span class="trc-sub">Pausa animaciones ambientales del launcher para ahorrar recursos en PCs modestas.</span>
+                  </div>
+                  <input type="checkbox" id="settingsLowSpecUi" class="toggle-input" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <button class="btn-gold" id="btnSettingsOptimizeLauncher">
+                  ⚡ Optimizar y Liberar Caché del Launcher
+                </button>
                 <button class="btn-secondary-outline" id="btnSettingsOpenFolder">
                   📂 Abrir Carpeta de Datos (.doraland)
                 </button>
@@ -539,6 +569,89 @@
           </div>
 
         </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 5: COMPLEMENTOS DE CLIENTE (MODS CLIENTE, RESOURCE PACKS, SHADERS)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenAddons">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">🧩 Centro de <span class="text-gold">Mods de Cliente, Resource Packs & Shaders</span></h2>
+            <p class="screen-sub">Instala mods adicionales compatibles de cliente (NeoForge 1.21.1), paquetes de texturas o shaders sin alterar ni mostrar los mods base del servidor.</p>
+          </div>
+        </div>
+
+        <!-- Barra de Categorías y Acciones -->
+        <div class="addons-toolbar">
+          <div class="addons-tabs">
+            <button class="addon-tab active" data-addon-cat="mod">
+              🧩 Mods de Cliente
+            </button>
+            <button class="addon-tab" data-addon-cat="resourcepack">
+              🎨 Resource Packs
+            </button>
+            <button class="addon-tab" data-addon-cat="shader">
+              ✨ Shaders
+            </button>
+          </div>
+
+          <div class="addons-actions">
+            <div class="addon-search-box">
+              <input type="text" class="input-field" id="addonSearchInput" placeholder="Buscar en catálogo compatible (Modrinth 1.21.1)..." />
+              <button class="btn-gold" id="btnAddonSearch">Buscar</button>
+            </div>
+            <button class="btn-primary" id="btnInstallLocalAddon" style="width:auto; padding:9px 14px; font-size:12px;">
+              📁 Instalar desde mi PC (.JAR)
+            </button>
+            <button class="btn-secondary-outline" id="btnOpenAddonFolder" style="width:auto; padding:9px 12px;">
+              📂 Carpeta
+            </button>
+          </div>
+        </div>
+
+        <!-- Mis Complementos Personales Instalados -->
+        <div class="glass-card addons-installed-box">
+          <div class="card-header-row">
+            <h3 class="card-subtitle" id="installedAddonsTitle">📦 Tus Mods de Cliente Instalados (0)</h3>
+            <span class="spc-badge">Protegidos por Auto-Sync</span>
+          </div>
+          <p class="card-desc">Aquí solo aparecen los complementos opcionales que tú has añadido. Los mods internos del servidor están ocultos y protegidos.</p>
+          <div class="user-addons-list" id="userAddonsList">
+            <span class="empty-addon-note">No has instalado complementos adicionales en esta categoría todavía.</span>
+          </div>
+        </div>
+
+        <!-- Catálogo Compatible en 1 Clic -->
+        <div class="addons-catalog-section">
+          <div class="card-header-row" style="margin-bottom: 10px;">
+            <h3 class="card-subtitle" id="catalogAddonsTitle">✨ Recomendados y Compatibles con Doraland (NeoForge 1.21.1)</h3>
+          </div>
+          <div class="addons-catalog-grid" id="catalogAddonsGrid"></div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 6: CHANGELOG (LAUNCHER + MODS AGREGADOS, ACTUALIZADOS Y RETIRADOS)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenChangelog">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">📜 Registro de Cambios <span class="text-gold">(Changelog)</span></h2>
+            <p class="screen-sub">Conoce todas las novedades del Launcher, optimizaciones de rendimiento y los mods que se agregan, actualizan o retiran del servidor.</p>
+          </div>
+          <div class="changelog-filters">
+            <button class="cl-filter-btn active" data-cl-filter="all">Todo</button>
+            <button class="cl-filter-btn" data-cl-filter="launcher">🚀 Launcher</button>
+            <button class="cl-filter-btn" data-cl-filter="mods">📦 Cambios de Mods</button>
+          </div>
+        </div>
+
+        <!-- Detector Automático de Diferencias del Manifiesto de Mods -->
+        <div id="autoModDiffContainer" style="display:none;"></div>
+
+        <!-- Línea de Tiempo de Versiones -->
+        <div class="changelog-timeline" id="changelogTimeline"></div>
       </section>
 
     </main>

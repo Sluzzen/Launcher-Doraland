@@ -1921,3 +1921,362 @@ html, body {
   text-align: center;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   PANTALLA 5: CENTRO DE COMPLEMENTOS (MODS CLIENTE / RP / SHADERS)
+════════════════════════════════════════════════════════════ */
+.addons-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.addons-tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border);
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.addon-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addon-tab:hover {
+  color: var(--text-primary);
+}
+
+.addon-tab.active {
+  background: linear-gradient(135deg, var(--green-bright), var(--green-mid));
+  color: #041308;
+  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.35);
+}
+
+.addons-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.addon-search-box {
+  display: flex;
+  gap: 6px;
+  min-width: 260px;
+  max-width: 340px;
+  flex: 1;
+}
+
+.addons-installed-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-addons-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.empty-addon-note {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.user-addon-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(8, 18, 12, 0.85);
+  border: 1px solid var(--border-bright);
+  padding: 7px 12px;
+  border-radius: 9px;
+}
+
+.uap-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.uap-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.uap-meta {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.uap-remove {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FCA5A5;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.uap-remove:hover {
+  background: rgba(239, 68, 68, 0.28);
+}
+
+.addons-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 12px;
+}
+
+.addon-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s;
+}
+.addon-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+.ac-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.ac-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ac-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ac-title {
+  font-size: 13.5px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.ac-author {
+  font-size: 10.5px;
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.ac-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.ac-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ac-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--green-neon);
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.ac-install-btn {
+  background: linear-gradient(135deg, var(--green-bright), var(--green-mid));
+  border: none;
+  color: #041308;
+  padding: 6px 13px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ac-install-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.ac-install-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PANTALLA 6: CHANGELOG (LAUNCHER Y MODS)
+════════════════════════════════════════════════════════════ */
+.changelog-filters {
+  display: flex;
+  gap: 6px;
+}
+
+.cl-filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 13px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cl-filter-btn.active {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.changelog-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cl-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cl-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cl-ver-tag {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #140D00;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.cl-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.cl-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.cl-summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cl-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.cl-group-box {
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+
+.cl-group-title {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cl-group-title.launcher { color: var(--blue-water); }
+.cl-group-title.added    { color: var(--green-neon); }
+.cl-group-title.updated  { color: var(--gold-light); }
+.cl-group-title.removed  { color: #FCA5A5; }
+
+.cl-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cl-list li {
+  font-size: 11.5px;
+  color: var(--text-primary);
+  line-height: 1.4;
+  padding-left: 12px;
+  position: relative;
+}
+.cl-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
+

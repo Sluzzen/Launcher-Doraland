@@ -24,6 +24,18 @@ contextBridge.exposeInMainWorld('doraland', {
   importSkinByNick: (nick) => ipcRenderer.invoke('import-skin-by-nick', nick),
   resetSkin: () => ipcRenderer.invoke('reset-skin'),
 
+  // Gestor de Complementos de Cliente (Mods Cliente, Resource Packs y Shaders)
+  getUserAddons: () => ipcRenderer.invoke('get-user-addons'),
+  searchAddonsCatalog: (queryOpts) => ipcRenderer.invoke('search-addons-catalog', queryOpts),
+  installRemoteAddon: (payload) => ipcRenderer.invoke('install-remote-addon', payload),
+  installLocalAddon: (category) => ipcRenderer.invoke('install-local-addon', category),
+  removeUserAddon: (payload) => ipcRenderer.invoke('remove-user-addon', payload),
+  openAddonFolder: (category) => ipcRenderer.invoke('open-addon-folder', category),
+
+  // Changelog y Optimización
+  getChangelog: () => ipcRenderer.invoke('get-changelog'),
+  optimizeLauncher: () => ipcRenderer.invoke('optimize-launcher'),
+
   // Autenticación
   authMicrosoft: () => ipcRenderer.invoke('auth-microsoft'),
   authOffline: (username) => ipcRenderer.invoke('auth-offline', username),

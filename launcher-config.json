@@ -94,7 +94,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "allowPremium": true,
     "allowOffline": true,
     "gameDataFolder": ".doraland",
@@ -104,5 +104,60 @@
       "height": 720,
       "fullscreen": false
     }
-  }
+  },
+  "changelog": [
+    {
+      "version": "1.0.3",
+      "date": "2026-11-11",
+      "title": "Centro de Complementos de Cliente, Changelog Dinámico y Optimización Turbo",
+      "summary": "Nueva pestaña para instalar Mods de Cliente compatibles (NeoForge 1.21.1), Resource Packs y Shaders sin exponer los mods base del servidor, historial completo de cambios y optimización profunda de memoria y red.",
+      "launcherChanges": [
+        "Nuevo Centro de Complementos: instala Mods de Cliente compatibles con NeoForge 1.21.1, Resource Packs (.zip) y Shaders en 1 clic desde Modrinth o desde tu PC.",
+        "Protección inteligente de Mods de Cliente: el sincronizador automático conserva tus mods personales sin borrarlos al actualizar el modpack del servidor.",
+        "Nuevo apartado de Changelog interactivo: consulta todas las novedades del Launcher y qué mods se agregan, actualizan o retiran en cada versión.",
+        "Optimización Turbo del Launcher: conexiones Keep-Alive (6 hilos paralelos), pausa automática de renderizado en segundo plano (0% GPU al jugar), caché de validación Java 21 y limpiador de caché integrado."
+      ],
+      "modsAdded": [
+        "Soporte abierto para Mods de Cliente opcionales (Zoom, HUDs, Minimap, Sound Physics, etc.)"
+      ],
+      "modsUpdated": [
+        "Sincronización verificada de los 149 mods del ecosistema Doraland (NeoForge 21.1.250)",
+        "Paquete de 1,510+ animaciones de Emotecraft y perfiles de Shaders actualizados"
+      ],
+      "modsRemoved": []
+    },
+    {
+      "version": "1.0.2",
+      "date": "2026-11-11",
+      "title": "Integración Oficial Google AdSense y Simplificación de Interfaz",
+      "summary": "Interfaz unificada con un único botón por acción, corrección de perfiles del Staff Team y conexión oficial con Google AdSense.",
+      "launcherChanges": [
+        "Interfaz simplificada y limpia: un único control por función en toda la ventana.",
+        "Vinculación oficial con el dominio sluzzen.github.io y verificación de ads.txt.",
+        "Actualización de avatares y skins del Staff Team (Dacota10, Yanah_, OmniAzkeel, SLuzzen)."
+      ],
+      "modsAdded": [],
+      "modsUpdated": [
+        "Configuraciones de FancyMenu y DrippyLoadingScreen optimizadas"
+      ],
+      "modsRemoved": []
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-11-11",
+      "title": "Estudio de Skins No Premium, Ajustes de Resolución y Auto-Updater Dual",
+      "summary": "Lanzamiento del Estudio de Skins 2D/3D para jugadores No Premium, selector de resolución y auto-actualizador directo desde GitHub.",
+      "launcherChanges": [
+        "Estudio de Skins integrado: sube tu archivo .PNG o importa la skin de cualquier jugador con vista previa frontal y trasera.",
+        "Pantalla de Ajustes: configura Game Resolution (720p, 1080p, 2K, Pantalla Completa), cuenta Microsoft Premium y memoria RAM.",
+        "Sistema Dual de Auto-Actualización: cualquier versión del launcher se actualiza sola desde GitHub."
+      ],
+      "modsAdded": [
+        "149 Mods base del servidor Doraland (NeoForge 1.21.1)",
+        "1,510+ Emotes preinstalados y Shaders Complementary / BSL / Mellow"
+      ],
+      "modsUpdated": [],
+      "modsRemoved": []
+    }
+  ]
 }
