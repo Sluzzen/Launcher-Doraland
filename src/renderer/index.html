@@ -343,156 +343,242 @@
       </section>
 
       <!-- ════════════════════════════════════════════════════════
-           PANTALLA 3: ESTUDIO DE SKIN & CAPAS (CAPAS SOLO PREMIUM)
+           PANTALLA 3: ESTUDIO PRO DE SKIN & CAPAS (v1.0.3.1)
       ═════════════════════════════════════════════════════════ -->
       <section class="screen" id="screenSkin">
         <div class="screen-header">
           <div>
             <h2 class="screen-title">
               <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Estudio de <span class="text-gold">Skin & Capas</span>
+              Estudio Pro de <span class="text-gold">Skin & Capas</span>
             </h2>
-            <p class="screen-sub">Sube tu propio archivo <strong>.PNG (64×64 o 64×32)</strong>, importa cualquier skin y equipa tu Capa oficial (Beneficio Exclusivo Premium).</p>
+            <p class="screen-sub">Personaliza poses, capas 3D por zona, iluminación del escenario, texturas <strong>.PNG (64×64)</strong> y tu <strong>Capa Oficial Premium</strong>.</p>
+          </div>
+          <div class="skin-header-badges">
+            <span class="sh-badge" id="skinFormatBadge">TEXTURA 64×64</span>
+            <span class="sh-badge sh-badge-gold" id="skinModelBadge">MODELO CLÁSICO (4PX)</span>
           </div>
         </div>
 
         <div class="skin-studio-grid">
-          <!-- Visor frontal y trasero en Canvas -->
+          <!-- COLUMNA IZQUIERDA: ESCENARIO INTERACTIVO + CONTROLES DE POSE, PARTES Y TEXTURA -->
           <div class="glass-card skin-viewer-panel">
+            <!-- Barra superior del visor: Nombre + Selector de Escenario -->
             <div class="svp-top">
-              <span class="svp-label" id="skinCurrentName">Skin por defecto (Steve)</span>
-              <label class="toggle-label">
+              <div class="svp-title-group">
+                <span class="svp-status-dot"></span>
+                <span class="svp-label" id="skinCurrentName">Skin por defecto (Explorador)</span>
+              </div>
+              <div class="svp-scene-selector" id="skinSceneSelector" title="Cambiar ambiente del estudio">
+                <button class="scene-dot active" data-scene="emerald" title="Bosque Esmeralda"></button>
+                <button class="scene-dot" data-scene="gold" title="Santuario Dorado"></button>
+                <button class="scene-dot" data-scene="night" title="Noche Abisal"></button>
+                <button class="scene-dot" data-scene="grid" title="Cuadrícula Técnica"></button>
+              </div>
+            </div>
+
+            <!-- Barra de Poses y Animación -->
+            <div class="svp-pose-bar">
+              <span class="svp-bar-lbl">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                POSE:
+              </span>
+              <div class="pose-btn-group" id="skinPoseGroup">
+                <button class="pose-btn active" data-pose="walk">Caminando</button>
+                <button class="pose-btn" data-pose="idle">Estático</button>
+                <button class="pose-btn" data-pose="wave">Saludando</button>
+                <button class="pose-btn" data-pose="hero">Héroe</button>
+              </div>
+              <label class="toggle-label" style="margin-left:auto;">
                 <input type="checkbox" id="skinShowOuterLayer" class="toggle-input" checked />
                 <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                <span>Capa 3D Exterior</span>
+                <span>3D Global</span>
               </label>
             </div>
 
-            <div class="svp-stage" id="skinDropZone">
+            <!-- Escenario Principal con Pedestales Holográficos -->
+            <div class="svp-stage scene-emerald" id="skinDropZone">
+              <div class="svp-grid-floor"></div>
+
               <div class="svp-char-col">
-                <span class="svp-view-tag">VISTA FRONTAL</span>
-                <canvas id="studioSkinFront" width="150" height="240"></canvas>
+                <span class="svp-view-tag">
+                  <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                  VISTA FRONTAL 3D
+                </span>
+                <div class="svp-canvas-wrap">
+                  <canvas id="studioSkinFront" width="175" height="255"></canvas>
+                  <div class="svp-pedestal"></div>
+                </div>
               </div>
+
               <div class="svp-char-col">
-                <span class="svp-view-tag">VISTA TRASERA + CAPA</span>
-                <canvas id="studioSkinBack" width="150" height="240"></canvas>
+                <span class="svp-view-tag">
+                  <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  ESPALDA + CAPA
+                </span>
+                <div class="svp-canvas-wrap">
+                  <canvas id="studioSkinBack" width="175" height="255"></canvas>
+                  <div class="svp-pedestal pedestal-gold"></div>
+                </div>
               </div>
             </div>
 
-            <p class="svp-drop-hint">
-              <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              También puedes arrastrar y soltar un archivo <strong>.PNG</strong> directamente sobre este recuadro.
-            </p>
+            <!-- Selector de Capas 3D por Parte del Cuerpo -->
+            <div class="svp-parts-bar">
+              <span class="svp-parts-lbl">CAPAS 3D POR ZONA:</span>
+              <div class="svp-parts-chips" id="skinPartsChips">
+                <button class="part-chip active" data-part="hat" title="Sombrero / Casco 3D">Casco</button>
+                <button class="part-chip active" data-part="jacket" title="Chaqueta / Torso 3D">Chaqueta</button>
+                <button class="part-chip active" data-part="leftSleeve" title="Manga Izquierda 3D">Manga Izq</button>
+                <button class="part-chip active" data-part="rightSleeve" title="Manga Derecha 3D">Manga Der</button>
+                <button class="part-chip active" data-part="leftPants" title="Pantalón Izquierdo 3D">Pierna Izq</button>
+                <button class="part-chip active" data-part="rightPants" title="Pantalón Derecho 3D">Pierna Der</button>
+              </div>
+            </div>
+
+            <!-- Barra Inferior del Visor: Inspector de Textura 64x64 + Acciones Rápidas -->
+            <div class="svp-inspector-bar">
+              <div class="svp-tex-preview">
+                <canvas id="skinRawTextureCanvas" width="44" height="44" title="Mapa de textura UV 64×64"></canvas>
+                <div class="svp-tex-meta">
+                  <strong id="skinTexTitle">Mapa UV Activo</strong>
+                  <span id="skinTexDims">Arrastra un .PNG al visor para cambiar</span>
+                </div>
+              </div>
+              <div class="svp-tex-actions">
+                <button class="btn-mini-tool" id="btnExportSkinPng" title="Descargar copia .PNG de esta skin">
+                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Exportar .PNG
+                </button>
+                <button class="btn-mini-tool btn-mini-danger" id="btnResetSkin" title="Restablecer skin por defecto">
+                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  Restablecer
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- Controles de subida, modelo, capas e importación -->
+          <!-- COLUMNA DERECHA: SUBIDA, MODELO, SELECTOR DE CAPAS PREMIUM Y GALERÍA/IMPORTADOR -->
           <div class="skin-controls-col">
 
-            <!-- Único Botón para Subir PNG desde PC -->
-            <div class="glass-card">
-              <h3 class="card-subtitle">
-                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Subir Archivo de Skin (.PNG)
-              </h3>
-              <p class="card-desc">Selecciona una textura de skin de Minecraft desde tu computadora. Se aplicará automáticamente en tu cliente `.doraland` al jugar.</p>
-              <button class="btn-primary" id="btnStudioSelectFile" style="margin-top: 10px;">
-                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                Seleccionar Archivo .PNG de mi PC
-              </button>
-            </div>
-
-            <!-- SELECTOR DE CAPAS (BENEFICIO EXCLUSIVO PREMIUM) -->
-            <div class="glass-card cape-selector-card" id="capeSelectorCard">
+            <!-- Tarjeta 1: Subir PNG + Selector de Modelo Integrado -->
+            <div class="glass-card skin-upload-card">
               <div class="card-header-row">
                 <h3 class="card-subtitle">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Textura y Geometría del Personaje
+                </h3>
+              </div>
+              <p class="card-desc">Sube tu textura `.PNG` desde tu PC y elige el grosor de brazos para tu personaje.</p>
+
+              <div class="upload-and-model-row">
+                <button class="btn-primary" id="btnStudioSelectFile">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Subir Archivo .PNG de mi PC
+                </button>
+
+                <div class="model-selector">
+                  <button class="model-btn active" id="btnModelClassic" data-model="classic">
+                    <strong>Clásico (Steve)</strong>
+                    <span>Brazos anchos 4px</span>
+                  </button>
+                  <button class="model-btn" id="btnModelSlim" data-model="slim">
+                    <strong>Delgado (Alex)</strong>
+                    <span>Brazos finos 3px</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 2: SELECTOR DE CAPAS (BENEFICIO EXCLUSIVO PREMIUM) -->
+            <div class="glass-card cape-selector-card" id="capeSelectorCard">
+              <div class="cape-header-row">
+                <h3 class="card-subtitle">
                   <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  Selector de Capas (Capes)
+                  Guardarropa de Capas (Capes)
                 </h3>
                 <span class="cape-premium-badge" id="capePremiumBadge">
                   <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
-                  SOLO PREMIUM
+                  BENEFICIO PREMIUM
                 </span>
               </div>
 
               <!-- Aviso cuando la cuenta es No Premium -->
               <div class="cape-locked-box" id="capeLockedBox" style="display: none;">
-                <div class="clb-info">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  <div>
-                    <strong class="clb-title">Beneficio Exclusivo para Cuentas Premium</strong>
-                    <span class="clb-sub">Inicia sesión con tu cuenta oficial de Microsoft para desbloquear y equipar capas en tu personaje.</span>
-                  </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <div style="flex:1;">
+                  <div class="cape-locked-title">Exclusivo para Cuentas Premium Microsoft</div>
+                  <div class="cape-locked-sub">Conecta tu cuenta oficial para equipar capas animadas o subir tu propia capa `.PNG`.</div>
                 </div>
                 <button class="btn-gold" id="btnUnlockCapesPremium" style="font-size:11px; padding:7px 12px;">
-                  Vincular Premium
+                  Conectar Premium
                 </button>
               </div>
 
               <!-- Grid de Capas Desbloqueado para Usuarios Premium -->
               <div class="cape-options-wrap" id="capeOptionsWrap">
                 <div class="cape-grid" id="capeGrid">
-                  <button class="cape-item active" data-cape-id="none" data-cape-name="Sin Capa">
-                    <span class="cape-swatch cape-none">×</span>
-                    <span class="cape-lbl">Sin Capa</span>
+                  <button class="cape-item active" data-cape-id="none">
+                    <span class="cape-swatch cape-none"></span>
+                    <span>Sin Capa</span>
                   </button>
-                  <button class="cape-item" data-cape-id="doraland-royal" data-cape-name="Doraland Real" data-primary="#14532D" data-accent="#F59E0B">
-                    <span class="cape-swatch" style="background: linear-gradient(135deg, #16A34A, #F59E0B);"></span>
-                    <span class="cape-lbl">Doraland Real</span>
+                  <button class="cape-item" data-cape-id="doraland_emerald">
+                    <span class="cape-swatch cape-emerald"></span>
+                    <span>Esmeralda</span>
                   </button>
-                  <button class="cape-item" data-cape-id="migrator" data-cape-name="Migrator Oficial" data-primary="#7F1D1D" data-accent="#FBBF24">
-                    <span class="cape-swatch" style="background: linear-gradient(135deg, #991B1B, #F59E0B);"></span>
-                    <span class="cape-lbl">Migrator</span>
+                  <button class="cape-item" data-cape-id="royal_gold">
+                    <span class="cape-swatch cape-gold"></span>
+                    <span>Oro Real</span>
                   </button>
-                  <button class="cape-item" data-cape-id="anniversary-15" data-cape-name="15º Aniversario" data-primary="#064E3B" data-accent="#34D399">
-                    <span class="cape-swatch" style="background: linear-gradient(135deg, #059669, #6EE7B7);"></span>
-                    <span class="cape-lbl">15º Aniv.</span>
+                  <button class="cape-item" data-cape-id="crimson_fire">
+                    <span class="cape-swatch cape-crimson"></span>
+                    <span>Carmesí</span>
                   </button>
-                  <button class="cape-item" data-cape-id="cherry-blossom" data-cape-name="Cherry Blossom" data-primary="#831843" data-accent="#F472B6">
-                    <span class="cape-swatch" style="background: linear-gradient(135deg, #BE185D, #F9A8D4);"></span>
-                    <span class="cape-lbl">Cherry</span>
+                  <button class="cape-item" data-cape-id="ender_void">
+                    <span class="cape-swatch cape-void"></span>
+                    <span>Vacío Ender</span>
                   </button>
-                  <button class="cape-item" data-cape-id="custom-upload" id="btnUploadCustomCape">
-                    <span class="cape-swatch cape-none">+</span>
-                    <span class="cape-lbl">Subir .PNG</span>
+                  <button class="cape-item" data-cape-id="custom" id="btnSelectCustomCape">
+                    <span class="cape-swatch cape-custom"></span>
+                    <span>Capa .PNG</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            <!-- Modelo de brazos -->
-            <div class="glass-card">
-              <h3 class="card-subtitle">
-                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Modelo de Personaje
-              </h3>
-              <div class="model-selector">
-                <button class="model-btn active" id="btnModelClassic" data-model="classic">
-                  <strong>Clásico (Steve)</strong>
-                  <span>Brazos de 4 píxeles</span>
-                </button>
-                <button class="model-btn" id="btnModelSlim" data-model="slim">
-                  <strong>Delgado (Alex)</strong>
-                  <span>Brazos de 3 píxeles</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Importar desde un Nickname Premium -->
+            <!-- Tarjeta 3: Importador por Nickname + Galería Rápida de Presets -->
             <div class="glass-card">
               <h3 class="card-subtitle">
                 <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                Importar Skin por Nickname
+                Buscador de Skins & Presets Oficiales
               </h3>
-              <p class="card-desc">Escribe el nombre de cualquier jugador de Minecraft para importar su skin.</p>
+              <p class="card-desc">Importa la skin de cualquier jugador de Minecraft o prueba un preset del Staff Team con un clic.</p>
+
               <div class="import-nick-row">
-                <input type="text" class="input-field" id="inputSkinNick" placeholder="Ej: Dacota10, Yanah_, OmniAzkeel, SLuzzen..." maxlength="16" />
+                <input type="text" class="input-field" id="inputSkinNick" placeholder="Escribe cualquier Nickname de Minecraft..." maxlength="16" />
                 <button class="btn-gold" id="btnImportSkinNick">Importar</button>
               </div>
-              <div class="skin-actions-footer">
-                <button class="btn-danger-outline" id="btnResetSkin">
-                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                  Restablecer a Skin por defecto
-                </button>
+
+              <div class="skin-presets-row">
+                <span class="preset-lbl">Presets Rápidos:</span>
+                <div class="preset-chips">
+                  <button class="preset-head-btn" data-preset-nick="Dacota10" title="Probar skin de Dacota10">
+                    <img src="https://mc-heads.net/avatar/Dacota10/24" alt="" />
+                    <span>Dacota10</span>
+                  </button>
+                  <button class="preset-head-btn" data-preset-nick="Yanah_" title="Probar skin de Yanah_">
+                    <img src="https://mc-heads.net/avatar/Yanah_/24" alt="" />
+                    <span>Yanah_</span>
+                  </button>
+                  <button class="preset-head-btn" data-preset-nick="OmniAzkeel" title="Probar skin de OmniAzkeel">
+                    <img src="https://mc-heads.net/avatar/OmniAzkeel/24" alt="" />
+                    <span>OmniAzkeel</span>
+                  </button>
+                  <button class="preset-head-btn" data-preset-nick="SLuzzen" title="Probar skin de SLuzzen">
+                    <img src="https://mc-heads.net/avatar/SLuzzen/24" alt="" />
+                    <span>SLuzzen</span>
+                  </button>
+                </div>
               </div>
             </div>
 

@@ -109,13 +109,13 @@
     {
       "version": "1.0.3.1",
       "date": "2026-11-11",
-      "title": "Selector de Capas Exclusivo Premium, Banner de Actualización Flotante e Iconografía Vectorial SVG",
-      "summary": "Nuevo selector de Capas (Capes) en el Estudio de Skins exclusivo para cuentas Microsoft Premium, notificación y barra de actualización en primer plano y reemplazo integral de emojis por iconos vectoriales SVG en el Launcher y la Web.",
+      "title": "Estudio Pro de Skins & Capas (Premium), Banner de Actualización Flotante e Iconografía SVG",
+      "summary": "Renovación completa del Estudio Pro de Skins con animaciones de pose en tiempo real, pedestales holográficos, control de capas 3D por zona del cuerpo, inspector UV 64×64, Selector de Capas exclusivo Premium, actualización en primer plano e iconografía SVG.",
       "launcherChanges": [
-        "Selector de Capas (Capes) junto al Estudio de Skins (Beneficio Exclusivo para jugadores con Cuenta Premium Microsoft), con previsualización en vivo sobre la espalda del personaje.",
+        "Estudio Pro de Skins: poses animadas en tiempo real (Caminando, Estático, Saludando, Héroe), 4 ambientes de iluminación, pedestales holográficos, control individual de las 6 zonas 3D (Casco, Chaqueta, Mangas, Piernas), inspector de mapa UV 64×64, exportación .PNG y presets rápidos del Staff Team.",
+        "Selector de Capas (Capes) junto al Estudio de Skins (Beneficio Exclusivo para jugadores con Cuenta Premium Microsoft), con ondeo animado sobre la espalda del personaje.",
         "Banner y barra de progreso de auto-actualización fijados en capa superior (z-index máximo) para que el proceso de actualización sea siempre visible sobre cualquier pantalla.",
-        "Reemplazo total de emojis por iconografía vectorial SVG de alta definición tanto en el Launcher como en el Sitio Web oficial.",
-        "Soporte de versionado extendido de 4 segmentos (1.0.3.1) en el motor de auto-actualización."
+        "Reemplazo total de emojis por iconografía vectorial SVG de alta definición tanto en el Launcher como en el Sitio Web oficial."
       ],
       "modsAdded": [],
       "modsUpdated": [

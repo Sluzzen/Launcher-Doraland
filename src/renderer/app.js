@@ -649,7 +649,18 @@ function updateSliderFill(slider) {
   slider.style.setProperty('--pct', `${pct}%`);
 }
 
-// ── ESTUDIO DE SKINS (NO PREMIUM PNG + RENDER CANVAS) ─────────
+// ── ESTUDIO PRO DE SKINS & CAPAS (ANIMACIÓN + CAPAS 3D POR ZONA + INSPECTOR UV) ──
+let skinStudioPose = 'walk'; // 'walk' | 'idle' | 'wave' | 'hero'
+let skinStudioAnimPhase = 0;
+let skinPartsVisibility = {
+  hat: true,
+  jacket: true,
+  leftSleeve: true,
+  rightSleeve: true,
+  leftPants: true,
+  rightPants: true
+};
+
 function setupSkinStudio() {
   document.getElementById('btnStudioSelectFile')?.addEventListener('click', pickCustomSkinFile);
   document.getElementById('btnHomeUploadSkin')?.addEventListener('click', pickCustomSkinFile);
@@ -677,15 +688,56 @@ function setupSkinStudio() {
   btnClassic?.addEventListener('click', () => setModel('classic'));
   btnSlim?.addEventListener('click', () => setModel('slim'));
 
-  // Toggle capa exterior 3D
-  document.getElementById('skinShowOuterLayer')?.addEventListener('change', () => {
+  // Selector de Escenario (Esmeralda, Oro, Noche, Cuadrícula)
+  document.querySelectorAll('#skinSceneSelector .scene-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('#skinSceneSelector .scene-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      const scene = dot.dataset.scene || 'emerald';
+      const stage = document.getElementById('skinDropZone');
+      if (stage) {
+        stage.className = `svp-stage scene-${scene}`;
+      }
+    });
+  });
+
+  // Selector de Pose (Caminando, Estático, Saludando, Héroe)
+  document.querySelectorAll('#skinPoseGroup .pose-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#skinPoseGroup .pose-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      skinStudioPose = btn.dataset.pose || 'walk';
+      renderAllSkinCanvases();
+    });
+  });
+
+  // Toggle global de Capa Exterior 3D
+  document.getElementById('skinShowOuterLayer')?.addEventListener('change', (e) => {
+    const enabled = Boolean(e.target.checked);
+    Object.keys(skinPartsVisibility).forEach(k => { skinPartsVisibility[k] = enabled; });
+    document.querySelectorAll('#skinPartsChips .part-chip').forEach(chip => {
+      chip.classList.toggle('active', enabled);
+    });
     renderAllSkinCanvases();
   });
 
-  // Importar por Nickname
-  document.getElementById('btnImportSkinNick')?.addEventListener('click', async () => {
-    const input = document.getElementById('inputSkinNick');
-    const nick = input?.value?.trim() || '';
+  // Toggles individuales de Capas 3D por zona del cuerpo
+  document.querySelectorAll('#skinPartsChips .part-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const partKey = chip.dataset.part;
+      if (!partKey) return;
+      skinPartsVisibility[partKey] = !skinPartsVisibility[partKey];
+      chip.classList.toggle('active', skinPartsVisibility[partKey]);
+      const anyActive = Object.values(skinPartsVisibility).some(Boolean);
+      const globalToggle = document.getElementById('skinShowOuterLayer');
+      if (globalToggle) globalToggle.checked = anyActive;
+      renderAllSkinCanvases();
+    });
+  });
+
+  // Importar por Nickname (función reutilizable para el buscador y los presets)
+  const importNickHandler = async (nickToImport) => {
+    const nick = (nickToImport || '').trim();
     if (!nick) {
       showNotification('Escribe un nickname de Minecraft primero.', 'error');
       return;
@@ -704,6 +756,46 @@ function setupSkinStudio() {
     } finally {
       if (btn) { btn.disabled = false; btn.textContent = 'Importar'; }
     }
+  };
+
+  document.getElementById('btnImportSkinNick')?.addEventListener('click', () => {
+    const input = document.getElementById('inputSkinNick');
+    importNickHandler(input?.value || '');
+  });
+
+  document.getElementById('inputSkinNick')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') importNickHandler(e.target.value || '');
+  });
+
+  // Galería rápida de Presets del Staff
+  document.querySelectorAll('.preset-head-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const presetNick = btn.dataset.presetNick;
+      if (presetNick) {
+        const input = document.getElementById('inputSkinNick');
+        if (input) input.value = presetNick;
+        importNickHandler(presetNick);
+      }
+    });
+  });
+
+  // Exportar / Guardar copia .PNG de la skin actual
+  document.getElementById('btnExportSkinPng')?.addEventListener('click', () => {
+    if (!loadedSkinImage) {
+      showNotification('No hay una textura PNG personalizada u online cargada para exportar.', 'info');
+      return;
+    }
+    const off = document.createElement('canvas');
+    off.width = loadedSkinImage.width || 64;
+    off.height = loadedSkinImage.height || 64;
+    const octx = off.getContext('2d');
+    octx.imageSmoothingEnabled = false;
+    octx.drawImage(loadedSkinImage, 0, 0);
+    const a = document.createElement('a');
+    a.href = off.toDataURL('image/png');
+    a.download = currentSkin?.name || `skin-${currentSession?.name || 'doraland'}.png`;
+    a.click();
+    showNotification('Textura .PNG exportada correctamente.', 'success');
   });
 
   // Restablecer skin
@@ -751,12 +843,34 @@ function setupSkinStudio() {
       reader.readAsDataURL(file);
     });
   }
+
+  // Bucle de animación del Estudio de Skin (se ejecuta solo cuando #screenSkin está activo)
+  function animateStudioPoses() {
+    const skinScreen = document.getElementById('screenSkin');
+    const isSkinScreenActive = skinScreen && skinScreen.classList.contains('active');
+    if (isSkinScreenActive && !document.hidden && !isLaunching && !currentSettings.lowSpecUi && skinStudioPose !== 'idle') {
+      skinStudioAnimPhase += 0.085;
+      const showOuter = document.getElementById('skinShowOuterLayer')?.checked !== false;
+      const slim = currentSkin?.model === 'slim';
+      const frontCanvas = document.getElementById('studioSkinFront');
+      const backCanvas = document.getElementById('studioSkinBack');
+      if (frontCanvas) drawMinecraftCharacter(frontCanvas, loadedSkinImage, 'front', showOuter, slim, skinStudioPose, skinStudioAnimPhase);
+      if (backCanvas) drawMinecraftCharacter(backCanvas, loadedSkinImage, 'back', showOuter, slim, skinStudioPose, skinStudioAnimPhase);
+    }
+    setTimeout(() => requestAnimationFrame(animateStudioPoses), 45);
+  }
+  requestAnimationFrame(animateStudioPoses);
 }
 
 // ── SELECTOR DE CAPAS (EXCLUSIVO CUENTAS PREMIUM) ─────────────
 function setupCapeSelector() {
+  document.getElementById('btnUnlockCapesPremium')?.addEventListener('click', () => {
+    loginMicrosoft();
+  });
+
   const buttons = document.querySelectorAll('#capeGrid .cape-item');
   buttons.forEach(btn => {
+    if (btn.id === 'btnSelectCustomCape') return;
     btn.addEventListener('click', async () => {
       const isPremium = currentSession?.meta?.type === 'msa';
       if (!isPremium) {
@@ -858,6 +972,38 @@ function loadImageElement(src) {
   });
 }
 
+function updateRawTextureInspector(img, sourceName) {
+  const rawCanvas = document.getElementById('skinRawTextureCanvas');
+  const formatBadge = document.getElementById('skinFormatBadge');
+  const modelBadge = document.getElementById('skinModelBadge');
+  const slim = currentSkin?.model === 'slim';
+
+  if (modelBadge) {
+    modelBadge.textContent = slim ? 'MODELO ALEX (3PX)' : 'MODELO STEVE (4PX)';
+  }
+
+  if (!rawCanvas) return;
+  const rctx = rawCanvas.getContext('2d');
+  rctx.imageSmoothingEnabled = false;
+  rctx.clearRect(0, 0, rawCanvas.width, rawCanvas.height);
+
+  if (img) {
+    rctx.drawImage(img, 0, 0, rawCanvas.width, rawCanvas.height);
+    const dims = `${img.width}×${img.height}`;
+    if (formatBadge) formatBadge.textContent = `TEXTURA ${dims}`;
+    safeText('skinTexTitle', sourceName || 'Textura Activa');
+    safeText('skinTexDims', `Mapa UV ${dims}px • ${img.height === 32 ? 'Formato Legacy' : 'Formato Moderno 2 Capas'}`);
+  } else {
+    rctx.fillStyle = '#15803D';
+    rctx.fillRect(6, 6, 32, 32);
+    rctx.fillStyle = '#F59E0B';
+    rctx.fillRect(12, 12, 20, 20);
+    if (formatBadge) formatBadge.textContent = 'TEXTURA 64×64';
+    safeText('skinTexTitle', 'Explorador Doraland (Base)');
+    safeText('skinTexDims', 'Sube o arrastra un archivo .PNG al escenario');
+  }
+}
+
 async function refreshSkinRenderer() {
   const model = currentSkin?.model || 'classic';
   document.getElementById('btnModelClassic')?.classList.toggle('active', model === 'classic');
@@ -870,6 +1016,7 @@ async function refreshSkinRenderer() {
     safeText('homeSkinNameLabel', currentSkin.name || 'Skin personalizada activa');
     try {
       loadedSkinImage = await loadImageElement(currentSkin.dataUrl);
+      updateRawTextureInspector(loadedSkinImage, currentSkin.name || 'Personalizada.png');
       renderAllSkinCanvases();
       return;
     } catch {}
@@ -882,12 +1029,14 @@ async function refreshSkinRenderer() {
     safeText('homeSkinNameLabel', `Skin de ${currentSession.name}`);
     try {
       loadedSkinImage = await loadImageElement(`https://mc-heads.net/skin/${encodeURIComponent(currentSession.name)}`);
+      updateRawTextureInspector(loadedSkinImage, `${currentSession.name}.png`);
       renderAllSkinCanvases();
       return;
     } catch {}
   }
 
   loadedSkinImage = null;
+  updateRawTextureInspector(null, null);
   safeText('skinCurrentName', 'Skin por defecto (Explorador Doraland)');
   safeText('homeSkinBadge', 'Por defecto');
   safeText('homeSkinNameLabel', 'Explorador Doraland');
@@ -904,9 +1053,9 @@ function renderAllSkinCanvases() {
   const avatarCanvas = document.getElementById('sidebarAvatarCanvas');
   const avatarImg = document.getElementById('userAvatar');
 
-  if (homeCanvas) drawMinecraftCharacter(homeCanvas, loadedSkinImage, 'front', showOuter, slim);
-  if (frontCanvas) drawMinecraftCharacter(frontCanvas, loadedSkinImage, 'front', showOuter, slim);
-  if (backCanvas) drawMinecraftCharacter(backCanvas, loadedSkinImage, 'back', showOuter, slim);
+  if (homeCanvas) drawMinecraftCharacter(homeCanvas, loadedSkinImage, 'front', showOuter, slim, 'idle', 0);
+  if (frontCanvas) drawMinecraftCharacter(frontCanvas, loadedSkinImage, 'front', showOuter, slim, skinStudioPose, skinStudioAnimPhase);
+  if (backCanvas) drawMinecraftCharacter(backCanvas, loadedSkinImage, 'back', showOuter, slim, skinStudioPose, skinStudioAnimPhase);
 
   if (avatarCanvas && avatarImg) {
     if (loadedSkinImage) {
@@ -928,7 +1077,7 @@ function drawMinecraftHeadAvatar(canvas, skinImg, showOuter = true) {
 
   if (skinImg) {
     ctx.drawImage(skinImg, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
-    if (showOuter) {
+    if (showOuter && skinPartsVisibility.hat) {
       ctx.drawImage(skinImg, 40, 8, 8, 8, 0, 0, canvas.width, canvas.height);
     }
   } else {
@@ -945,19 +1094,22 @@ function drawMinecraftHeadAvatar(canvas, skinImg, showOuter = true) {
   }
 }
 
-function drawCapeOnBack(ctx, ox, oy, scale) {
+function drawCapeOnBack(ctx, ox, oy, scale, pose = 'idle', phase = 0) {
   const isPremium = currentSession?.meta?.type === 'msa';
   const capeId = currentCape?.id || 'none';
   if (!isPremium || capeId === 'none') return;
 
-  const cx = ox + 3 * scale;
-  const cy = oy + 8 * scale;
-  const cw = 10 * scale;
-  const ch = 16 * scale;
+  const waveX = pose === 'walk' ? Math.sin(phase) * 0.45 * scale : pose === 'hero' ? Math.sin(phase * 1.3) * 0.65 * scale : 0;
+  const waveLift = pose === 'hero' ? 0.8 * scale : pose === 'walk' ? Math.abs(Math.cos(phase)) * 0.35 * scale : 0;
 
-  // Sombra proyectada de la capa
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-  ctx.fillRect(cx + 2, cy + 2, cw, ch);
+  const cx = Math.round(ox + 3 * scale + waveX * 0.5);
+  const cy = Math.round(oy + 8 * scale);
+  const cw = Math.round(10 * scale);
+  const ch = Math.round(16 * scale - waveLift);
+
+  // Sombra 3D proyectada sobre la espalda y piernas
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.52)';
+  ctx.fillRect(cx + 3, cy + 3, cw, ch);
 
   if (capeId === 'custom' && loadedCapeImage) {
     ctx.drawImage(loadedCapeImage, 1, 1, 10, 16, cx, cy, cw, ch);
@@ -965,15 +1117,18 @@ function drawCapeOnBack(ctx, ox, oy, scale) {
   }
 
   const palettes = {
-    doraland_emerald: { bg: '#15803D', border: '#4ADE80', emblem: '#FCD34D' },
-    royal_gold:       { bg: '#B45309', border: '#FCD34D', emblem: '#FEF08A' },
-    crimson_fire:     { bg: '#991B1B', border: '#F87171', emblem: '#FBBF24' },
-    ender_void:       { bg: '#1E1B4B', border: '#38BDF8', emblem: '#A855F7' }
+    doraland_emerald: { bg: '#15803D', border: '#4ADE80', emblem: '#FCD34D', shade: '#14532D' },
+    royal_gold:       { bg: '#B45309', border: '#FCD34D', emblem: '#FEF08A', shade: '#78350F' },
+    crimson_fire:     { bg: '#991B1B', border: '#F87171', emblem: '#FBBF24', shade: '#7F1D1D' },
+    ender_void:       { bg: '#1E1B4B', border: '#38BDF8', emblem: '#A855F7', shade: '#0F172A' }
   };
   const pal = palettes[capeId] || palettes.doraland_emerald;
 
+  // Fondo de capa con pliegue de sombreado
   ctx.fillStyle = pal.bg;
   ctx.fillRect(cx, cy, cw, ch);
+  ctx.fillStyle = pal.shade;
+  ctx.fillRect(cx + cw - 2 * scale, cy, 2 * scale, ch);
 
   // Borde pixelado de la capa
   ctx.fillStyle = pal.border;
@@ -989,49 +1144,86 @@ function drawCapeOnBack(ctx, ox, oy, scale) {
   ctx.fillRect(cx + 4 * scale, cy + 5 * scale, 2 * scale, 3 * scale);
 }
 
-function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = true, slim = false) {
+function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = true, slim = false, pose = 'idle', phase = 0) {
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Escala en píxeles por unidad de modelo (modelo total: 16 unidades de ancho x 32 unidades de alto)
-  const scale = Math.min(Math.floor(canvas.width / 18), Math.floor(canvas.height / 34));
+  const scale = Math.min(Math.floor(canvas.width / 19), Math.floor(canvas.height / 35));
   const ox = Math.floor((canvas.width - 16 * scale) / 2);
   const oy = Math.floor((canvas.height - 32 * scale) / 2);
   const armW = slim ? 3 : 4;
   const leftArmX = slim ? 1 : 0;
   const rightArmX = 12;
 
+  // Cálculo de offsets dinámicos según la pose seleccionada
+  let headBobY = 0;
+  let headTiltX = 0;
+  let lArmDY = 0;
+  let rArmDY = 0;
+  let lLegDY = 0;
+  let rLegDY = 0;
+  let lArmDX = 0;
+  let rArmDX = 0;
+
+  if (pose === 'walk') {
+    const s = Math.sin(phase);
+    headBobY = Math.abs(Math.cos(phase)) * 0.35;
+    lArmDY = s * 1.4;
+    rArmDY = -s * 1.4;
+    lLegDY = -s * 1.3;
+    rLegDY = s * 1.3;
+  } else if (pose === 'wave') {
+    const w = Math.sin(phase * 1.8);
+    headTiltX = 0.25;
+    lArmDY = -2.4 + w * 0.45;
+    lArmDX = -0.45 + w * 0.25;
+  } else if (pose === 'hero') {
+    const b = Math.sin(phase * 0.9);
+    headBobY = b * 0.2;
+    lArmDX = -0.5;
+    rArmDX = 0.5;
+    lArmDY = -0.4;
+    rArmDY = -0.4;
+  }
+
+  const showHat = showOuter && skinPartsVisibility.hat;
+  const showJacket = showOuter && skinPartsVisibility.jacket;
+  const showLSleeve = showOuter && skinPartsVisibility.leftSleeve;
+  const showRSleeve = showOuter && skinPartsVisibility.rightSleeve;
+  const showLPants = showOuter && skinPartsVisibility.leftPants;
+  const showRPants = showOuter && skinPartsVisibility.rightPants;
+
   if (!skinImg) {
-    // Render estilizado por defecto (Explorador de Doraland) si no hay imagen cargada
-    // Cabeza
+    // Render estilizado por defecto (Explorador de Doraland) con pose dinámica
     ctx.fillStyle = '#4A2E1B';
-    ctx.fillRect(ox + 4 * scale, oy + 0 * scale, 8 * scale, 8 * scale);
+    ctx.fillRect(ox + (4 + headTiltX) * scale, oy + headBobY * scale, 8 * scale, 8 * scale);
     ctx.fillStyle = '#D8A074';
-    ctx.fillRect(ox + 4 * scale, oy + (view === 'front' ? 2 : 5) * scale, 8 * scale, (view === 'front' ? 6 : 3) * scale);
+    ctx.fillRect(ox + (4 + headTiltX) * scale, oy + (headBobY + (view === 'front' ? 2 : 5)) * scale, 8 * scale, (view === 'front' ? 6 : 3) * scale);
     if (view === 'front') {
       ctx.fillStyle = '#22C55E';
-      ctx.fillRect(ox + 5 * scale, oy + 4 * scale, 2 * scale, 1 * scale);
-      ctx.fillRect(ox + 9 * scale, oy + 4 * scale, 2 * scale, 1 * scale);
+      ctx.fillRect(ox + (5 + headTiltX) * scale, oy + (4 + headBobY) * scale, 2 * scale, 1 * scale);
+      ctx.fillRect(ox + (9 + headTiltX) * scale, oy + (4 + headBobY) * scale, 2 * scale, 1 * scale);
     }
-    // Torso (Túnica verde/dorada Doraland)
+    // Torso
     ctx.fillStyle = '#15803D';
     ctx.fillRect(ox + 4 * scale, oy + 8 * scale, 8 * scale, 12 * scale);
     ctx.fillStyle = '#F59E0B';
     ctx.fillRect(ox + 4 * scale, oy + 17 * scale, 8 * scale, 2 * scale);
     // Brazos
     ctx.fillStyle = '#166534';
-    ctx.fillRect(ox + leftArmX * scale, oy + 8 * scale, armW * scale, 9 * scale);
-    ctx.fillRect(ox + rightArmX * scale, oy + 8 * scale, armW * scale, 9 * scale);
+    ctx.fillRect(ox + (leftArmX + lArmDX) * scale, oy + (8 + lArmDY) * scale, armW * scale, 9 * scale);
+    ctx.fillRect(ox + (rightArmX + rArmDX) * scale, oy + (8 + rArmDY) * scale, armW * scale, 9 * scale);
     ctx.fillStyle = '#D8A074';
-    ctx.fillRect(ox + leftArmX * scale, oy + 17 * scale, armW * scale, 3 * scale);
-    ctx.fillRect(ox + rightArmX * scale, oy + 17 * scale, armW * scale, 3 * scale);
+    ctx.fillRect(ox + (leftArmX + lArmDX) * scale, oy + (17 + lArmDY) * scale, armW * scale, 3 * scale);
+    ctx.fillRect(ox + (rightArmX + rArmDX) * scale, oy + (17 + rArmDY) * scale, armW * scale, 3 * scale);
     // Piernas
     ctx.fillStyle = '#1E293B';
-    ctx.fillRect(ox + 4 * scale, oy + 20 * scale, 4 * scale, 12 * scale);
-    ctx.fillRect(ox + 8 * scale, oy + 20 * scale, 4 * scale, 12 * scale);
+    ctx.fillRect(ox + 4 * scale, oy + (20 + lLegDY) * scale, 4 * scale, 12 * scale);
+    ctx.fillRect(ox + 8 * scale, oy + (20 + rLegDY) * scale, 4 * scale, 12 * scale);
     if (view === 'back') {
-      drawCapeOnBack(ctx, ox, oy, scale);
+      drawCapeOnBack(ctx, ox, oy, scale, pose, phase);
     }
     return;
   }
@@ -1042,68 +1234,80 @@ function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = tru
     ctx.drawImage(skinImg, sx, sy, sw, sh, ox + dx * scale, oy + dy * scale, dw * scale, dh * scale);
   };
 
+  // Sombreado volumétrico 3D para dar relieve a extremidades y torso
+  const shadeRect = (dx, dy, dw, dh, alpha = 0.16) => {
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.fillRect(ox + dx * scale, oy + dy * scale, dw * scale, dh * scale);
+  };
+
   if (view === 'front') {
-    // Cabeza base + Sombrero 3D
-    part(8, 8, 8, 8, 4, 0);
-    if (showOuter) part(40, 8, 8, 8, 3.75, -0.25, 8.5, 8.5);
-
-    // Torso + Chaqueta
-    part(20, 20, 8, 12, 4, 8);
-    if (showOuter && !isLegacy64x32) part(20, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
-
-    // Brazo Derecho (a la izquierda del visor)
-    part(44, 20, armW, 12, leftArmX, 8);
-    if (showOuter && !isLegacy64x32) part(44, 36, armW, 12, leftArmX - 0.15, 7.85, armW + 0.3, 12.3);
-
-    // Brazo Izquierdo (a la derecha del visor)
-    if (isLegacy64x32) {
-      part(44, 20, armW, 12, rightArmX, 8);
-    } else {
-      part(36, 52, armW, 12, rightArmX, 8);
-      if (showOuter) part(52, 52, armW, 12, rightArmX - 0.15, 7.85, armW + 0.3, 12.3);
-    }
-
     // Pierna Derecha
-    part(4, 20, 4, 12, 4, 20);
-    if (showOuter && !isLegacy64x32) part(4, 36, 4, 12, 3.85, 19.85, 4.3, 12.3);
+    part(4, 20, 4, 12, 4, 20 + lLegDY);
+    if (showRPants && !isLegacy64x32) part(4, 36, 4, 12, 3.85, 19.85 + lLegDY, 4.3, 12.3);
+    if (lLegDY > 0.2) shadeRect(4, 20 + lLegDY, 4, 12, 0.15);
 
     // Pierna Izquierda
     if (isLegacy64x32) {
-      part(4, 20, 4, 12, 8, 20);
+      part(4, 20, 4, 12, 8, 20 + rLegDY);
     } else {
-      part(20, 52, 4, 12, 8, 20);
-      if (showOuter) part(4, 52, 4, 12, 7.85, 19.85, 4.3, 12.3);
+      part(20, 52, 4, 12, 8, 20 + rLegDY);
+      if (showLPants) part(4, 52, 4, 12, 7.85, 19.85 + rLegDY, 4.3, 12.3);
     }
+    if (rLegDY > 0.2) shadeRect(8, 20 + rLegDY, 4, 12, 0.15);
+
+    // Torso + Chaqueta
+    part(20, 20, 8, 12, 4, 8);
+    if (showJacket && !isLegacy64x32) part(20, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
+    shadeRect(4, 19, 8, 1, 0.2);
+
+    // Brazo Derecho (a la izquierda del visor)
+    part(44, 20, armW, 12, leftArmX + lArmDX, 8 + lArmDY);
+    if (showRSleeve && !isLegacy64x32) part(44, 36, armW, 12, leftArmX + lArmDX - 0.15, 7.85 + lArmDY, armW + 0.3, 12.3);
+    shadeRect(leftArmX + lArmDX + armW - 0.6, 8 + lArmDY, 0.6, 12, 0.18);
+
+    // Brazo Izquierdo (a la derecha del visor)
+    if (isLegacy64x32) {
+      part(44, 20, armW, 12, rightArmX + rArmDX, 8 + rArmDY);
+    } else {
+      part(36, 52, armW, 12, rightArmX + rArmDX, 8 + rArmDY);
+      if (showLSleeve) part(52, 52, armW, 12, rightArmX + rArmDX - 0.15, 7.85 + rArmDY, armW + 0.3, 12.3);
+    }
+    shadeRect(rightArmX + rArmDX, 8 + rArmDY, 0.6, 12, 0.18);
+
+    // Cabeza base + Sombrero 3D
+    part(8, 8, 8, 8, 4 + headTiltX, 0 + headBobY);
+    if (showHat) part(40, 8, 8, 8, 3.7 + headTiltX, -0.3 + headBobY, 8.6, 8.6);
   } else {
     // VISTA TRASERA
-    part(24, 8, 8, 8, 4, 0);
-    if (showOuter) part(56, 8, 8, 8, 3.75, -0.25, 8.5, 8.5);
+    if (isLegacy64x32) {
+      part(12, 20, 4, 12, 4, 20 + rLegDY);
+      part(12, 20, 4, 12, 8, 20 + lLegDY);
+    } else {
+      part(28, 52, 4, 12, 4, 20 + rLegDY);
+      if (showLPants) part(12, 52, 4, 12, 3.85, 19.85 + rLegDY, 4.3, 12.3);
+      part(12, 20, 4, 12, 8, 20 + lLegDY);
+      if (showRPants) part(12, 36, 4, 12, 7.85, 19.85 + lLegDY, 4.3, 12.3);
+    }
 
     part(32, 20, 8, 12, 4, 8);
-    if (showOuter && !isLegacy64x32) part(32, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
+    if (showJacket && !isLegacy64x32) part(32, 36, 8, 12, 3.85, 7.85, 8.3, 12.3);
 
     // Brazos traseros
     const rArmBackX = slim ? 51 : 52;
     const lArmBackX = slim ? 43 : 44;
     if (isLegacy64x32) {
-      part(rArmBackX, 20, armW, 12, leftArmX, 8);
-      part(rArmBackX, 20, armW, 12, rightArmX, 8);
+      part(rArmBackX, 20, armW, 12, leftArmX - rArmDX, 8 + rArmDY);
+      part(rArmBackX, 20, armW, 12, rightArmX - lArmDX, 8 + lArmDY);
     } else {
-      part(lArmBackX, 52, armW, 12, leftArmX, 8);
-      part(rArmBackX, 20, armW, 12, rightArmX, 8);
+      part(lArmBackX, 52, armW, 12, leftArmX - rArmDX, 8 + rArmDY);
+      part(rArmBackX, 20, armW, 12, rightArmX - lArmDX, 8 + lArmDY);
     }
 
-    // Piernas traseras
-    if (isLegacy64x32) {
-      part(12, 20, 4, 12, 4, 20);
-      part(12, 20, 4, 12, 8, 20);
-    } else {
-      part(28, 52, 4, 12, 4, 20);
-      part(12, 20, 4, 12, 8, 20);
-    }
+    part(24, 8, 8, 8, 4 - headTiltX, 0 + headBobY);
+    if (showHat) part(56, 8, 8, 8, 3.7 - headTiltX, -0.3 + headBobY, 8.6, 8.6);
 
-    // Capa sobre la espalda (solo Cuentas Premium)
-    drawCapeOnBack(ctx, ox, oy, scale);
+    // Capa sobre la espalda (solo Cuentas Premium) con animación de ondeo
+    drawCapeOnBack(ctx, ox, oy, scale, pose, phase);
   }
 }
 
