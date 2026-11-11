@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-11-11T17:19:48.106Z",
+  "generatedAt": "2026-11-11T17:25:59.991Z",
   "minecraft": {
     "version": "1.21.1",
     "loaders": {
@@ -39,6 +39,901 @@
     "ip": "doralandmc.holyhosting.club",
     "port": 25565
   },
-  "modsCount": 0,
-  "mods": []
+  "modsCount": 149,
+  "mods": [
+    {
+      "name": "additional_lights-neoforge-1.21-2.1.10.jar",
+      "size": 514194,
+      "sha1": "8dc485146437e8ac40dd29e10747601fd4e372ca",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/additional_lights-neoforge-1.21-2.1.10.jar"
+    },
+    {
+      "name": "alexscaves-2.0.10.jar",
+      "size": 74900204,
+      "sha1": "366ddaac40f14cd0102f026b4d999753fc1db2a4",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/alexscaves-2.0.10.jar"
+    },
+    {
+      "name": "alexsmobs-1.22.17.jar",
+      "size": 26620546,
+      "sha1": "5070e8070f60650d773bfd9f1d031496f8f50259",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/alexsmobs-1.22.17.jar"
+    },
+    {
+      "name": "alltheleaks-1.1.12+1.21.1-neoforge.jar",
+      "size": 562895,
+      "sha1": "d69b9e98e957418ca0ab768b79983e68ffbfcd49",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/alltheleaks-1.1.12%2B1.21.1-neoforge.jar"
+    },
+    {
+      "name": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
+      "size": 84811632,
+      "sha1": "c79ab328b2c46068effebdcb3f26e98dc4404cb0",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar"
+    },
+    {
+      "name": "amendments-1.21-2.1.10-neoforge.jar",
+      "size": 1168211,
+      "sha1": "d0cae2882177b7ad285021b48c128ddcc7022464",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/amendments-1.21-2.1.10-neoforge.jar"
+    },
+    {
+      "name": "Aquaculture-1.21.1-2.7.21.jar",
+      "size": 605949,
+      "sha1": "93c2043c6a5cfbfbfba93321d044bc61d8a6547b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Aquaculture-1.21.1-2.7.21.jar"
+    },
+    {
+      "name": "architectury-13.0.11-neoforge.jar",
+      "size": 584734,
+      "sha1": "008656a0702801174b8ec245ed7aad1921d6e9f1",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/architectury-13.0.11-neoforge.jar"
+    },
+    {
+      "name": "artifacts-neoforge-13.2.5.jar",
+      "size": 1086922,
+      "sha1": "fb6cd3be2d034dde369ffd7558c95c6daa44189e",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/artifacts-neoforge-13.2.5.jar"
+    },
+    {
+      "name": "balm-neoforge-1.21.1-21.0.65.jar",
+      "size": 783793,
+      "sha1": "69e0b3b69dd23c132e85b7e82310f45ae96b263d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/balm-neoforge-1.21.1-21.0.65.jar"
+    },
+    {
+      "name": "BetterAdvancements-NeoForge-1.21.1-0.4.3.21.jar",
+      "size": 98641,
+      "sha1": "870521cfaa1a4cb6c830e2409e8b9e4cf179aff2",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/BetterAdvancements-NeoForge-1.21.1-0.4.3.21.jar"
+    },
+    {
+      "name": "betterdays-1.21.1-3.3.6.3-NEOFORGE.jar",
+      "size": 585998,
+      "sha1": "0beeb796055f8abdebb9304fe26b655068a52a9c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/betterdays-1.21.1-3.3.6.3-NEOFORGE.jar"
+    },
+    {
+      "name": "bettervillage-neoforge-1.21.1-3.3.1.jar",
+      "size": 2429558,
+      "sha1": "fbe35b530079ddbd60a7c2afac3e259768cbd400",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/bettervillage-neoforge-1.21.1-3.3.1.jar"
+    },
+    {
+      "name": "BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar",
+      "size": 22338157,
+      "sha1": "6a12e1a249d074fb18f07d1f141b80ca2885e2be",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar"
+    },
+    {
+      "name": "bookshelf-neoforge-1.21.1-21.1.81.jar",
+      "size": 328813,
+      "sha1": "efc4cda6da4dd879f24d057ed0a6413764c9ba40",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/bookshelf-neoforge-1.21.1-21.1.81.jar"
+    },
+    {
+      "name": "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.122.jar",
+      "size": 3717245,
+      "sha1": "91a9a9b7791fb8a9642752ca6009553a0546c96e",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/c2me-neoforge-mc1.21.1-0.4.0-alpha.0.122.jar"
+    },
+    {
+      "name": "camera-neoforge-1.21.1-1.0.22.jar",
+      "size": 307439,
+      "sha1": "79c6969bfad4e3b903ba247ebb1f64882ef09aa3",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/camera-neoforge-1.21.1-1.0.22.jar"
+    },
+    {
+      "name": "Chimes-v2.1.1-1.21.1-NeoForge.jar",
+      "size": 12478373,
+      "sha1": "991e81741231b73b2cd3cbe9ab41e73cbe99d7be",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Chimes-v2.1.1-1.21.1-NeoForge.jar"
+    },
+    {
+      "name": "Chunky-NeoForge-1.4.23.jar",
+      "size": 340572,
+      "sha1": "ab0c74743a653020fe2dfc4986b43e893947f3e9",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Chunky-NeoForge-1.4.23.jar"
+    },
+    {
+      "name": "citadel-1.21.1-2.7.6.jar",
+      "size": 3028943,
+      "sha1": "e0392370117ec16a721f8d65728944398de77607",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/citadel-1.21.1-2.7.6.jar"
+    },
+    {
+      "name": "cloth-config-15.0.140-neoforge.jar",
+      "size": 1163890,
+      "sha1": "c3e5733ba4503b102589a026000fd5ce0212f6f2",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/cloth-config-15.0.140-neoforge.jar"
+    },
+    {
+      "name": "collective-1.21.1-8.39.jar",
+      "size": 1061931,
+      "sha1": "b1153f03c97bccaa6bc11d6199f07f16ef4318ff",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/collective-1.21.1-8.39.jar"
+    },
+    {
+      "name": "configured-neoforge-1.21.1-2.6.3.jar",
+      "size": 428793,
+      "sha1": "e977d86eec39d49295df4e2c4265d6710ae065e8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/configured-neoforge-1.21.1-2.6.3.jar"
+    },
+    {
+      "name": "copycats-3.0.9+mc.1.21.1-neoforge.jar",
+      "size": 1799381,
+      "sha1": "74de17876c43f5f780bac478b9f9eb11e687b8d7",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/copycats-3.0.9%2Bmc.1.21.1-neoforge.jar"
+    },
+    {
+      "name": "coroutil-neoforge-1.21.0-1.3.9.jar",
+      "size": 65716,
+      "sha1": "0f5a6309ce8394721b97740e6f3e45665f13b8de",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/coroutil-neoforge-1.21.0-1.3.9.jar"
+    },
+    {
+      "name": "corpse-neoforge-1.21.1-1.1.13.jar",
+      "size": 253695,
+      "sha1": "4f42091ef36e98e99c2f28a273ded960c0ac08bd",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/corpse-neoforge-1.21.1-1.1.13.jar"
+    },
+    {
+      "name": "cosmeticarmorreworked-1.21.1-v1-neoforge.jar",
+      "size": 92722,
+      "sha1": "5f1e699cd0888b857ec63f01adaeb3571848bfea",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/cosmeticarmorreworked-1.21.1-v1-neoforge.jar"
+    },
+    {
+      "name": "create-1.21.1-6.0.10.jar",
+      "size": 19123767,
+      "sha1": "0e97e49837bed766e6f28a4c95b04885d6acc353",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/create-1.21.1-6.0.10.jar"
+    },
+    {
+      "name": "createbetterfps-1.21.1-1.1.4.jar",
+      "size": 26547,
+      "sha1": "c594e20659b73a67bd0b0c2de45b29b78a2eb160",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/createbetterfps-1.21.1-1.1.4.jar"
+    },
+    {
+      "name": "CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar",
+      "size": 1235813,
+      "sha1": "180613074e3f8df9b1e052a3abe19a1c4ac38b48",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar"
+    },
+    {
+      "name": "curios-neoforge-9.5.1+1.21.1.jar",
+      "size": 410690,
+      "sha1": "418fcd42e3a7844c9bdc71c9b6401fdb3894e0c4",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/curios-neoforge-9.5.1%2B1.21.1.jar"
+    },
+    {
+      "name": "CustomNPCs-Unofficial-NeoForge-1.21.1.20251230.jar",
+      "size": 10789250,
+      "sha1": "e2f3b58ceb5aac4021d7bfd130e320925581471b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/CustomNPCs-Unofficial-NeoForge-1.21.1.20251230.jar"
+    },
+    {
+      "name": "CustomPlayerModels-1.21-0.6.27a.jar",
+      "size": 2793136,
+      "sha1": "34d57efcc56c043f89c61f169944d7b95c11f504",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/CustomPlayerModels-1.21-0.6.27a.jar"
+    },
+    {
+      "name": "darkdoppelganger-3.4.0-1.21.1.jar",
+      "size": 4503628,
+      "sha1": "875d85a9eeaab1daa5a13a7399cea8f4cb53a237",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/darkdoppelganger-3.4.0-1.21.1.jar"
+    },
+    {
+      "name": "darkerdepths-2.1.6.jar",
+      "size": 2118195,
+      "sha1": "748a1c3694df35ae8373dc293725e3aff13e9831",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/darkerdepths-2.1.6.jar"
+    },
+    {
+      "name": "decocraft-3.0.11-1.21.1-neoforge.jar",
+      "size": 93170262,
+      "sha1": "6704940aa352d1acf3cf9362e5ef8dd4e65b563c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/decocraft-3.0.11-1.21.1-neoforge.jar"
+    },
+    {
+      "name": "default_skill_trees-1.1.jar",
+      "size": 11519,
+      "sha1": "564a1320a4d26de1ad476687ce1920ccd12c142c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/default_skill_trees-1.1.jar"
+    },
+    {
+      "name": "drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar",
+      "size": 168632,
+      "sha1": "9d27991a7f5a551265692abf8ed40ece10ea1958",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar"
+    },
+    {
+      "name": "dummmmmmy-1.21-2.1.2-neoforge.jar",
+      "size": 215883,
+      "sha1": "87fb529cbb220a33fedf45a4a6f2269b8e00fffe",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/dummmmmmy-1.21-2.1.2-neoforge.jar"
+    },
+    {
+      "name": "DungeonsArise-1.21.1-2.1.68-release.jar",
+      "size": 11842679,
+      "sha1": "c651339154da7b9e9cf47a80fdef22c4d59cad5c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/DungeonsArise-1.21.1-2.1.68-release.jar"
+    },
+    {
+      "name": "DungeonsAriseSevenSeas-1.21.x-1.0.4-neoforge.jar",
+      "size": 244981,
+      "sha1": "ac9edb266a1360e9e4c80ed0b2f931f1505307eb",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/DungeonsAriseSevenSeas-1.21.x-1.0.4-neoforge.jar"
+    },
+    {
+      "name": "elevatorid-neoforge-1.21.1-1.11.4.jar",
+      "size": 191190,
+      "sha1": "87a5504efcd51de55cd4215a103cbfcf717fa022",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/elevatorid-neoforge-1.21.1-1.11.4.jar"
+    },
+    {
+      "name": "emotecraft-for-MC1.21.1-2.4.12-neoforge.jar",
+      "size": 861829,
+      "sha1": "1228c7597c4b6cbaec10a090f9b5b471ca9042d4",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/emotecraft-for-MC1.21.1-2.4.12-neoforge.jar"
+    },
+    {
+      "name": "enchdesc-neoforge-1.21.1-21.1.11.jar",
+      "size": 82648,
+      "sha1": "4d453df785ac21e0e7389cba949f4fa460c3e267",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/enchdesc-neoforge-1.21.1-21.1.11.jar"
+    },
+    {
+      "name": "entityculling-neoforge-1.10.5-mc1.21.1.jar",
+      "size": 1585287,
+      "sha1": "420d0006dbc0a20b1c2dd0b3c7c20ddb5cc51fcf",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/entityculling-neoforge-1.10.5-mc1.21.1.jar"
+    },
+    {
+      "name": "epic-knights-1.21.1-neoforge-10.15.jar",
+      "size": 2818976,
+      "sha1": "c708f1f8f1530469638af65640c4514a9a4c6b0c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/epic-knights-1.21.1-neoforge-10.15.jar"
+    },
+    {
+      "name": "etched-5.1.0.jar",
+      "size": 628299,
+      "sha1": "0cc1f1d0bc5d9af3f9ffbb8ce166f5cc9b59ec89",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/etched-5.1.0.jar"
+    },
+    {
+      "name": "evenmoreinstruments-neoforge-1.21-1.21.1-6.1.4.jar",
+      "size": 6663854,
+      "sha1": "2f933ab292514beefd4a3f60c200c8094632165e",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/evenmoreinstruments-neoforge-1.21-1.21.1-6.1.4.jar"
+    },
+    {
+      "name": "FallingTree-1.21.1-1.21.1.11.jar",
+      "size": 496356,
+      "sha1": "626e7ec3a979dcc15d8e65c53207572c41c1b255",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/FallingTree-1.21.1-1.21.1.11.jar"
+    },
+    {
+      "name": "fancy-entity-renderer-neoforge-1.21-0.4.9.jar",
+      "size": 410875,
+      "sha1": "427df4a943f0b52430235cd610688e589870de2f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/fancy-entity-renderer-neoforge-1.21-0.4.9.jar"
+    },
+    {
+      "name": "fancymenu_neoforge_3.9.12_MC_1.21.1.jar",
+      "size": 25912346,
+      "sha1": "388d2380529fc175bfe1337e1a5b46b694284ccb",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/fancymenu_neoforge_3.9.12_MC_1.21.1.jar"
+    },
+    {
+      "name": "FarmersDelight-1.21.1-1.3.4.jar",
+      "size": 3160490,
+      "sha1": "27675ddfcb8cc37e6ea1ab6c15051c7949d94657",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/FarmersDelight-1.21.1-1.3.4.jar"
+    },
+    {
+      "name": "ferritecore-7.0.3-neoforge.jar",
+      "size": 121559,
+      "sha1": "9563692efb708b6b568df27a01ec52f6311928ef",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/ferritecore-7.0.3-neoforge.jar"
+    },
+    {
+      "name": "ftb-chunks-neoforge-2101.1.22.jar",
+      "size": 655807,
+      "sha1": "a53f1bb7965c6954a348d4f321f03d3971ad503f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/ftb-chunks-neoforge-2101.1.22.jar"
+    },
+    {
+      "name": "ftb-library-neoforge-2101.1.36.jar",
+      "size": 1439427,
+      "sha1": "07b5bf1c6ac5160a6cfe1b39ed8c1465dc151b00",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/ftb-library-neoforge-2101.1.36.jar"
+    },
+    {
+      "name": "ftb-teams-neoforge-2101.1.11.jar",
+      "size": 308236,
+      "sha1": "62b65f752d0326edd13244e58d5f2aec035da4e9",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/ftb-teams-neoforge-2101.1.11.jar"
+    },
+    {
+      "name": "gaboulibs-neoforge-1.9.jar",
+      "size": 31997,
+      "sha1": "aa39c5645c0479dbd7a485432e9694c78ad6082a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/gaboulibs-neoforge-1.9.jar"
+    },
+    {
+      "name": "geckolib-neoforge-1.21.1-4.9.3.jar",
+      "size": 634531,
+      "sha1": "5cfe835472a5c5457ae9ac192d9d7b317454d5ac",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/geckolib-neoforge-1.21.1-4.9.3.jar"
+    },
+    {
+      "name": "genshinstrument-neoforge-1.21-1.21.1-5.1.jar",
+      "size": 7056535,
+      "sha1": "1eecc4734bc280eb0ef68e387ad9574c41c8482e",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/genshinstrument-neoforge-1.21-1.21.1-5.1.jar"
+    },
+    {
+      "name": "GlitchCore-neoforge-1.21.1-2.1.0.2.jar",
+      "size": 90717,
+      "sha1": "a31c3f36330f19aa538add3d727782a62c9c30ad",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/GlitchCore-neoforge-1.21.1-2.1.0.2.jar"
+    },
+    {
+      "name": "iceandfire-2.1.2.jar",
+      "size": 20773661,
+      "sha1": "0786f4142b7cabd958688f68beef3e63e9c0ae8b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/iceandfire-2.1.2.jar"
+    },
+    {
+      "name": "IDA v2.1.2-1.21.1.jar",
+      "size": 12131555,
+      "sha1": "cc2c1d100b9f808536b3e8be363097a530038029",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/IDA%20v2.1.2-1.21.1.jar"
+    },
+    {
+      "name": "imfast-NEOFORGE-1.21.1-1.0.3.jar",
+      "size": 4193,
+      "sha1": "f8e92ef61de3751f619238eed5ae9952b5a049d0",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/imfast-NEOFORGE-1.21.1-1.0.3.jar"
+    },
+    {
+      "name": "ImmediatelyFast-NeoForge-1.6.14+1.21.1.jar",
+      "size": 365195,
+      "sha1": "fee59af2f39c66d09c4c09f441c799e76af70f97",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/ImmediatelyFast-NeoForge-1.6.14%2B1.21.1.jar"
+    },
+    {
+      "name": "immersive-weathering-tweaks-1.3.1.jar",
+      "size": 57620,
+      "sha1": "020b01df52b26ac38aa8c7ed994767c560193169",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/immersive-weathering-tweaks-1.3.1.jar"
+    },
+    {
+      "name": "Immersive-weathering-V1.0.4-neoforge-beta.jar",
+      "size": 2283529,
+      "sha1": "011571c9eca3613ca2f4275da922eb3ec12061e1",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Immersive-weathering-V1.0.4-neoforge-beta.jar"
+    },
+    {
+      "name": "immersive_aircraft-1.5.0+1.21.1-neoforge.jar",
+      "size": 2465051,
+      "sha1": "af88f1fd32a7a03aabda2aa14f351c55ab47f0f7",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/immersive_aircraft-1.5.0%2B1.21.1-neoforge.jar"
+    },
+    {
+      "name": "immersive_armors-1.7.6+1.21.1-neoforge.jar",
+      "size": 1274167,
+      "sha1": "4c5762af46c0beac0830d1f1e9c88332b120ceaa",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/immersive_armors-1.7.6%2B1.21.1-neoforge.jar"
+    },
+    {
+      "name": "immersive_furniture-neoforge-0.3.3+1.21.1.jar",
+      "size": 1018042,
+      "sha1": "cd595ea729f0b55a09568c2ebcdb1ad2d6c16c53",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/immersive_furniture-neoforge-0.3.3%2B1.21.1.jar"
+    },
+    {
+      "name": "immersive_melodies-neoforge-0.8.0+1.21.1.jar",
+      "size": 5565133,
+      "sha1": "5f3cd9eb07465a88a22abc6230862e798f45ef82",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/immersive_melodies-neoforge-0.8.0%2B1.21.1.jar"
+    },
+    {
+      "name": "incontrol-1.21-10.3.0.jar",
+      "size": 356782,
+      "sha1": "eb89f724834b393e9a76c404df642d930e50eb19",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/incontrol-1.21-10.3.0.jar"
+    },
+    {
+      "name": "integrated_api-neoforge-1.21.1-1.8.2.jar",
+      "size": 478502,
+      "sha1": "e0a0e44235b98f21a05ebbe0171fe8487319a173",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/integrated_api-neoforge-1.21.1-1.8.2.jar"
+    },
+    {
+      "name": "irons_lib-1.21.1-2.1.0.jar",
+      "size": 406284,
+      "sha1": "70fba64d12b6ff9553580e52101d989c89297797",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/irons_lib-1.21.1-2.1.0.jar"
+    },
+    {
+      "name": "irons_spellbooks-1.21.1-3.16.3.jar",
+      "size": 13890046,
+      "sha1": "017fd8140c477f9ae602cf95594f1c23bef1d6e3",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/irons_spellbooks-1.21.1-3.16.3.jar"
+    },
+    {
+      "name": "Jade-1.21.1-NeoForge-15.10.6.jar",
+      "size": 726853,
+      "sha1": "88ee316e68900080b017f60c12162e2731924cf8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Jade-1.21.1-NeoForge-15.10.6.jar"
+    },
+    {
+      "name": "jei-1.21.1-neoforge-19.56.0.441.jar",
+      "size": 2156268,
+      "sha1": "e520422338d3eba053189d042fc08eb40eb22bb8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/jei-1.21.1-neoforge-19.56.0.441.jar"
+    },
+    {
+      "name": "journeymap-neoforge-1.21.1-6.0.8.jar",
+      "size": 4303084,
+      "sha1": "e964f91ee6319bb1d789a7011e30772907962b90",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/journeymap-neoforge-1.21.1-6.0.8.jar"
+    },
+    {
+      "name": "jupiter-2.3.7-1.21.1-neoforge.jar",
+      "size": 278988,
+      "sha1": "569fb484ea5c8e8d690945ad4cd132131a719751",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/jupiter-2.3.7-1.21.1-neoforge.jar"
+    },
+    {
+      "name": "kirriscasino-neoforge-1.21.1-0.1.1.jar",
+      "size": 317118,
+      "sha1": "f747c4e14980192c4cbf3c2032347ad9e7a7e708",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/kirriscasino-neoforge-1.21.1-0.1.1.jar"
+    },
+    {
+      "name": "konkrete_neoforge_1.9.9_MC_1.21.jar",
+      "size": 618842,
+      "sha1": "97771eb287d5ac7fe667d1df9493d5e54c8ca1fa",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/konkrete_neoforge_1.9.9_MC_1.21.jar"
+    },
+    {
+      "name": "lexiconfig-neoforge-1.4.21-novel.jar",
+      "size": 65316,
+      "sha1": "f862c78f4d27938208913d1c3ee4d9be1a13d166",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/lexiconfig-neoforge-1.4.21-novel.jar"
+    },
+    {
+      "name": "libraryferret-neoforge-1.21.1-4.0.0.jar",
+      "size": 139416,
+      "sha1": "95887e3ae531dc7e8a39e2c285c8a27cf06d698c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/libraryferret-neoforge-1.21.1-4.0.0.jar"
+    },
+    {
+      "name": "lionfishapi-3.1.jar",
+      "size": 91596,
+      "sha1": "353ca00ed118eb67cf11085abbbd699884722326",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/lionfishapi-3.1.jar"
+    },
+    {
+      "name": "lithostitched-1.8.0+beta6-neoforge-21.1.jar",
+      "size": 978169,
+      "sha1": "b8526bb7fcfb844ce91513ab349c408dd1a8279e",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/lithostitched-1.8.0%2Bbeta6-neoforge-21.1.jar"
+    },
+    {
+      "name": "lootr-neoforge-1.21.1-1.11.38.125.jar",
+      "size": 1000464,
+      "sha1": "ad56869af94247d39f4364cba6403b115b3100b8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/lootr-neoforge-1.21.1-1.11.38.125.jar"
+    },
+    {
+      "name": "L_Ender's Cataclysm 1.21.1-3.33.jar",
+      "size": 73375661,
+      "sha1": "5ff39c0eddfa08ea0e921bdcb17da7f32f0b00ce",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/L_Ender's%20Cataclysm%201.21.1-3.33.jar"
+    },
+    {
+      "name": "mcw-bridges-3.1.2-mc1.21.1neoforge.jar",
+      "size": 661387,
+      "sha1": "71ece28129789a2123cf07e79938f488d8675bb2",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-bridges-3.1.2-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-doors-1.1.5-mc1.21.1neoforge.jar",
+      "size": 1190404,
+      "sha1": "c127904f23db1a641dd9e065ec51c5c177cb4cd7",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-doors-1.1.5-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-furniture-3.4.1-mc1.21.1neoforge.jar",
+      "size": 2080436,
+      "sha1": "3dccc819f14bcc60b3683edd82ca8c5e64964229",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-furniture-3.4.1-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-lights-1.1.5-mc1.21.1neoforge.jar",
+      "size": 525744,
+      "sha1": "13c1107caf26b2c60d8626b3658b26cc7f634b38",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-lights-1.1.5-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-mcwfences-1.2.1-mc1.21.1neoforge.jar",
+      "size": 673871,
+      "sha1": "b5580c3fc521ed8bf4db3e407bd590efc317f74d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-mcwfences-1.2.1-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-mcwpaths-1.1.1-mc1.21.1neoforge.jar",
+      "size": 777742,
+      "sha1": "4bb7e1d28eef19f87438881b0f582a15297b95ae",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-mcwpaths-1.1.1-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-mcwstairs-1.0.2-mc1.21.1neoforge.jar",
+      "size": 529082,
+      "sha1": "1ee43d693c821efc955a74e551f94372af90a140",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-mcwstairs-1.0.2-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-mcwwindows-2.4.2-mc1.21.1neoforge.jar",
+      "size": 1261268,
+      "sha1": "eb1d3c118acb450cc2fe14c2ce7ce247a1bca60c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-mcwwindows-2.4.2-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-paintings-1.1.0-mc1.21.1neoforge.jar",
+      "size": 179058,
+      "sha1": "7e637b44624da6a3b7cd6cfd26324c3f116d4da6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-paintings-1.1.0-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-roofs-2.3.2-mc1.21.1neoforge.jar",
+      "size": 1784829,
+      "sha1": "05806ff152fab56f7c1b4b215d772ea73611283d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-roofs-2.3.2-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "mcw-trapdoors-1.1.5-mc1.21.1neoforge.jar",
+      "size": 572870,
+      "sha1": "1f8b59e31f889f53b6296b42ee09d447e7e56620",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mcw-trapdoors-1.1.5-mc1.21.1neoforge.jar"
+    },
+    {
+      "name": "Mekanism-1.21.1-10.7.19.85.jar",
+      "size": 11976009,
+      "sha1": "b78945c40cfe7640408f3fd1e44da385a8c8b805",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Mekanism-1.21.1-10.7.19.85.jar"
+    },
+    {
+      "name": "MekanismAdditions-1.21.1-10.7.19.85.jar",
+      "size": 1162551,
+      "sha1": "0934a9f9961a9a1a47ff344762f8eeb0c149d80d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/MekanismAdditions-1.21.1-10.7.19.85.jar"
+    },
+    {
+      "name": "MekanismGenerators-1.21.1-10.7.19.85.jar",
+      "size": 1114598,
+      "sha1": "44c4d8006597580ff7e4101b5a22f7b426cdcaf6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/MekanismGenerators-1.21.1-10.7.19.85.jar"
+    },
+    {
+      "name": "MekanismTools-1.21.1-10.7.19.85.jar",
+      "size": 526620,
+      "sha1": "4433b3eec0a5a0bf415d873e710a1cecea5850bc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/MekanismTools-1.21.1-10.7.19.85.jar"
+    },
+    {
+      "name": "melody_neoforge_1.0.10_MC_1.21.jar",
+      "size": 36096,
+      "sha1": "e83052a92c4ca0016bcfe7f0207273983dc84698",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/melody_neoforge_1.0.10_MC_1.21.jar"
+    },
+    {
+      "name": "modernfix-neoforge-5.27.24+mc1.21.1.jar",
+      "size": 604333,
+      "sha1": "1fe7f8b4176e86507cc8ed5460b6acdd3dac5529",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/modernfix-neoforge-5.27.24%2Bmc1.21.1.jar"
+    },
+    {
+      "name": "moonlight-1.21.1-3.6.5-neoforge.jar",
+      "size": 2280483,
+      "sha1": "91cbf847aaf1165a7331b43030af829873e0fef6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/moonlight-1.21.1-3.6.5-neoforge.jar"
+    },
+    {
+      "name": "moreculling-neoforge-1.21.1-1.0.10.jar",
+      "size": 335699,
+      "sha1": "7e2d906031fdba883649eef6ef48a4dbdbb0f6cf",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/moreculling-neoforge-1.21.1-1.0.10.jar"
+    },
+    {
+      "name": "mowziesmobs-1.21.1-1.8.2.jar",
+      "size": 36042925,
+      "sha1": "d64475cd77444b056ece6472c79d40293dc63c6c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mowziesmobs-1.21.1-1.8.2.jar"
+    },
+    {
+      "name": "mowzies_cataclysm-1.2.2.jar",
+      "size": 28114,
+      "sha1": "0dff3e849155ca343d1a500f5b9ca2b54ffa692d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/mowzies_cataclysm-1.2.2.jar"
+    },
+    {
+      "name": "MutantMonsters-v21.1.1-1.21.1-NeoForge.jar",
+      "size": 1346730,
+      "sha1": "c9981cf323d5e0fd49387ad20dafec1f58b2c88d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/MutantMonsters-v21.1.1-1.21.1-NeoForge.jar"
+    },
+    {
+      "name": "NeoForge-1.21.1-ColorfulSeasons-1.1.0.jar",
+      "size": 55213,
+      "sha1": "731cab4467c1055489970d7605ac70cf9c80e1cc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/NeoForge-1.21.1-ColorfulSeasons-1.1.0.jar"
+    },
+    {
+      "name": "NeoForge-Version-Serene Seasons Plus-1.21.1-5.1.2.jar",
+      "size": 415754,
+      "sha1": "13d356654676b83694c8ad78f45e2cd5dd8a93e0",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/NeoForge-Version-Serene%20Seasons%20Plus-1.21.1-5.1.2.jar"
+    },
+    {
+      "name": "nickname-1.0.0.jar",
+      "size": 1319508,
+      "sha1": "6bc3aec6cd16c6d2bc5e2b60f6c135a384b081fc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/nickname-1.0.0.jar"
+    },
+    {
+      "name": "oddities-1.0.0-neoforge-1.21.1.jar",
+      "size": 2312080,
+      "sha1": "638e8a0cbfd60b5a4a40273d5dc0081d3a86bd94",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/oddities-1.0.0-neoforge-1.21.1.jar"
+    },
+    {
+      "name": "Paraglider-neoforge-21.1.5.jar",
+      "size": 658184,
+      "sha1": "39043f24e897fade07a138bb8d60bfe08d8103b1",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Paraglider-neoforge-21.1.5.jar"
+    },
+    {
+      "name": "Pehkui-3.8.3+1.21-neoforge.jar",
+      "size": 507568,
+      "sha1": "4ae35b04b0fca7b170417a12d6da6a693281574b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Pehkui-3.8.3%2B1.21-neoforge.jar"
+    },
+    {
+      "name": "player-animation-lib-forge-2.0.4+1.21.1.jar",
+      "size": 203149,
+      "sha1": "05be8ddcc78532b9a5520c718edc6c971cd0057c",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/player-animation-lib-forge-2.0.4%2B1.21.1.jar"
+    },
+    {
+      "name": "PlayerRevive_NEOFORGE_v2.1.2_mc1.21.1.jar",
+      "size": 5307768,
+      "sha1": "b1ee96cfefa36e1c05aaab8e92bfb3f9ae927d15",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/PlayerRevive_NEOFORGE_v2.1.2_mc1.21.1.jar"
+    },
+    {
+      "name": "prickle-neoforge-1.21.1-21.1.11.jar",
+      "size": 84812,
+      "sha1": "5174059ecf97340a0de5ef211b938de26c4eaa36",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/prickle-neoforge-1.21.1-21.1.11.jar"
+    },
+    {
+      "name": "Psychadelic-Chemistry_1.21.1-2.2.5_neoforge.jar",
+      "size": 72843968,
+      "sha1": "cdccb9f60908eca8d004f3f783b1c3756e415eb5",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Psychadelic-Chemistry_1.21.1-2.2.5_neoforge.jar"
+    },
+    {
+      "name": "PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar",
+      "size": 1442182,
+      "sha1": "319fc1ea1498920b39a318ea324f6112a7318d67",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar"
+    },
+    {
+      "name": "quantified api-omni-2.2.3.jar",
+      "size": 9577892,
+      "sha1": "0a4f72b0a7685c99724ffcf2cec69ce0e739c185",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/quantified%20api-omni-2.2.3.jar"
+    },
+    {
+      "name": "Quark-4.1-485.jar",
+      "size": 15590176,
+      "sha1": "445fbf066be38aa1da59368a5386e906405c1907",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Quark-4.1-485.jar"
+    },
+    {
+      "name": "reducedores-1.21.x-1.1.jar",
+      "size": 1976706,
+      "sha1": "bd0e4f0b6ad0256b4cac74b52c03b50efe460357",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/reducedores-1.21.x-1.1.jar"
+    },
+    {
+      "name": "seasonsfix-neoforge-1.21.1-2.1.2.jar",
+      "size": 28382,
+      "sha1": "b64cd5c8c572d3280c322ed7928f47fc4b7209ab",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/seasonsfix-neoforge-1.21.1-2.1.2.jar"
+    },
+    {
+      "name": "SereneSeasons-neoforge-1.21.1-10.1.0.3.jar",
+      "size": 159205,
+      "sha1": "8b9034d4c43f880b1f1ebdd3943219de0b0bc4c5",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/SereneSeasons-neoforge-1.21.1-10.1.0.3.jar"
+    },
+    {
+      "name": "simpleradio-neoforge-1.21.1-4.5.7.9.jar",
+      "size": 1016130,
+      "sha1": "91d73ced322f4707ace24f4b51eb77598b14b1f8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/simpleradio-neoforge-1.21.1-4.5.7.9.jar"
+    },
+    {
+      "name": "skinlayers3d-neoforge-1.11.3-mc1.21.1.jar",
+      "size": 1903528,
+      "sha1": "c3ca1000cf0e82608bc4a96067e15a20ecdbec1b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/skinlayers3d-neoforge-1.11.3-mc1.21.1.jar"
+    },
+    {
+      "name": "sodium-neoforge-0.8.13+mc1.21.1.jar",
+      "size": 1292934,
+      "sha1": "1757289be21ed18db5b0d90703fa3db1b2de5693",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/sodium-neoforge-0.8.13%2Bmc1.21.1.jar"
+    },
+    {
+      "name": "sons_of_sins-2.2.1d-neoforge-1.21.1.jar",
+      "size": 5197454,
+      "sha1": "ba1fe4eb8a3df55e611d39eaa1a837b23517dce9",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/sons_of_sins-2.2.1d-neoforge-1.21.1.jar"
+    },
+    {
+      "name": "sophisticatedbackpacks-1.21.1-3.26.3.2158.jar",
+      "size": 1251706,
+      "sha1": "c9cef1451d73c5afef78a637c593634f55e757fc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/sophisticatedbackpacks-1.21.1-3.26.3.2158.jar"
+    },
+    {
+      "name": "sophisticatedcore-1.21.1-1.5.1.2341.jar",
+      "size": 1785221,
+      "sha1": "a256b4d3c1218754a3172253e6bda644551be6a5",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/sophisticatedcore-1.21.1-1.5.1.2341.jar"
+    },
+    {
+      "name": "spark-1.10.124-neoforge.jar",
+      "size": 3642581,
+      "sha1": "9430cc2ab64ff89d698be593769fb9f9ee4efae6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/spark-1.10.124-neoforge.jar"
+    },
+    {
+      "name": "starterkit-1.21.1-8.1.jar",
+      "size": 273623,
+      "sha1": "9dff28020422ddaf4d7f677888212df5c2f6fb9d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/starterkit-1.21.1-8.1.jar"
+    },
+    {
+      "name": "StrawStatues-v21.1.0-1.21.1-NeoForge.jar",
+      "size": 313043,
+      "sha1": "133f187ee682ee71c3db7307b93c572b7951af4b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/StrawStatues-v21.1.0-1.21.1-NeoForge.jar"
+    },
+    {
+      "name": "Structory_26.2_v1.3.7.jar",
+      "size": 1261346,
+      "sha1": "8a9a1a1b3f74398310420b6fbe2c26ef142bed42",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Structory_26.2_v1.3.7.jar"
+    },
+    {
+      "name": "supplementaries-1.21.1-3.9.9-neoforge.jar",
+      "size": 13548968,
+      "sha1": "06ed05381a5653d90398dc6ebf3ad1154add6374",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/supplementaries-1.21.1-3.9.9-neoforge.jar"
+    },
+    {
+      "name": "TerraBlender-neoforge-1.21.1-4.1.0.8.jar",
+      "size": 120364,
+      "sha1": "2016eed89eac0eb0510d2190c3b0b80bf4346191",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/TerraBlender-neoforge-1.21.1-4.1.0.8.jar"
+    },
+    {
+      "name": "Terralith_1.21.x_v2.6.2.jar",
+      "size": 2814865,
+      "sha1": "d4a9fe71b841f70edfb4b280f9bf5c58e4a28224",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Terralith_1.21.x_v2.6.2.jar"
+    },
+    {
+      "name": "the_knocker-1.5.2-neoforge-1.21.1.jar",
+      "size": 993804,
+      "sha1": "96ebf978760c7e6f7f7bf2152f6079925621c3fc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/the_knocker-1.5.2-neoforge-1.21.1.jar"
+    },
+    {
+      "name": "trashslot-neoforge-1.21.1-21.1.11.jar",
+      "size": 77535,
+      "sha1": "7343e4b563feb79122c8373a0d5416182ca436a8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/trashslot-neoforge-1.21.1-21.1.11.jar"
+    },
+    {
+      "name": "twilightforest-1.21.1-4.8.3345-universal.jar",
+      "size": 27154121,
+      "sha1": "9cfd4154928433e2f1f6cfc3deb48c284debb580",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/twilightforest-1.21.1-4.8.3345-universal.jar"
+    },
+    {
+      "name": "underwater_village-1.0.2-neoforge-1.21.1.jar",
+      "size": 386146,
+      "sha1": "0adcea413b73bad85a5dbb7f18e80576378817e2",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/underwater_village-1.0.2-neoforge-1.21.1.jar"
+    },
+    {
+      "name": "uranus-3.0-beta.1.jar",
+      "size": 221525,
+      "sha1": "c87886ec34ba1282366801f84f6953dc42cb42b2",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/uranus-3.0-beta.1.jar"
+    },
+    {
+      "name": "Vampirism-1.21-1.10.13.jar",
+      "size": 12478474,
+      "sha1": "349b6e4ea893c98a580775b1725399903e222228",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Vampirism-1.21-1.10.13.jar"
+    },
+    {
+      "name": "voicechat-neoforge-1.21.1-2.6.22.jar",
+      "size": 4918442,
+      "sha1": "3b2001d8df61fe6dc03dcd5f5cd4a8f49821feb0",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/voicechat-neoforge-1.21.1-2.6.22.jar"
+    },
+    {
+      "name": "waystones-neoforge-1.21.1-21.1.45.jar",
+      "size": 1219809,
+      "sha1": "6ec1a176a102212db4f6391886db52ed103c830f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/waystones-neoforge-1.21.1-21.1.45.jar"
+    },
+    {
+      "name": "Werewolves-1.21-2.0.3.3.jar",
+      "size": 2297879,
+      "sha1": "12a400d50c6e2afdcd96caf73cb80d37877147c8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Werewolves-1.21-2.0.3.3.jar"
+    },
+    {
+      "name": "WhisperingSpirits-neoforge-1.21.1-v1.4.0.jar",
+      "size": 1928017,
+      "sha1": "224279a35996ab8eeefbdf2f5f9c34c4ac718c20",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/WhisperingSpirits-neoforge-1.21.1-v1.4.0.jar"
+    },
+    {
+      "name": "Zeta-1.1-40.jar",
+      "size": 763725,
+      "sha1": "72f6efe421cfc0547c774ae8241d727b7d996754",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/Zeta-1.1-40.jar"
+    },
+    {
+      "name": "[1.21.1] SecurityCraft v1.10.2.1.jar",
+      "size": 5193371,
+      "sha1": "8760079e80039f982f1a92d3ee9d60a2bcab3251",
+      "url": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods/%5B1.21.1%5D%20SecurityCraft%20v1.10.2.1.jar"
+    }
+  ]
 }

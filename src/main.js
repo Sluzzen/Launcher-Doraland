@@ -719,7 +719,7 @@ async function syncOverridesProtected(gameDir, cfg, event) {
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland y shaders...' });
+  event?.sender.send('launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland, emotes y shaders...' });
 
   // Archivos de preferencias personales que no deben sobrescribirse si el jugador ya los modificó
   const userProtectedRelPaths = new Set([
@@ -782,35 +782,43 @@ async function syncOverridesProtected(gameDir, cfg, event) {
 }
 
 // ============================================================================
-// 10. SINCRONIZACIÓN DE MODS HÍBRIDA (REMOTA Y LOCAL BUNDLED)
+// 10. SINCRONIZACIÓN DE MODS HÍBRIDA (LOCAL + REMOTA EN GITHUB)
 // ============================================================================
 async function syncModsProtected(gameDir, cfg, event) {
   const targetModsPath = path.join(gameDir, 'mods');
   await fs.ensureDir(targetModsPath);
 
+  // 1. Si existe carpeta mods/ local junto al launcher, copiar primero desde disco (instantáneo)
+  await syncLocalBundledMods(targetModsPath, cfg, event, false);
+
+  // 2. Sincronizar contra el manifiesto remoto (o el manifiesto empaquetado de respaldo)
+  let manifest = null;
   if (cfg.mods?.remoteManifestUrl && cfg.mods?.source !== 'bundled') {
     try {
-      event?.sender.send('launch-log', { type: 'info', msg: '🌐 Conectando con el repositorio para verificar actualizaciones de mods...' });
-      const manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
-
-      if (manifest && Array.isArray(manifest.mods)) {
-        if (manifest.server?.ip) cfg.server.ip = manifest.server.ip;
-        if (manifest.minecraft?.loaders && typeof manifest.minecraft.loaders === 'object') {
-          cfg.minecraft.loaders = { ...cfg.minecraft.loaders, ...manifest.minecraft.loaders };
-        }
-
-        if (manifest.mods.length > 0) {
-          event?.sender.send('launch-log', { type: 'info', msg: `📦 Manifiesto remoto recibido: ${manifest.mods.length} mods.` });
-          await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event);
-          return;
-        }
-      }
+      event?.sender.send('launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de mods en el servidor...' });
+      manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
     } catch (err) {
-      event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Manifiesto remoto no disponible (${err.message}). Usando paquete local.` });
+      event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Servidor remoto ocupado (${err.message}). Usando manifiesto integrado.` });
     }
   }
 
-  await syncLocalBundledMods(targetModsPath, cfg, event);
+  if (!manifest) {
+    const localManifestPath = path.join(__dirname, '..', 'mods-manifest.json');
+    if (fs.existsSync(localManifestPath)) {
+      try {
+        manifest = await fs.readJson(localManifestPath);
+      } catch {}
+    }
+  }
+
+  if (manifest && Array.isArray(manifest.mods) && manifest.mods.length > 0) {
+    if (manifest.server?.ip) cfg.server.ip = manifest.server.ip;
+    if (manifest.minecraft?.loaders && typeof manifest.minecraft.loaders === 'object') {
+      cfg.minecraft.loaders = { ...cfg.minecraft.loaders, ...manifest.minecraft.loaders };
+    }
+
+    await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event);
+  }
 }
 
 async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
@@ -877,18 +885,20 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 }
 
-async function syncLocalBundledMods(targetModsPath, cfg, event) {
-  let bundledModsPath;
+async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = false) {
+  const candidates = [];
   if (app.isPackaged) {
-    bundledModsPath = path.join(path.dirname(app.getPath('exe')), 'mods');
-    if (!fs.existsSync(bundledModsPath)) {
-      bundledModsPath = path.join(process.resourcesPath, 'mods');
+    if (process.env.PORTABLE_EXECUTABLE_DIR) {
+      candidates.push(path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'mods'));
     }
+    candidates.push(path.join(path.dirname(app.getPath('exe')), 'mods'));
+    candidates.push(path.join(process.resourcesPath, 'mods'));
   } else {
-    bundledModsPath = path.join(__dirname, '..', 'mods');
+    candidates.push(path.join(__dirname, '..', 'mods'));
   }
 
-  if (!fs.existsSync(bundledModsPath)) {
+  const bundledModsPath = candidates.find(p => fs.existsSync(p));
+  if (!bundledModsPath) {
     return;
   }
 
@@ -896,14 +906,12 @@ async function syncLocalBundledMods(targetModsPath, cfg, event) {
   const bundledJars = rawFiles.filter(f => f.toLowerCase().endsWith('.jar'));
 
   if (bundledJars.length === 0) {
-    const existing = (await fs.readdir(targetModsPath)).filter(f => f.toLowerCase().endsWith('.jar'));
-    event?.sender.send('launch-log', { type: 'info', msg: `📦 Mods instalados en carpeta del juego: ${existing.length} mods.` });
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: `📦 Sincronizando ${bundledJars.length} mods desde el paquete local...` });
+  event?.sender.send('launch-log', { type: 'info', msg: `📦 Verificando ${bundledJars.length} mods desde paquete local...` });
 
-  if (cfg.mods?.cleanOldMods) {
+  if (cleanExtra && cfg.mods?.cleanOldMods) {
     const currentFiles = await fs.readdir(targetModsPath);
     for (const file of currentFiles) {
       if (file.toLowerCase().endsWith('.jar') && !bundledJars.includes(file)) {
@@ -930,14 +938,11 @@ async function syncLocalBundledMods(targetModsPath, cfg, event) {
     if (needsCopy) {
       await fs.copy(srcPath, destPath, { overwrite: true });
       updatedCount++;
-      event?.sender.send('launch-log', { type: 'info', msg: `✅ Mod sincronizado: ${jarName}` });
     }
   }
 
-  if (updatedCount === 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Mods locales al día (${bundledJars.length} mods verificados).` });
-  } else {
-    event?.sender.send('launch-log', { type: 'info', msg: `🎉 Se actualizaron ${updatedCount} mods locales.` });
+  if (updatedCount > 0) {
+    event?.sender.send('launch-log', { type: 'info', msg: `✅ Se copiaron ${updatedCount} mods desde el paquete local.` });
   }
 }
 

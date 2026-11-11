@@ -46,9 +46,17 @@
     "files": [
       "src/**/*",
       "assets/**/*",
-      "mods/**/*",
-      "overrides/**/*",
-      "launcher-config.json"
+      "launcher-config.json",
+      "mods-manifest.json"
+    ],
+    "extraResources": [
+      {
+        "from": "overrides",
+        "to": "overrides",
+        "filter": [
+          "**/*"
+        ]
+      }
     ],
     "win": {
       "target": [
