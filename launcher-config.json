@@ -94,7 +94,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.4.1",
+    "version": "1.0.5",
     "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,
@@ -108,13 +108,14 @@
   },
   "changelog": [
     {
-      "version": "1.0.4.1",
+      "version": "1.0.5",
       "date": "2026-11-11",
-      "title": "Crédito Oficial en Dock de Juego y Firmas de Integridad",
-      "summary": "Actualización visual en el pie del botón de juego con el crédito oficial de desarrollo y refuerzo de marcas internas de autoría en el Launcher.",
+      "title": "Crédito Oficial, Marcas de Integridad y Corrección SemVer de Auto-Updater",
+      "summary": "Actualización visual en el pie del botón de juego con 'Desarrollado por SLuzzen', firmas internas de autoría y blindaje SemVer para evitar errores de arranque en electron-updater.",
       "launcherChanges": [
         "Actualizado el pie del panel de lanzamiento con el texto 'Desarrollado por SLuzzen'.",
-        "Añadidas firmas internas de autoría e integridad en los módulos principales del Launcher."
+        "Añadidas firmas internas de autoría e integridad en los módulos principales del Launcher.",
+        "Blindaje SemVer en package.json y carga segura de electron-updater para prevenir cierres al iniciar."
       ],
       "modsAdded": [],
       "modsUpdated": [],

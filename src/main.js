@@ -26,7 +26,12 @@ const fs = require('fs-extra');
 const https = require('https');
 const os = require('os');
 const { spawn, spawnSync, execSync } = require('child_process');
-const { autoUpdater } = require('electron-updater');
+let autoUpdater = null;
+try {
+  autoUpdater = require('electron-updater').autoUpdater;
+} catch (err) {
+  console.warn('[Updater] Aviso cargando electron-updater (se usará live-branch updater):', err.message);
+}
 
 // Agente HTTPS Keep-Alive para optimizar conexiones y descargas paralelas (reduce latencia TLS en 70%)
 const keepAliveAgent = new https.Agent({
@@ -175,7 +180,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.4.1",
+    version: "1.0.5",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -188,7 +193,7 @@ const DEFAULT_CONFIG = {
   },
   changelog: [
     {
-      version: "1.0.4.1",
+      version: "1.0.5",
       date: "2026-11-11",
       title: "Crédito Oficial en Dock de Juego y Firmas de Integridad",
       summary: "Actualización visual en el pie del botón de juego con el crédito oficial de desarrollo y refuerzo de marcas internas de autoría en el Launcher.",
@@ -397,8 +402,18 @@ function appendLauncherLog(message) {
 //    A) electron-updater (GitHub Releases / Instalador NSIS)
 //    B) Live Self-Updater desde rama main de GitHub (Funciona en CUALQUIER versión sin requerir Release)
 // ============================================================================
-autoUpdater.autoDownload = true;
-autoUpdater.autoInstallOnAppQuit = true;
+if (autoUpdater) {
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+}
+
+function toStrictSemver(verStr) {
+  const parts = String(verStr || '1.0.0').trim().replace(/^v/i, '').split('.');
+  if (parts.length >= 4) {
+    return `${parseInt(parts[0], 10) || 1}.${parseInt(parts[1], 10) || 0}.${parseInt(parts[2], 10) || 0}-${parts.slice(3).join('.')}`;
+  }
+  return `${parseInt(parts[0], 10) || 1}.${parseInt(parts[1], 10) || 0}.${parseInt(parts[2], 10) || 0}`;
+}
 
 let isUpdatingLauncher = false;
 let pendingUpdateMode = null; // 'release' | 'live-branch'
@@ -514,7 +529,7 @@ async function checkAndApplyGitBranchSelfUpdate() {
 
       if (item.isJson) {
         const parsed = JSON.parse(content);
-        if (item.rel === 'package.json') parsed.version = remoteVer;
+        if (item.rel === 'package.json') parsed.version = toStrictSemver(remoteVer);
         if (item.rel === 'launcher-config.json' && parsed.launcher) parsed.launcher.version = remoteVer;
         const targetPath = path.join(appRootDir, item.rel);
         await fs.ensureDir(path.dirname(targetPath));
@@ -566,47 +581,49 @@ async function checkAndApplyGitBranchSelfUpdate() {
 }
 
 function setupLauncherAutoUpdater() {
-  autoUpdater.on('update-available', (info) => {
-    const localVer = getLocalLauncherVersion();
-    if (!isNewerVersion(info.version, localVer)) return;
+  if (autoUpdater) {
+    autoUpdater.on('update-available', (info) => {
+      const localVer = getLocalLauncherVersion();
+      if (!isNewerVersion(info.version, localVer)) return;
 
-    isUpdatingLauncher = true;
-    pendingUpdateMode = 'release';
-    appendLauncherLog(`Actualización de Release disponible: v${info.version} (actual: v${localVer})`);
-    mainWindow?.webContents.send('launcher-update-available', {
-      version: info.version,
-      currentVersion: localVer,
-      autoApplying: true,
-      releaseNotes: info.releaseNotes || 'Descargando nueva versión de Doraland Launcher...'
+      isUpdatingLauncher = true;
+      pendingUpdateMode = 'release';
+      appendLauncherLog(`Actualización de Release disponible: v${info.version} (actual: v${localVer})`);
+      mainWindow?.webContents.send('launcher-update-available', {
+        version: info.version,
+        currentVersion: localVer,
+        autoApplying: true,
+        releaseNotes: info.releaseNotes || 'Descargando nueva versión de Doraland Launcher...'
+      });
     });
-  });
 
-  autoUpdater.on('download-progress', (progress) => {
-    mainWindow?.webContents.send('launcher-update-progress', {
-      percent: Math.round(progress.percent),
-      speed: (progress.bytesPerSecond / 1024 / 1024).toFixed(1)
+    autoUpdater.on('download-progress', (progress) => {
+      mainWindow?.webContents.send('launcher-update-progress', {
+        percent: Math.round(progress.percent),
+        speed: (progress.bytesPerSecond / 1024 / 1024).toFixed(1)
+      });
     });
-  });
 
-  autoUpdater.on('update-downloaded', (info) => {
-    appendLauncherLog(`Instalador de actualización descargado: v${info.version}. Reiniciando...`);
-    mainWindow?.webContents.send('launcher-update-downloaded', {
-      version: info.version,
-      autoRestart: true
+    autoUpdater.on('update-downloaded', (info) => {
+      appendLauncherLog(`Instalador de actualización descargado: v${info.version}. Reiniciando...`);
+      mainWindow?.webContents.send('launcher-update-downloaded', {
+        version: info.version,
+        autoRestart: true
+      });
+      setTimeout(() => {
+        autoUpdater.quitAndInstall(false, true);
+      }, 2200);
     });
-    setTimeout(() => {
-      autoUpdater.quitAndInstall(false, true);
-    }, 2200);
-  });
 
-  autoUpdater.on('error', (err) => {
-    appendLauncherLog(`Aviso electron-updater (usando actualizador directo de rama como respaldo): ${err.message}`);
-  });
+    autoUpdater.on('error', (err) => {
+      appendLauncherLog(`Aviso electron-updater (usando actualizador directo de rama como respaldo): ${err.message}`);
+    });
+  }
 
   // Ejecutar verificación inmediata al abrir cualquier versión del launcher
   setTimeout(async () => {
     const branchRes = await checkAndApplyGitBranchSelfUpdate();
-    if (!branchRes.updated && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
+    if (!branchRes.updated && autoUpdater && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
       try {
         await autoUpdater.checkForUpdates();
       } catch {}
@@ -620,7 +637,7 @@ ipcMain.handle('check-launcher-update', async () => {
     if (branchRes.updated) {
       return { success: true, updateAvailable: true, version: branchRes.remoteVersion };
     }
-    if (app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
+    if (autoUpdater && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
       const res = await autoUpdater.checkForUpdates();
       return { success: true, updateAvailable: !!res?.updateInfo };
     }
@@ -634,7 +651,7 @@ ipcMain.handle('download-launcher-update', async () => {
   try {
     const branchRes = await checkAndApplyGitBranchSelfUpdate();
     if (branchRes.updated) return { success: true };
-    await autoUpdater.downloadUpdate();
+    if (autoUpdater) await autoUpdater.downloadUpdate();
     return { success: true };
   } catch (err) {
     return { success: false, error: err.message };
@@ -642,7 +659,7 @@ ipcMain.handle('download-launcher-update', async () => {
 });
 
 ipcMain.handle('install-launcher-update', () => {
-  if (pendingUpdateMode === 'release') {
+  if (pendingUpdateMode === 'release' && autoUpdater) {
     autoUpdater.quitAndInstall(false, true);
   } else {
     app.relaunch();
