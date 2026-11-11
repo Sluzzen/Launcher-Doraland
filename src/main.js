@@ -161,7 +161,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.3.1",
+    version: "1.0.4",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -174,7 +174,7 @@ const DEFAULT_CONFIG = {
   },
   changelog: [
     {
-      version: "1.0.3.1",
+      version: "1.0.4",
       date: "2026-11-11",
       title: "Selector de Capas Exclusivo Premium, Banner de Actualización Flotante e Iconografía Vectorial SVG",
       summary: "Nuevo selector de Capas (Capes) en el Estudio de Skins exclusivo para cuentas Microsoft Premium, notificación y barra de actualización en primer plano y reemplazo integral de emojis por iconos vectoriales SVG en el Launcher y la Web.",

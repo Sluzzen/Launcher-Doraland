@@ -1189,7 +1189,7 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="https://github.com/Sluzzen/Launcher-Doraland/releases/latest" id="btnHeroDownload" target="_blank" rel="noopener" class="btn btn-emerald">
+          <a href="https://github.com/Sluzzen/Launcher-Doraland/releases" id="btnHeroDownload" target="_blank" rel="noopener" class="btn btn-emerald">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
@@ -1417,7 +1417,7 @@
           </ul>
 
           <div class="hero-buttons">
-            <a href="https://github.com/Sluzzen/Launcher-Doraland/releases/latest" id="btnSetupDownload" target="_blank" rel="noopener"
+            <a href="https://github.com/Sluzzen/Launcher-Doraland/releases" id="btnSetupDownload" target="_blank" rel="noopener"
               class="btn btn-emerald">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -1894,22 +1894,44 @@
       } catch {}
     }
 
-    // 6. Enlace Directo al Último Instalador desde GitHub Releases (sin mostrar número de versión)
+    // 6. Enlace Directo al Último Instalador Setup (.exe) desde GitHub Releases (sin mostrar versión)
+    function pickSetupExeAsset(assets) {
+      if (!Array.isArray(assets)) return null;
+      return (
+        assets.find(a => /setup.*\.exe$/i.test(a.name)) ||
+        assets.find(a => /\.exe$/i.test(a.name) && !/portable/i.test(a.name)) ||
+        null
+      );
+    }
+
     async function resolveLatestLauncherDownload() {
       try {
-        const res = await fetch('https://api.github.com/repos/Sluzzen/Launcher-Doraland/releases/latest');
-        if (!res.ok) return;
-        const rel = await res.json();
-        const exeAsset = (rel.assets || []).find(a => /\.exe$/i.test(a.name));
-        const dlUrl = exeAsset ? exeAsset.browser_download_url : rel.html_url;
+        let rel = null;
+        const latestRes = await fetch('https://api.github.com/repos/Sluzzen/Launcher-Doraland/releases/latest');
+        if (latestRes.ok) {
+          rel = await latestRes.json();
+        } else {
+          const listRes = await fetch('https://api.github.com/repos/Sluzzen/Launcher-Doraland/releases?per_page=10');
+          if (listRes.ok) {
+            const list = await listRes.json();
+            if (Array.isArray(list) && list.length > 0) {
+              rel = list.find(r => !r.draft && pickSetupExeAsset(r.assets)) || list.find(r => !r.draft) || null;
+            }
+          }
+        }
+        if (!rel) return;
+
+        const setupAsset = pickSetupExeAsset(rel.assets);
+        const dlUrl = setupAsset ? setupAsset.browser_download_url : rel.html_url;
         if (!dlUrl) return;
+
         const heroBtn = document.getElementById('btnHeroDownload');
         const setupBtn = document.getElementById('btnSetupDownload');
         if (heroBtn) heroBtn.href = dlUrl;
         if (setupBtn) setupBtn.href = dlUrl;
-        if (exeAsset) {
+        if (setupAsset) {
           const setupLbl = document.getElementById('btnSetupDownloadLabel');
-          if (setupLbl) setupLbl.textContent = 'Descargar Instalador Directo (.EXE)';
+          if (setupLbl) setupLbl.textContent = 'Descargar Instalador Setup (.EXE)';
         }
       } catch {}
     }
