@@ -80,7 +80,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Doraland Launcher"
+      "shortcutName": "Doraland Launcher",
+      "artifactName": "Doraland-Launcher-Setup-${version}.${ext}"
     },
     "portable": {
       "artifactName": "DoralandLauncher-Portable.exe"

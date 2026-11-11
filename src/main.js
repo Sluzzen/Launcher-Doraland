@@ -842,11 +842,10 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
     }
   }
 
-  let updatedCount = 0;
-  for (let i = 0; i < remoteMods.length; i++) {
-    const mod = remoteMods[i];
+  // Filtrar solo los mods que faltan o cambiaron de tamaño
+  const pendingMods = [];
+  for (const mod of remoteMods) {
     const destPath = path.join(targetModsPath, mod.name);
-
     let needsDownload = true;
     if (fs.existsSync(destPath) && isValidJarFile(destPath)) {
       const stat = await fs.stat(destPath);
@@ -854,9 +853,48 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
         needsDownload = false;
       }
     }
-
     if (needsDownload) {
-      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando mod (${i + 1}/${remoteMods.length}): ${mod.name}...` });
+      pendingMods.push(mod);
+    }
+  }
+
+  if (pendingMods.length === 0) {
+    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods verificados).` });
+    return;
+  }
+
+  event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} mods pendientes desde el repositorio...` });
+
+  let updatedCount = 0;
+  let completedTasks = 0;
+  let warned404 = false;
+  const concurrency = 4;
+  let currentIndex = 0;
+
+  async function downloadWithRetry(url, dest, maxRetries = 3) {
+    let lastErr;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await downloadFile(url, dest);
+        if (isValidJarFile(dest)) return;
+        await fs.remove(dest);
+        throw new Error('Archivo JAR incompleto o dañado');
+      } catch (err) {
+        lastErr = err;
+        if (err.message.includes('HTTP 404')) break; // No reintentar si es 404
+        if (attempt < maxRetries) {
+          await new Promise(r => setTimeout(r, 800 * attempt));
+        }
+      }
+    }
+    throw lastErr;
+  }
+
+  async function worker() {
+    while (currentIndex < pendingMods.length) {
+      const idx = currentIndex++;
+      const mod = pendingMods[idx];
+      const destPath = path.join(targetModsPath, mod.name);
 
       let modUrl = mod.url;
       if (!modUrl && cfg.mods.remoteManifestUrl) {
@@ -865,31 +903,35 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
       }
 
       try {
-        await downloadFile(modUrl, destPath, (pct) => {
-          event?.sender.send('launch-progress', {
-            type: `Mod: ${mod.name}`,
-            task: pct,
-            total: 100
-          });
+        await downloadWithRetry(modUrl, destPath, 3);
+        updatedCount++;
+        completedTasks++;
+        event?.sender.send('launch-progress', {
+          type: `Mods (${completedTasks}/${pendingMods.length}): ${mod.name}`,
+          task: completedTasks,
+          total: pendingMods.length
         });
-
-        if (isValidJarFile(destPath)) {
-          updatedCount++;
-          event?.sender.send('launch-log', { type: 'info', msg: `✅ Mod sincronizado: ${mod.name}` });
-        } else {
-          await fs.remove(destPath);
-          event?.sender.send('launch-log', { type: 'error', msg: `❌ Mod descargado dañado: ${mod.name}` });
-        }
+        event?.sender.send('launch-log', { type: 'info', msg: `✅ [${completedTasks}/${pendingMods.length}] Mod descargado: ${mod.name}` });
       } catch (dlErr) {
-        event?.sender.send('launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
+        completedTasks++;
+        if (dlErr.message.includes('HTTP 404') && !warned404) {
+          warned404 = true;
+          event?.sender.send('launch-log', {
+            type: 'error',
+            msg: '❌ Error HTTP 404 en GitHub: El repositorio Sluzzen/Launcher-Doraland está en modo PRIVADO. Cámbialo a PÚBLICO en GitHub (Settings -> Change visibility -> Public) para permitir la descarga automática de mods.'
+          });
+        } else {
+          event?.sender.send('launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
+        }
       }
     }
   }
 
-  if (updatedCount === 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods).` });
-  } else {
-    event?.sender.send('launch-log', { type: 'info', msg: `🎉 Se actualizaron ${updatedCount} mods automáticamente.` });
+  const workers = Array.from({ length: Math.min(concurrency, pendingMods.length) }, () => worker());
+  await Promise.all(workers);
+
+  if (updatedCount > 0) {
+    event?.sender.send('launch-log', { type: 'info', msg: `🎉 Se descargaron/actualizaron ${updatedCount} mods automáticamente.` });
   }
 }
 
