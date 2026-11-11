@@ -1,10 +1,24 @@
 // === PROCESO PRINCIPAL (main.js) - Doraland Launcher ===
+// Desarrollado por SLuzzen
 // Incluye:
 // 1. Auto-actualización de Launcher (electron-updater con GitHub Releases)
 // 2. Auto-actualización de Mods y Config remota (Sincronización de Manifiesto en GitHub/Hosting)
 // 3. Sincronización de Overrides (configs, FancyMenu, DrippyLoadingScreen, shaderpacks)
 // 4. Gestor multimotor dinámico (NeoForge, Forge, Fabric, Quilt, Híbridos, Plugins y Vanilla)
 // 5. Suite completa de protecciones, validaciones e integridad
+
+const __MAIN_WM__ = Object.freeze({
+  signature: Buffer.from('RGVzYXJyb2xsYWRvIHBvciBTTHV6emVu', 'base64').toString('utf8'),
+  hex: '4465736172726f6c6c61646f20706f7220534c757a7a656e'
+});
+try {
+  Object.defineProperty(globalThis, '__doralandAuthor', {
+    value: __MAIN_WM__.signature,
+    writable: false,
+    enumerable: false,
+    configurable: false
+  });
+} catch {}
 
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
@@ -161,7 +175,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.4",
+    version: "1.0.4.1",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -173,6 +187,19 @@ const DEFAULT_CONFIG = {
     }
   },
   changelog: [
+    {
+      version: "1.0.4.1",
+      date: "2026-11-11",
+      title: "Crédito Oficial en Dock de Juego y Firmas de Integridad",
+      summary: "Actualización visual en el pie del botón de juego con el crédito oficial de desarrollo y refuerzo de marcas internas de autoría en el Launcher.",
+      launcherChanges: [
+        "Actualizado el pie del panel de lanzamiento con el texto 'Desarrollado por SLuzzen'.",
+        "Añadidas firmas internas de autoría e integridad en los módulos principales del Launcher."
+      ],
+      modsAdded: [],
+      modsUpdated: [],
+      modsRemoved: []
+    },
     {
       version: "1.0.4",
       date: "2026-11-11",

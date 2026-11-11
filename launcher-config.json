@@ -94,7 +94,8 @@
     }
   },
   "launcher": {
-    "version": "1.0.4",
+    "version": "1.0.4.1",
+    "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,
     "gameDataFolder": ".doraland",
@@ -106,6 +107,19 @@
     }
   },
   "changelog": [
+    {
+      "version": "1.0.4.1",
+      "date": "2026-11-11",
+      "title": "Crédito Oficial en Dock de Juego y Firmas de Integridad",
+      "summary": "Actualización visual en el pie del botón de juego con el crédito oficial de desarrollo y refuerzo de marcas internas de autoría en el Launcher.",
+      "launcherChanges": [
+        "Actualizado el pie del panel de lanzamiento con el texto 'Desarrollado por SLuzzen'.",
+        "Añadidas firmas internas de autoría e integridad en los módulos principales del Launcher."
+      ],
+      "modsAdded": [],
+      "modsUpdated": [],
+      "modsRemoved": []
+    },
     {
       "version": "1.0.4",
       "date": "2026-11-11",

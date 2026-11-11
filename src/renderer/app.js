@@ -1,5 +1,6 @@
 /* ============================================================
-   APP.JS — Lógica del Renderer (Doraland Launcher v1.0.3.1)
+   APP.JS — Lógica del Renderer (Doraland Launcher v1.0.4.1)
+   Desarrollado por SLuzzen
    Incluye:
    - Navegación Moderna + Pantalla de Ajustes (Resolución, Cuenta Premium, RAM/JVM)
    - Estudio de Skins + Selector de Capas (Beneficio exclusivo Premium)
@@ -7,6 +8,21 @@
    - Monetización con Google Ads (AdSense + Servidor de Anuncios + Fallback Patrocinado)
    - Auto-actualizador Dual en Primer Plano y Lanzador NeoForge 1.21.1
    ============================================================ */
+
+// Marca de agua interna de autoría (Desarrollado por SLuzzen)
+const __SLUZZEN_WM__ = Object.freeze({
+  label: String.fromCharCode(68, 101, 115, 97, 114, 114, 111, 108, 108, 97, 100, 111, 32, 112, 111, 114, 32, 83, 76, 117, 122, 122, 101, 110),
+  token: 'RGVzYXJyb2xsYWRvIHBvciBTTHV6emVu'
+});
+try {
+  Object.defineProperty(window, '__doralandWatermark', {
+    value: __SLUZZEN_WM__,
+    writable: false,
+    enumerable: false,
+    configurable: false
+  });
+  Symbol.for('doraland.author.sluzzen');
+} catch {}
 
 // ── ESTADO GLOBAL ─────────────────────────────────────────────
 let currentSession = null;
@@ -168,10 +184,9 @@ function applyConfig(cfg) {
   const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
   safeText('loaderBadge', `${loaderName} ${mcVer}`);
-  safeText('playLoaderText', `${loaderName} ${mcVer}`);
   safeText('serverIp', ip);
   safeText('tbServerIp', ip);
-  safeText('playServerIp', ip);
+  safeText('playHint', __SLUZZEN_WM__.label);
   safeText('wbServerIp', ip);
   safeText('wbForgeVersion', `${loaderDisplay} • MC ${mcVer}`);
 

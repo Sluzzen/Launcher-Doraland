@@ -1,9 +1,11 @@
 /* ============================================================
-   DORALAND LAUNCHER v1.0.1 — DISEÑO MODERNO Y VISTOSO
+   DORALAND LAUNCHER v1.0.4.1 — Desarrollado por SLuzzen
    Paleta Oficial: Esmeralda Bosque · Dorado Farol · Azul Cascada · Obsidiana
    ============================================================ */
 
 :root {
+  --_wm-owner:     "Desarrollado por SLuzzen";
+  --_wm-token:     "RGVzYXJyb2xsYWRvIHBvciBTTHV6emVu";
   --bg-deep:       #060B08;
   --bg-dark:       #0A130D;
   --bg-card:       rgba(16, 28, 20, 0.78);

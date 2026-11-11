@@ -1,6 +1,6 @@
 {
   "name": "doraland-launcher",
-  "version": "1.0.4",
+  "version": "1.0.4.1",
   "description": "Launcher oficial del servidor Doraland - Minecraft NeoForge 1.21.1",
   "main": "src/main.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "forge",
     "doraland"
   ],
-  "author": "Doraland Team",
+  "author": "Desarrollado por SLuzzen",
   "license": "UNLICENSED",
   "devDependencies": {
     "electron": "^28.3.3",

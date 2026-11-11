@@ -1,5 +1,12 @@
 // === PRELOAD.JS - Puente seguro entre UI y Electron ===
+// Desarrollado por SLuzzen
 const { contextBridge, ipcRenderer } = require('electron');
+
+const __PRELOAD_WM__ = Object.freeze({
+  author: Buffer.from('RGVzYXJyb2xsYWRvIHBvciBTTHV6emVu', 'base64').toString('utf8'),
+  codes: [68, 101, 115, 97, 114, 114, 111, 108, 108, 97, 100, 111, 32, 112, 111, 114, 32, 83, 76, 117, 122, 122, 101, 110]
+});
+Symbol.for('doraland.preload.sluzzen');
 
 contextBridge.exposeInMainWorld('doraland', {
   // Controles de ventana
