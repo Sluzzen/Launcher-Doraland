@@ -197,11 +197,21 @@ let mainWindow = null;
 let launcherConfig = null;
 let isGameRunning = false;
 
-// Carga segura de configuración
+// Carga segura de configuración (permite override externo junto al .exe o usa el integrado)
 function loadConfig() {
-  const configPath = path.join(__dirname, '..', 'launcher-config.json');
+  const candidates = [];
+  if (app.isPackaged) {
+    if (process.env.PORTABLE_EXECUTABLE_DIR) {
+      candidates.push(path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'launcher-config.json'));
+    }
+    candidates.push(path.join(path.dirname(app.getPath('exe')), 'launcher-config.json'));
+  }
+  const bundledPath = path.join(__dirname, '..', 'launcher-config.json');
+  candidates.push(bundledPath);
+
+  const configPath = candidates.find(p => fs.existsSync(p));
   try {
-    if (fs.existsSync(configPath)) {
+    if (configPath) {
       const raw = fs.readFileSync(configPath, 'utf8');
       const parsed = JSON.parse(raw);
       launcherConfig = {
@@ -223,7 +233,9 @@ function loadConfig() {
       };
     } else {
       launcherConfig = { ...DEFAULT_CONFIG };
-      fs.writeJsonSync(configPath, launcherConfig, { spaces: 2 });
+      if (!app.isPackaged) {
+        fs.writeJsonSync(bundledPath, launcherConfig, { spaces: 2 });
+      }
     }
   } catch (err) {
     console.warn('[Config] Error leyendo configuración:', err.message);
@@ -699,23 +711,19 @@ function isValidJarFile(filePath) {
 async function syncOverridesProtected(gameDir, cfg, event) {
   if (cfg.mods?.syncOverrides === false) return;
 
-  let bundledOverridesPath;
+  const candidates = [];
   if (app.isPackaged) {
-    bundledOverridesPath = path.join(path.dirname(app.getPath('exe')), 'overrides');
-    if (!fs.existsSync(bundledOverridesPath)) {
-      bundledOverridesPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'overrides');
+    if (process.env.PORTABLE_EXECUTABLE_DIR) {
+      candidates.push(path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'overrides'));
     }
-    if (!fs.existsSync(bundledOverridesPath)) {
-      bundledOverridesPath = path.join(process.resourcesPath, 'overrides');
-    }
-    if (!fs.existsSync(bundledOverridesPath)) {
-      bundledOverridesPath = path.join(__dirname, '..', 'overrides');
-    }
-  } else {
-    bundledOverridesPath = path.join(__dirname, '..', 'overrides');
+    candidates.push(path.join(path.dirname(app.getPath('exe')), 'overrides'));
+    candidates.push(path.join(process.resourcesPath, 'overrides'));
+    candidates.push(path.join(process.resourcesPath, 'app.asar.unpacked', 'overrides'));
   }
+  candidates.push(path.join(__dirname, '..', 'overrides'));
 
-  if (!fs.existsSync(bundledOverridesPath)) {
+  const bundledOverridesPath = candidates.find(p => fs.existsSync(p));
+  if (!bundledOverridesPath) {
     return;
   }
 
@@ -968,9 +976,24 @@ function resolveModernLoaderJvmArgs(versionJson, gameDir, customVersion, mcVersi
       .replace(/\$\{classpath_separator\}/g, cpSeparator)
       .replace(/\$\{version_name\}/g, customVersion);
 
-    // Asegurar que BootstrapLauncher ignore también el jar base si aparece en -cp
-    if (arg.startsWith('-DignoreList=') && !arg.includes(`${mcVersion}.jar`)) {
-      arg = `${arg},${mcVersion}.jar`;
+    // Asegurar que BootstrapLauncher ignore el jar base y los módulos boot en -cp
+    if (arg.startsWith('-DignoreList=')) {
+      const extraIgnores = [
+        `${mcVersion}.jar`,
+        'bootstraplauncher',
+        'securejarhandler',
+        'asm-commons',
+        'asm-util',
+        'asm-analysis',
+        'asm-tree',
+        'asm-',
+        'JarJarFileSystems'
+      ];
+      for (const item of extraIgnores) {
+        if (!arg.includes(item)) {
+          arg = `${arg},${item}`;
+        }
+      }
     }
 
     resolved.push(arg);
@@ -1239,6 +1262,32 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       ...(loaderSetup.extraJvmArgs || [])
     ];
 
+    // Reutilizar jar y json vanilla ya descargados por el instalador y filtrar nativos de arquitecturas ajenas (ej. arm64/x86 en Windows x64)
+    const vanillaDir = path.join(gameDir, 'versions', mcVersion);
+    const vanillaJsonPath = path.join(vanillaDir, `${mcVersion}.json`);
+    const vanillaJarPath = path.join(vanillaDir, `${mcVersion}.jar`);
+    const overrides = {};
+
+    if (fs.existsSync(vanillaJsonPath)) {
+      try {
+        const vJson = await fs.readJson(vanillaJsonPath);
+        if (Array.isArray(vJson.libraries) && process.arch === 'x64') {
+          const filtered = vJson.libraries.filter(lib => {
+            const name = lib?.name || '';
+            return !name.endsWith(':natives-windows-arm64') && !name.endsWith(':natives-windows-x86') && !name.endsWith(':natives-macos-arm64');
+          });
+          if (filtered.length !== vJson.libraries.length) {
+            vJson.libraries = filtered;
+            await fs.writeJson(vanillaJsonPath, vJson, { spaces: 2 });
+          }
+        }
+        overrides.versionJson = vanillaJsonPath;
+      } catch {}
+    }
+    if (fs.existsSync(vanillaJarPath) && isValidJarFile(vanillaJarPath)) {
+      overrides.minecraftJar = vanillaJarPath;
+    }
+
     const opts = {
       authorization: session,
       root: gameDir,
@@ -1252,9 +1301,7 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       },
       javaPath: javaCheck.path,
       customArgs: jvmArgs,
-      overrides: {
-        assetIndex: mcVersion
-      }
+      overrides
     };
 
     if (loaderSetup.customVersion) {
