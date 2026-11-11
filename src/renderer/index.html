@@ -107,22 +107,32 @@
 
       <!-- Badge versión del motor -->
       <div class="game-version-badge">
-        <span class="gv-mc">⚡ <span id="loaderBadge">NeoForge 1.21.1</span></span>
+        <span class="gv-mc">
+          <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span id="loaderBadge">NeoForge 1.21.1</span>
+        </span>
       </div>
     </aside>
 
     <!-- ── PANEL PRINCIPAL ── -->
     <main class="main-panel">
 
-      <!-- Banner de Auto-Actualización del Launcher -->
+      <!-- Banner Flotante Superior de Auto-Actualización del Launcher (Siempre Visible Encima de Todo) -->
       <div class="update-banner" id="updateBanner" style="display: none;">
-        <div class="ub-icon">🚀</div>
-        <div class="ub-text">
-          <span class="ub-title" id="ubTitle">Nueva versión disponible</span>
-          <span class="ub-desc" id="ubDesc">Actualizando Doraland Launcher automáticamente...</span>
+        <div class="ub-row">
+          <div class="ub-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <div class="ub-text">
+            <span class="ub-title" id="ubTitle">Actualizando Doraland Launcher</span>
+            <span class="ub-desc" id="ubDesc">Descargando e instalando la última actualización automáticamente...</span>
+          </div>
+          <div class="ub-actions">
+            <button class="ub-btn" id="btnUpdateLauncher">Actualizando...</button>
+          </div>
         </div>
-        <div class="ub-actions">
-          <button class="ub-btn" id="btnUpdateLauncher">Actualizar</button>
+        <div class="ub-progress-track" id="ubProgressTrack">
+          <div class="ub-progress-fill" id="ubProgressBar" style="width: 15%;"></div>
         </div>
       </div>
 
@@ -138,10 +148,22 @@
             <h1 class="art-title">Explora el Mundo de <span class="text-gold">Doraland</span></h1>
             <p class="art-desc">Un ecosistema único con 149 mods optimizados, más de 1,500 emotes, shaders preconfigurados y soporte completo tanto para cuentas Premium como No Premium.</p>
             <div class="art-pills">
-              <span class="art-pill">⚔️ 149 Mods NeoForge</span>
-              <span class="art-pill">💃 1,510 Emotes</span>
-              <span class="art-pill">🎨 Skins No Premium</span>
-              <span class="art-pill">✨ Shaders Incluidos</span>
+              <span class="art-pill">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                149 Mods NeoForge
+              </span>
+              <span class="art-pill">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                1,510 Emotes
+              </span>
+              <span class="art-pill">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Skins & Capas
+              </span>
+              <span class="art-pill">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+                Shaders Incluidos
+              </span>
             </div>
           </div>
 
@@ -169,8 +191,10 @@
             <!-- Panel Premium -->
             <div class="auth-panel active" id="panelPremium">
               <div class="auth-info-box premium-box">
-                <span class="aib-icon">👑</span>
-                <p class="auth-desc">Conecta tu cuenta oficial de <strong>Minecraft Java Edition</strong> mediante Microsoft OAuth seguro. Sincroniza tu UUID, capa y skin oficial.</p>
+                <span class="aib-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                </span>
+                <p class="auth-desc">Conecta tu cuenta oficial de <strong>Minecraft Java Edition</strong> mediante Microsoft OAuth seguro. Sincroniza tu UUID, skin oficial y desbloquea el <strong>Selector de Capas</strong>.</p>
               </div>
               <button class="btn-microsoft" id="btnMicrosoft">
                 <svg width="20" height="20" viewBox="0 0 23 23" fill="none"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
@@ -185,7 +209,9 @@
             <!-- Panel Offline (No Premium) -->
             <div class="auth-panel" id="panelOffline">
               <div class="auth-info-box offline-box">
-                <span class="aib-icon">🎮</span>
+                <span class="aib-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-1h.01m2.99-2h.01"/></svg>
+                </span>
                 <p class="auth-desc">Accede sin cuenta oficial. Puedes personalizar tu Skin `.PNG` desde la pestaña <strong>Mi Skin</strong> del menú lateral.</p>
               </div>
               <div class="input-group">
@@ -211,7 +237,10 @@
         <div class="hero-banner">
           <div class="hero-content">
             <div class="hero-tags">
-              <span class="hero-tag tag-gold">✨ TEMPORADA ACTIVA</span>
+              <span class="hero-tag tag-gold">
+                <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                TEMPORADA ACTIVA
+              </span>
               <span class="hero-tag tag-green" id="wbForgeVersion">NeoForge 21.1.250</span>
               <span class="hero-tag tag-blue" id="heroResBadge">1280×720 HD</span>
               <span class="hero-tag tag-green" id="heroRamBadge">RAM: 6 GB</span>
@@ -240,7 +269,9 @@
               </div>
               <div class="ad-banner-mount" id="adHomeMount">
                 <div class="ad-home-fallback" id="adHomeFallback">
-                  <div class="ahf-icon">💎</div>
+                  <div class="ahf-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><polygon points="6 3 18 3 22 9 12 22 2 9"/></svg>
+                  </div>
                   <div class="ahf-text">
                     <div class="ahf-title" id="adHomeTitle">Comunidad Oficial Doraland • Eventos y Rangos</div>
                     <div class="ahf-sub" id="adHomeSubtitle">Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.</div>
@@ -312,13 +343,16 @@
       </section>
 
       <!-- ════════════════════════════════════════════════════════
-           PANTALLA 3: ESTUDIO DE SKIN (NO PREMIUM & AVATAR)
+           PANTALLA 3: ESTUDIO DE SKIN & CAPAS (CAPAS SOLO PREMIUM)
       ═════════════════════════════════════════════════════════ -->
       <section class="screen" id="screenSkin">
         <div class="screen-header">
           <div>
-            <h2 class="screen-title">🎨 Estudio de <span class="text-gold">Skin Personalizada</span></h2>
-            <p class="screen-sub">Sube tu propio archivo <strong>.PNG (64×64 o 64×32)</strong> para tu cuenta No Premium o importa la skin de cualquier jugador.</p>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Estudio de <span class="text-gold">Skin & Capas</span>
+            </h2>
+            <p class="screen-sub">Sube tu propio archivo <strong>.PNG (64×64 o 64×32)</strong>, importa cualquier skin y equipa tu Capa oficial (Beneficio Exclusivo Premium).</p>
           </div>
         </div>
 
@@ -340,29 +374,97 @@
                 <canvas id="studioSkinFront" width="150" height="240"></canvas>
               </div>
               <div class="svp-char-col">
-                <span class="svp-view-tag">VISTA TRASERA</span>
+                <span class="svp-view-tag">VISTA TRASERA + CAPA</span>
                 <canvas id="studioSkinBack" width="150" height="240"></canvas>
               </div>
             </div>
 
-            <p class="svp-drop-hint">💡 También puedes arrastrar y soltar un archivo <strong>.PNG</strong> directamente sobre este recuadro.</p>
+            <p class="svp-drop-hint">
+              <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              También puedes arrastrar y soltar un archivo <strong>.PNG</strong> directamente sobre este recuadro.
+            </p>
           </div>
 
-          <!-- Controles de subida e importación -->
+          <!-- Controles de subida, modelo, capas e importación -->
           <div class="skin-controls-col">
 
             <!-- Único Botón para Subir PNG desde PC -->
             <div class="glass-card">
-              <h3 class="card-subtitle">📤 Subir Archivo de Skin (.PNG)</h3>
+              <h3 class="card-subtitle">
+                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Subir Archivo de Skin (.PNG)
+              </h3>
               <p class="card-desc">Selecciona una textura de skin de Minecraft desde tu computadora. Se aplicará automáticamente en tu cliente `.doraland` al jugar.</p>
               <button class="btn-primary" id="btnStudioSelectFile" style="margin-top: 10px;">
-                📁 Seleccionar Archivo .PNG de mi PC
+                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Seleccionar Archivo .PNG de mi PC
               </button>
+            </div>
+
+            <!-- SELECTOR DE CAPAS (BENEFICIO EXCLUSIVO PREMIUM) -->
+            <div class="glass-card cape-selector-card" id="capeSelectorCard">
+              <div class="card-header-row">
+                <h3 class="card-subtitle">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Selector de Capas (Capes)
+                </h3>
+                <span class="cape-premium-badge" id="capePremiumBadge">
+                  <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                  SOLO PREMIUM
+                </span>
+              </div>
+
+              <!-- Aviso cuando la cuenta es No Premium -->
+              <div class="cape-locked-box" id="capeLockedBox" style="display: none;">
+                <div class="clb-info">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <div>
+                    <strong class="clb-title">Beneficio Exclusivo para Cuentas Premium</strong>
+                    <span class="clb-sub">Inicia sesión con tu cuenta oficial de Microsoft para desbloquear y equipar capas en tu personaje.</span>
+                  </div>
+                </div>
+                <button class="btn-gold" id="btnUnlockCapesPremium" style="font-size:11px; padding:7px 12px;">
+                  Vincular Premium
+                </button>
+              </div>
+
+              <!-- Grid de Capas Desbloqueado para Usuarios Premium -->
+              <div class="cape-options-wrap" id="capeOptionsWrap">
+                <div class="cape-grid" id="capeGrid">
+                  <button class="cape-item active" data-cape-id="none" data-cape-name="Sin Capa">
+                    <span class="cape-swatch cape-none">×</span>
+                    <span class="cape-lbl">Sin Capa</span>
+                  </button>
+                  <button class="cape-item" data-cape-id="doraland-royal" data-cape-name="Doraland Real" data-primary="#14532D" data-accent="#F59E0B">
+                    <span class="cape-swatch" style="background: linear-gradient(135deg, #16A34A, #F59E0B);"></span>
+                    <span class="cape-lbl">Doraland Real</span>
+                  </button>
+                  <button class="cape-item" data-cape-id="migrator" data-cape-name="Migrator Oficial" data-primary="#7F1D1D" data-accent="#FBBF24">
+                    <span class="cape-swatch" style="background: linear-gradient(135deg, #991B1B, #F59E0B);"></span>
+                    <span class="cape-lbl">Migrator</span>
+                  </button>
+                  <button class="cape-item" data-cape-id="anniversary-15" data-cape-name="15º Aniversario" data-primary="#064E3B" data-accent="#34D399">
+                    <span class="cape-swatch" style="background: linear-gradient(135deg, #059669, #6EE7B7);"></span>
+                    <span class="cape-lbl">15º Aniv.</span>
+                  </button>
+                  <button class="cape-item" data-cape-id="cherry-blossom" data-cape-name="Cherry Blossom" data-primary="#831843" data-accent="#F472B6">
+                    <span class="cape-swatch" style="background: linear-gradient(135deg, #BE185D, #F9A8D4);"></span>
+                    <span class="cape-lbl">Cherry</span>
+                  </button>
+                  <button class="cape-item" data-cape-id="custom-upload" id="btnUploadCustomCape">
+                    <span class="cape-swatch cape-none">+</span>
+                    <span class="cape-lbl">Subir .PNG</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Modelo de brazos -->
             <div class="glass-card">
-              <h3 class="card-subtitle">💪 Modelo de Personaje</h3>
+              <h3 class="card-subtitle">
+                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Modelo de Personaje
+              </h3>
               <div class="model-selector">
                 <button class="model-btn active" id="btnModelClassic" data-model="classic">
                   <strong>Clásico (Steve)</strong>
@@ -377,14 +479,20 @@
 
             <!-- Importar desde un Nickname Premium -->
             <div class="glass-card">
-              <h3 class="card-subtitle">🔎 Importar Skin por Nickname</h3>
+              <h3 class="card-subtitle">
+                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Importar Skin por Nickname
+              </h3>
               <p class="card-desc">Escribe el nombre de cualquier jugador de Minecraft para importar su skin.</p>
               <div class="import-nick-row">
                 <input type="text" class="input-field" id="inputSkinNick" placeholder="Ej: Dacota10, Yanah_, OmniAzkeel, SLuzzen..." maxlength="16" />
                 <button class="btn-gold" id="btnImportSkinNick">Importar</button>
               </div>
               <div class="skin-actions-footer">
-                <button class="btn-danger-outline" id="btnResetSkin">🗑️ Restablecer a Skin por defecto</button>
+                <button class="btn-danger-outline" id="btnResetSkin">
+                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  Restablecer a Skin por defecto
+                </button>
               </div>
             </div>
 
@@ -398,7 +506,10 @@
       <section class="screen" id="screenSettings">
         <div class="screen-header">
           <div>
-            <h2 class="screen-title">⚙️ Ajustes de <span class="text-gold">Doraland Launcher</span></h2>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Ajustes de <span class="text-gold">Doraland Launcher</span>
+            </h2>
             <p class="screen-sub">Configura la resolución del juego, tu cuenta Premium de Minecraft, la memoria RAM dedicada y las opciones de inicio.</p>
           </div>
         </div>
@@ -408,7 +519,9 @@
           <!-- TARJETA 1: GAME RESOLUTION (RESOLUCIÓN DEL JUEGO) -->
           <div class="glass-card settings-card">
             <div class="sc-title-row">
-              <span class="sc-icon">🖥️</span>
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-neon)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
               <div>
                 <h3 class="card-subtitle">Game Resolution (Resolución del Juego)</h3>
                 <p class="card-desc">Define las dimensiones de la ventana de Minecraft o ejecuta el juego directamente en pantalla completa.</p>
@@ -455,7 +568,9 @@
           <!-- TARJETA 2: LAUNCHER SETTINGS (PREMIUM MINECRAFT & CUENTA) -->
           <div class="glass-card settings-card">
             <div class="sc-title-row">
-              <span class="sc-icon">👑</span>
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+              </span>
               <div>
                 <h3 class="card-subtitle">Launcher Settings (Premium Minecraft)</h3>
                 <p class="card-desc">Gestiona tu autenticación oficial con Microsoft (Premium) y el comportamiento del launcher al iniciar.</p>
@@ -509,7 +624,9 @@
           <!-- TARJETA 3: MEMORIA RAM, JAVA 21 Y ARCHIVOS LOCALES (ÚNICO CONTROL DE RAM) -->
           <div class="glass-card settings-card settings-card-wide">
             <div class="sc-title-row">
-              <span class="sc-icon">⚡</span>
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
               <div>
                 <h3 class="card-subtitle">Rendimiento, Memoria RAM y Archivos</h3>
                 <p class="card-desc">Los cambios de RAM, resolución y opciones se guardan automáticamente al ajustarlos.</p>
@@ -527,7 +644,7 @@
                 </div>
                 <div class="ram-markers">
                   <span>2 GB</span>
-                  <span class="text-green">★ Recomendado (6 GB - 8 GB)</span>
+                  <span class="text-green">Recomendado (6 GB - 8 GB)</span>
                   <span id="ramMaxLabel">16 GB</span>
                 </div>
                 <div class="input-group" style="margin-top: 12px;">
@@ -556,13 +673,16 @@
                 </label>
 
                 <button class="btn-gold" id="btnSettingsOptimizeLauncher">
-                  ⚡ Optimizar y Liberar Caché del Launcher
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Optimizar y Liberar Caché del Launcher
                 </button>
                 <button class="btn-secondary-outline" id="btnSettingsOpenFolder">
-                  📂 Abrir Carpeta de Datos (.doraland)
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Abrir Carpeta de Datos (.doraland)
                 </button>
                 <button class="btn-secondary-outline" id="btnSettingsCheckUpdate">
-                  🚀 Buscar Actualizaciones del Launcher
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                  Buscar Actualizaciones del Launcher
                 </button>
               </div>
             </div>
@@ -577,7 +697,10 @@
       <section class="screen" id="screenAddons">
         <div class="screen-header">
           <div>
-            <h2 class="screen-title">🧩 Centro de <span class="text-gold">Mods de Cliente, Resource Packs & Shaders</span></h2>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              Centro de <span class="text-gold">Mods de Cliente, Resource Packs & Shaders</span>
+            </h2>
             <p class="screen-sub">Instala mods adicionales compatibles de cliente (NeoForge 1.21.1), paquetes de texturas o shaders sin alterar ni mostrar los mods base del servidor.</p>
           </div>
         </div>
@@ -586,13 +709,16 @@
         <div class="addons-toolbar">
           <div class="addons-tabs">
             <button class="addon-tab active" data-addon-cat="mod">
-              🧩 Mods de Cliente
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              Mods de Cliente
             </button>
             <button class="addon-tab" data-addon-cat="resourcepack">
-              🎨 Resource Packs
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              Resource Packs
             </button>
             <button class="addon-tab" data-addon-cat="shader">
-              ✨ Shaders
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+              Shaders
             </button>
           </div>
 
@@ -602,10 +728,12 @@
               <button class="btn-gold" id="btnAddonSearch">Buscar</button>
             </div>
             <button class="btn-primary" id="btnInstallLocalAddon" style="width:auto; padding:9px 14px; font-size:12px;">
-              📁 Instalar desde mi PC (.JAR)
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="btnInstallLocalAddonLabel">Instalar desde mi PC (.JAR)</span>
             </button>
             <button class="btn-secondary-outline" id="btnOpenAddonFolder" style="width:auto; padding:9px 12px;">
-              📂 Carpeta
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              Carpeta
             </button>
           </div>
         </div>
@@ -613,7 +741,7 @@
         <!-- Mis Complementos Personales Instalados -->
         <div class="glass-card addons-installed-box">
           <div class="card-header-row">
-            <h3 class="card-subtitle" id="installedAddonsTitle">📦 Tus Mods de Cliente Instalados (0)</h3>
+            <h3 class="card-subtitle" id="installedAddonsTitle">Tus Mods de Cliente Instalados (0)</h3>
             <span class="spc-badge">Protegidos por Auto-Sync</span>
           </div>
           <p class="card-desc">Aquí solo aparecen los complementos opcionales que tú has añadido. Los mods internos del servidor están ocultos y protegidos.</p>
@@ -625,7 +753,7 @@
         <!-- Catálogo Compatible en 1 Clic -->
         <div class="addons-catalog-section">
           <div class="card-header-row" style="margin-bottom: 10px;">
-            <h3 class="card-subtitle" id="catalogAddonsTitle">✨ Recomendados y Compatibles con Doraland (NeoForge 1.21.1)</h3>
+            <h3 class="card-subtitle" id="catalogAddonsTitle">Recomendados y Compatibles con Doraland (NeoForge 1.21.1)</h3>
           </div>
           <div class="addons-catalog-grid" id="catalogAddonsGrid"></div>
         </div>
@@ -637,13 +765,16 @@
       <section class="screen" id="screenChangelog">
         <div class="screen-header">
           <div>
-            <h2 class="screen-title">📜 Registro de Cambios <span class="text-gold">(Changelog)</span></h2>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Registro de Cambios <span class="text-gold">(Changelog)</span>
+            </h2>
             <p class="screen-sub">Conoce todas las novedades del Launcher, optimizaciones de rendimiento y los mods que se agregan, actualizan o retiran del servidor.</p>
           </div>
           <div class="changelog-filters">
             <button class="cl-filter-btn active" data-cl-filter="all">Todo</button>
-            <button class="cl-filter-btn" data-cl-filter="launcher">🚀 Launcher</button>
-            <button class="cl-filter-btn" data-cl-filter="mods">📦 Cambios de Mods</button>
+            <button class="cl-filter-btn" data-cl-filter="launcher">Launcher</button>
+            <button class="cl-filter-btn" data-cl-filter="mods">Cambios de Mods</button>
           </div>
         </div>
 

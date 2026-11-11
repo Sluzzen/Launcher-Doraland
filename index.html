@@ -226,6 +226,9 @@
     }
 
     .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
       font-weight: 800;
       padding: 5px 13px;
@@ -519,6 +522,9 @@
     }
 
     .staff-role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 10.5px;
       font-weight: 900;
       letter-spacing: 0.8px;
@@ -809,8 +815,8 @@
       </ul>
 
       <div class="nav-cta">
-        <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-outline">💬 Discord</a>
-        <a href="#launcher" class="btn btn-emerald">⬇️ Descargar Launcher</a>
+        <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-outline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Discord</a>
+        <a href="#launcher" class="btn btn-emerald"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar Launcher</a>
       </div>
     </div>
   </nav>
@@ -823,14 +829,14 @@
     <section class="hero">
       <div>
         <div class="hero-badge-row">
-          <span class="pill pill-gold">✨ TEMPORADA OFICIAL</span>
-          <span class="pill pill-green">⚡ NEOFORGE 21.1.250 • MC 1.21.1</span>
-          <span class="pill pill-blue">🎨 PREMIUM & NO PREMIUM</span>
+          <span class="pill pill-gold"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> TEMPORADA OFICIAL</span>
+          <span class="pill pill-green"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> NEOFORGE 21.1.250 • MC 1.21.1</span>
+          <span class="pill pill-blue"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> PREMIUM & NO PREMIUM</span>
         </div>
 
         <h1>Vive la Aventura Definitiva en <span class="text-gold">Doraland</span></h1>
         <p>
-          Explora un mundo diseñado al detalle con mods sincronizados automáticamente, emotes, shaders preconfigurados y nuestro propio Launcher con Estudio de Skins integrado.
+          Explora un mundo diseñado al detalle con mods sincronizados automáticamente, emotes, shaders preconfigurados y nuestro propio Launcher con Estudio de Skins y Capas integrado.
         </p>
 
         <div class="server-ip-bar" id="copyIpBox" title="Haz clic para copiar la IP del servidor">
@@ -841,10 +847,10 @@
 
         <div class="hero-buttons">
           <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
-            🚀 Descargar Doraland Launcher
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> Descargar Doraland Launcher
           </a>
           <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold">
-            💬 Unirse al Discord Oficial
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Unirse al Discord Oficial
           </a>
         </div>
       </div>
@@ -874,7 +880,7 @@
       <!-- Banner Patrocinado de Respaldo -->
       <div class="ad-fallback-banner">
         <div class="afb-left">
-          <span class="afb-icon">💎</span>
+          <span class="afb-icon" style="color:var(--gold-light);display:flex;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9"/><line x1="2" y1="9" x2="22" y2="9"/></svg></span>
           <div>
             <div class="afb-title">Comunidad Oficial Doraland • Eventos, Sorteos y Soporte</div>
             <div class="afb-desc">Conéctate a doralandmc.holyhosting.club con el Launcher Oficial y participa en los eventos semanales.</div>
@@ -896,14 +902,14 @@
 
       <div class="stats-grid">
         <div class="stat-card">
-          <span class="stat-icon">🟢</span>
+          <span class="stat-icon" style="color:var(--green-neon);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
           <div class="stat-value" id="statServerState">Verificando...</div>
           <div class="stat-label">Estado del Servidor</div>
           <div class="stat-sub" id="statServerMotd">doralandmc.holyhosting.club</div>
         </div>
 
         <div class="stat-card">
-          <span class="stat-icon">👥</span>
+          <span class="stat-icon" style="color:var(--gold-light);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
           <div class="stat-value" id="statPlayersCount">0 / 100</div>
           <div class="stat-label">Jugadores en Línea</div>
           <div class="stat-sub">Capacidad dinámica activa</div>
@@ -925,7 +931,7 @@
 
         <!-- 1. Dacota10 (Owner) -->
         <article class="staff-card owner-card">
-          <span class="staff-role-pill role-owner">👑 OWNER</span>
+          <span class="staff-role-pill role-owner"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg> OWNER</span>
           <div class="staff-skin-stage">
             <img class="staff-body-img"
                  src="https://mc-heads.net/body/Dacota10/220"
@@ -942,7 +948,7 @@
 
         <!-- 2. Yanah_ (Developer / Head Admin) -->
         <article class="staff-card">
-          <span class="staff-role-pill role-admin">🛡️ DEVELOPER / HEAD ADMIN</span>
+          <span class="staff-role-pill role-admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> DEVELOPER / HEAD ADMIN</span>
           <div class="staff-skin-stage">
             <img class="staff-body-img"
                  src="https://mc-heads.net/body/Yanah_/220"
@@ -959,7 +965,7 @@
 
         <!-- 3. OmniAzkeel (Developer / Mods Developer) -->
         <article class="staff-card">
-          <span class="staff-role-pill role-mods">⚒️ DEVELOPER / MODS DEV</span>
+          <span class="staff-role-pill role-mods"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> DEVELOPER / MODS DEV</span>
           <div class="staff-skin-stage">
             <img class="staff-body-img"
                  src="https://mc-heads.net/body/OmniAzkeel/220"
@@ -976,7 +982,7 @@
 
         <!-- 4. SLuzzen (Developer / Web Developer) -->
         <article class="staff-card">
-          <span class="staff-role-pill role-web">💻 DEVELOPER / WEB DEV</span>
+          <span class="staff-role-pill role-web"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 16 18"/></svg> DEVELOPER / WEB DEV</span>
           <div class="staff-skin-stage">
             <img class="staff-body-img"
                  src="https://mc-heads.net/body/SLuzzen/220"
@@ -1005,18 +1011,18 @@
           <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente NeoForge 21.1.250, todos los mods, shaders y emotes sin que tengas que configurar nada manualmente.</p>
 
           <ul class="feature-list">
-            <li>✅ <strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium (Offline).</li>
-            <li>🎨 <strong>Estudio de Skin Integrado:</strong> Los jugadores No Premium pueden subir su propia skin en `.PNG`.</li>
-            <li>⚙️ <strong>Ajustes Avanzados:</strong> Configuración de Resolución (720p, 1080p, 2K, Pantalla Completa) y Memoria RAM.</li>
-            <li>🔄 <strong>Auto-Actualización Inteligente:</strong> Cualquier versión se actualiza sola cuando hay cambios en el servidor.</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span><strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium (Offline).</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <span><strong>Estudio de Skin + Capas:</strong> Sube tu propia skin en `.PNG` y equipa Capas exclusivas para usuarios Premium.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span><strong>Complementos & Ajustes:</strong> Instala Mods de Cliente, Resource Packs, Shaders y configura Resolución/RAM.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> <span><strong>Auto-Actualización en Primer Plano:</strong> El launcher y los mods se sincronizan solos con barra de progreso en vivo.</span></li>
           </ul>
 
           <div class="hero-buttons">
             <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
-              ⬇️ Descargar Instalador Setup
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar Instalador Setup
             </a>
             <a href="https://adoptium.net/temurin/releases/?version=21" target="_blank" rel="noopener" class="btn btn-outline">
-              ☕ Descargar Java 21 Oficial
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg> Descargar Java 21 Oficial
             </a>
           </div>
         </div>
@@ -1045,7 +1051,7 @@
 
       <div class="ad-fallback-banner">
         <div class="afb-left">
-          <span class="afb-icon">🚀</span>
+          <span class="afb-icon" style="color:var(--green-neon);display:flex;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></span>
           <div>
             <div class="afb-title">¿Ya tienes instalado Doraland Launcher?</div>
             <div class="afb-desc">Personaliza tu resolución, sube tu Skin .PNG y entra con un solo clic al servidor.</div>
@@ -1067,7 +1073,7 @@
         </p>
       </div>
       <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold" style="font-size: 16px; padding: 14px 28px;">
-        💬 Entrar al Servidor de Discord
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Entrar al Servidor de Discord
       </a>
     </section>
 

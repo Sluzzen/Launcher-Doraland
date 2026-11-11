@@ -161,7 +161,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.3",
+    version: "1.0.3.1",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -173,6 +173,23 @@ const DEFAULT_CONFIG = {
     }
   },
   changelog: [
+    {
+      version: "1.0.3.1",
+      date: "2026-11-11",
+      title: "Selector de Capas Exclusivo Premium, Banner de Actualización Flotante e Iconografía Vectorial SVG",
+      summary: "Nuevo selector de Capas (Capes) en el Estudio de Skins exclusivo para cuentas Microsoft Premium, notificación y barra de actualización en primer plano y reemplazo integral de emojis por iconos vectoriales SVG en el Launcher y la Web.",
+      launcherChanges: [
+        "Selector de Capas (Capes) junto al Estudio de Skins (Beneficio Exclusivo para jugadores con Cuenta Premium Microsoft), con previsualización en vivo sobre la espalda del personaje.",
+        "Banner y barra de progreso de auto-actualización fijados en capa superior (z-index máximo) para que el proceso de actualización sea siempre visible sobre cualquier pantalla.",
+        "Reemplazo total de emojis por iconografía vectorial SVG de alta definición tanto en el Launcher como en el Sitio Web oficial.",
+        "Soporte de versionado extendido de 4 segmentos (1.0.3.1) en el motor de auto-actualización."
+      ],
+      modsAdded: [],
+      modsUpdated: [
+        "Sincronización optimizada de recursos y texturas de capa para clientes Premium"
+      ],
+      modsRemoved: []
+    },
     {
       version: "1.0.3",
       date: "2026-11-11",
@@ -360,18 +377,21 @@ let isUpdatingLauncher = false;
 let pendingUpdateMode = null; // 'release' | 'live-branch'
 
 function parseSemverParts(verStr) {
-  const clean = String(verStr || '0.0.0').trim().replace(/^v/i, '').split('-')[0];
+  const clean = String(verStr || '0.0.0.0').trim().replace(/^v/i, '').split('-')[0];
   const parts = clean.split('.').map(n => parseInt(n, 10) || 0);
-  while (parts.length < 3) parts.push(0);
+  while (parts.length < 4) parts.push(0);
   return parts;
 }
 
 function isNewerVersion(remoteVer, localVer) {
   const r = parseSemverParts(remoteVer);
   const l = parseSemverParts(localVer);
-  for (let i = 0; i < 3; i++) {
-    if (r[i] > l[i]) return true;
-    if (r[i] < l[i]) return false;
+  const len = Math.max(r.length, l.length, 4);
+  for (let i = 0; i < len; i++) {
+    const rv = r[i] || 0;
+    const lv = l[i] || 0;
+    if (rv > lv) return true;
+    if (rv < lv) return false;
   }
   return false;
 }
@@ -1022,6 +1042,75 @@ ipcMain.handle('reset-skin', async () => {
   return { success: true };
 });
 
+// Selector de Capas (Capes) - Beneficio exclusivo para jugadores Premium (Microsoft OAuth)
+ipcMain.handle('get-cape', () => {
+  return getStore().get('selectedCape', { id: 'none', name: 'Sin Capa' });
+});
+
+ipcMain.handle('save-cape', async (_, payload) => {
+  const session = getStore().get('session', null);
+  const isPremium = session?.meta?.type === 'msa';
+  if (!isPremium) {
+    return { error: 'El Selector de Capas es un beneficio exclusivo para cuentas Premium de Minecraft.' };
+  }
+
+  const capeObj = {
+    id: payload?.id || 'none',
+    name: payload?.name || 'Sin Capa',
+    primaryColor: payload?.primaryColor || '#16A34A',
+    accentColor: payload?.accentColor || '#F59E0B',
+    emblem: payload?.emblem || 'crown',
+    dataUrl: payload?.dataUrl || null,
+    updatedAt: Date.now()
+  };
+
+  getStore().set('selectedCape', capeObj);
+  appendLauncherLog(`Capa Premium equipada por ${session.name}: ${capeObj.name}`);
+  return { success: true, cape: capeObj };
+});
+
+ipcMain.handle('select-cape-file', async () => {
+  const session = getStore().get('session', null);
+  const isPremium = session?.meta?.type === 'msa';
+  if (!isPremium) {
+    return { error: 'El Selector de Capas es un beneficio exclusivo para cuentas Premium de Minecraft.' };
+  }
+
+  try {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      title: 'Seleccionar Textura de Capa Premium (.PNG)',
+      filters: [{ name: 'Capa de Minecraft (PNG)', extensions: ['png'] }],
+      properties: ['openFile']
+    });
+
+    if (result.canceled || !result.filePaths || result.filePaths.length === 0) {
+      return { canceled: true };
+    }
+
+    const filePath = result.filePaths[0];
+    const buf = await fs.readFile(filePath);
+    if (!isValidPngBuffer(buf)) {
+      return { error: 'El archivo seleccionado no es una imagen PNG válida.' };
+    }
+
+    const capeObj = {
+      id: 'custom-png',
+      name: path.basename(filePath),
+      primaryColor: '#F59E0B',
+      accentColor: '#22C55E',
+      emblem: 'custom',
+      dataUrl: `data:image/png;base64,${buf.toString('base64')}`,
+      updatedAt: Date.now()
+    };
+
+    getStore().set('selectedCape', capeObj);
+    appendLauncherLog(`Capa personalizada PNG equipada por ${session.name}: ${capeObj.name}`);
+    return { success: true, cape: capeObj };
+  } catch (err) {
+    return { error: err.message || 'Error al cargar la textura de capa.' };
+  }
+});
+
 ipcMain.on('open-external', (_, url) => {
   if (typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://'))) {
     shell.openExternal(url);
@@ -1042,7 +1131,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Zoom cinematográfico fluido con tecla configurable y animaciones suaves para NeoForge 1.21.1.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '🔭'
+      iconType: 'search'
     },
     {
       id: '3dskinlayers',
@@ -1052,7 +1141,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Renderiza las capas exteriores de las skins de los jugadores en 3D real sin afectar FPS.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '🧊'
+      iconType: 'box'
     },
     {
       id: 'chat-heads',
@@ -1062,7 +1151,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Muestra la cabeza de la skin de cada jugador junto a sus mensajes en el chat del servidor.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '💬'
+      iconType: 'message'
     },
     {
       id: 'betterf3',
@@ -1072,7 +1161,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Reemplaza la pantalla de depuración F3 de Minecraft con módulos limpios, legibles y a color.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '📊'
+      iconType: 'activity'
     },
     {
       id: 'notenoughanimations',
@@ -1082,7 +1171,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Añade animaciones fluidas en tercera persona al comer, usar mapas, remar o sostener objetos.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '🏃'
+      iconType: 'user'
     },
     {
       id: 'controlling',
@@ -1092,7 +1181,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Permite buscar controles por nombre o por tecla asignada para evitar conflictos de atajos.',
       category: 'mod',
       badge: '100% Cliente • NeoForge 1.21.1',
-      icon: '⌨️'
+      iconType: 'sliders'
     }
   ],
   resourcepack: [
@@ -1104,7 +1193,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Duplica la resolución de las texturas de Minecraft 1.21.1 manteniendo el estilo original intacto.',
       category: 'resourcepack',
       badge: 'Resource Pack • 1.21.1',
-      icon: '🎨'
+      iconType: 'layers'
     },
     {
       id: 'fresh-animations',
@@ -1114,7 +1203,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Da vida a las criaturas y aldeanos con animaciones faciales y corporales dinámicas.',
       category: 'resourcepack',
       badge: 'Resource Pack • 1.21.1',
-      icon: '🐾'
+      iconType: 'sparkles'
     },
     {
       id: 'stay-true',
@@ -1124,7 +1213,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Mejora visualmente hojas, césped y bloques variados manteniendo la estética natural.',
       category: 'resourcepack',
       badge: 'Resource Pack • 1.21.1',
-      icon: '🌿'
+      iconType: 'layers'
     },
     {
       id: 'dark-mode-everywhere',
@@ -1134,7 +1223,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Convierte todos los inventarios y menús del juego a un modo oscuro elegante y descansado para la vista.',
       category: 'resourcepack',
       badge: 'Resource Pack • 1.21.1',
-      icon: '🌙'
+      iconType: 'moon'
     }
   ],
   shader: [
@@ -1146,7 +1235,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Iluminación realista, agua cristalina, nubes volumétricas y excelente optimización con Iris/Oculus.',
       category: 'shader',
       badge: 'Shader • Iris / Oculus',
-      icon: '☀️'
+      iconType: 'sun'
     },
     {
       id: 'complementary-reimagined',
@@ -1156,7 +1245,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Conserva la estética cúbica de Minecraft con sombras dinámicas, reflejos y atmósfera mágica.',
       category: 'shader',
       badge: 'Shader • Iris / Oculus',
-      icon: '✨'
+      iconType: 'sparkles'
     },
     {
       id: 'bsl-shaders',
@@ -1166,7 +1255,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Colores cálidos cinematográficos, iluminación suave y alto rendimiento para cualquier GPU.',
       category: 'shader',
       badge: 'Shader • Iris / Oculus',
-      icon: '🌅'
+      iconType: 'sun'
     },
     {
       id: 'sildurs-vibrant',
@@ -1176,7 +1265,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       description: 'Shader ultraligero diseñado para PCs de bajos recursos sin sacrificar sombras ni reflejos.',
       category: 'shader',
       badge: 'Shader • Ultra FPS',
-      icon: '⚡'
+      iconType: 'zap'
     }
   ]
 };
@@ -1338,7 +1427,7 @@ ipcMain.handle('search-addons-catalog', async (_, { category = 'mod', query = ''
           badge: cleanCat === 'mod' ? 'Cliente • NeoForge 1.21.1' : cleanCat === 'resourcepack' ? 'Resource Pack • 1.21.1' : 'Shader • Iris/Oculus',
           iconUrl: hit.icon_url || '',
           downloads: hit.downloads || 0,
-          icon: cleanCat === 'mod' ? '🧩' : cleanCat === 'resourcepack' ? '🎨' : '✨'
+          iconType: cleanCat === 'mod' ? 'box' : cleanCat === 'resourcepack' ? 'layers' : 'sparkles'
         }));
 
       if (!cleanQuery) {

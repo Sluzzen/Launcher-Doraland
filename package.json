@@ -1,6 +1,6 @@
 {
   "name": "doraland-launcher",
-  "version": "1.0.3",
+  "version": "1.0.3.1",
   "description": "Launcher oficial del servidor Doraland - Minecraft NeoForge 1.21.1",
   "main": "src/main.js",
   "scripts": {

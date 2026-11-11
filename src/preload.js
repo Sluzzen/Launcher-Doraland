@@ -17,12 +17,15 @@ contextBridge.exposeInMainWorld('doraland', {
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   openGameFolder: () => ipcRenderer.invoke('open-game-folder'),
 
-  // Sistema de Skins (No Premium y Vista Previa)
+  // Sistema de Skins y Capas (Capas: Beneficio Exclusivo Premium)
   getSkin: () => ipcRenderer.invoke('get-skin'),
   selectSkinFile: () => ipcRenderer.invoke('select-skin-file'),
   saveSkinData: (payload) => ipcRenderer.invoke('save-skin-data', payload),
   importSkinByNick: (nick) => ipcRenderer.invoke('import-skin-by-nick', nick),
   resetSkin: () => ipcRenderer.invoke('reset-skin'),
+  getCape: () => ipcRenderer.invoke('get-cape'),
+  saveCape: (payload) => ipcRenderer.invoke('save-cape', payload),
+  selectCapeFile: () => ipcRenderer.invoke('select-cape-file'),
 
   // Gestor de Complementos de Cliente (Mods Cliente, Resource Packs y Shaders)
   getUserAddons: () => ipcRenderer.invoke('get-user-addons'),
