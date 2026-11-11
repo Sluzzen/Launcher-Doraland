@@ -94,7 +94,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.3.1",
+    "version": "1.0.4",
     "allowPremium": true,
     "allowOffline": true,
     "gameDataFolder": ".doraland",
@@ -107,7 +107,7 @@
   },
   "changelog": [
     {
-      "version": "1.0.3.1",
+      "version": "1.0.4",
       "date": "2026-11-11",
       "title": "Estudio Pro de Skins & Capas (Premium), Banner de Actualización Flotante e Iconografía SVG",
       "summary": "Renovación completa del Estudio Pro de Skins con animaciones de pose en tiempo real, pedestales holográficos, control de capas 3D por zona del cuerpo, inspector UV 64×64, Selector de Capas exclusivo Premium, actualización en primer plano e iconografía SVG.",
