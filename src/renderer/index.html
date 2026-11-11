@@ -65,7 +65,7 @@
 
       <!-- Versión del juego -->
       <div class="game-version-badge">
-        <span class="gv-mc">⚒️ Forge <span id="mcVersion">1.21.1</span></span>
+        <span class="gv-mc">⚒️ <span id="loaderBadge">NeoForge 1.21.1</span></span>
       </div>
     </aside>
 
@@ -137,7 +137,7 @@
         <div class="welcome-banner">
           <div class="wb-text">
             <h2 class="wb-title">¡Listo para explorar, <span class="text-green" id="wbUsername">Jugador</span>!</h2>
-            <p class="wb-subtitle">Servidor <strong id="wbServerIp">play.doraland.net</strong> • Forge <span id="wbForgeVersion">1.21.1</span></p>
+            <p class="wb-subtitle">Servidor <strong id="wbServerIp">doralandmc.holyhosting.club</strong> • <span id="wbForgeVersion">NeoForge 21.1.250</span></p>
           </div>
         </div>
 
@@ -149,12 +149,12 @@
               Memoria RAM
             </label>
             <div class="slider-wrap">
-              <input type="range" class="ram-slider" id="ramSlider" min="2048" max="16384" step="512" value="4096" />
-              <span class="ram-value" id="ramValue">4 GB</span>
+              <input type="range" class="ram-slider" id="ramSlider" min="2048" max="16384" step="512" value="6144" />
+              <span class="ram-value" id="ramValue">6 GB</span>
             </div>
             <div class="ram-markers">
               <span>2 GB</span>
-              <span class="text-green">Recomendado</span>
+              <span class="text-green">Recomendado (6 GB)</span>
               <span>16 GB</span>
             </div>
           </div>
@@ -184,7 +184,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             ¡JUGAR EN DORALAND!
           </button>
-          <span class="play-hint" id="playHint">Forge 1.21.1 · <span id="playServerIp"></span></span>
+          <span class="play-hint" id="playHint"><span id="playLoaderText">NeoForge 1.21.1</span> · <span id="playServerIp"></span></span>
         </div>
 
         <!-- CONSOLA DE LOGS (desplegable) -->

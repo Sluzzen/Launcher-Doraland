@@ -1,0 +1,5 @@
+#Skip Serene Seasons' seasonal freeze check during chunk generation.
+enableWorldgenFix = true
+#Enable or disable logging to the console.
+#If enabled may cause some additional lag
+enableLogging = false

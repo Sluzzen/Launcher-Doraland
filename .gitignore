@@ -4,5 +4,7 @@ out/
 *.log
 .env
 *.exe
+/*.zip
 !assets/logo.png
+!overrides/shaderpacks/*.zip
 

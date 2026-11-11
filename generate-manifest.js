@@ -10,8 +10,7 @@ const modsDir = path.join(__dirname, 'mods');
 const configFile = path.join(__dirname, 'launcher-config.json');
 
 if (!fs.existsSync(modsDir)) {
-  console.error('❌ La carpeta mods/ no existe.');
-  process.exit(1);
+  fs.mkdirSync(modsDir, { recursive: true });
 }
 
 const config = fs.existsSync(configFile) ? JSON.parse(fs.readFileSync(configFile, 'utf8')) : {};
@@ -43,7 +42,7 @@ const manifest = {
   generatedAt: new Date().toISOString(),
   minecraft: {
     version: config.minecraft?.version || '1.21.1',
-    forgeVersion: config.minecraft?.forgeVersion || '1.21.1-52.0.47'
+    loaders: config.minecraft?.loaders || { neoforge: '21.1.250' }
   },
   server: {
     ip: config.server?.ip || 'doralandmc.holyhosting.club',
@@ -58,4 +57,3 @@ fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2), 'utf8');
 
 console.log(`\n✅ Manifiesto generado con éxito: ${outputPath}`);
 console.log('📌 Sube este archivo (mods-manifest.json) y tus mods a tu GitHub o servidor.');
-

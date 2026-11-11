@@ -47,6 +47,7 @@
       "src/**/*",
       "assets/**/*",
       "mods/**/*",
+      "overrides/**/*",
       "launcher-config.json"
     ],
     "win": {

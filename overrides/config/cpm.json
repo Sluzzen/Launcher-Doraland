@@ -1,0 +1,35 @@
+{
+  "editorLastVersion": "0.6.27a",
+  "keybindPerModel": {},
+  "playerSettings": {},
+  "globalSettings": {
+    "safetyProfile": "off"
+  },
+  "blockedList": {},
+  "modelProperties": {
+    "": {
+      "values": {},
+      "profiles": {}
+    }
+  },
+  "serverSettings": {
+    "ut21.holy.gg.": {
+      "ignoreSafetyRec": true
+    }
+  },
+  "editorUVAreaAlpha": 0.8,
+  "editorSelectMouseButton": 0.0,
+  "titleScreenButton": true,
+  "friendSettings": {},
+  "keybinds": {},
+  "editorDragMouseButton": -1.0,
+  "renderNames": true,
+  "editorMenuMouseButton": 1.0,
+  "editorRotateMouseButton": 2.0,
+  "editorRecentProjects": [
+    "C:\\Users\\sathy\\Desktop\\LightFury.cpmproject"
+  ],
+  "safetyProfiles": {},
+  "friendList": {},
+  "experimentalExport0614": true
+}

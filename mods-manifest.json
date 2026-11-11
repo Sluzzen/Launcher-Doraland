@@ -1,9 +1,39 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-11-11T16:45:38.487Z",
+  "generatedAt": "2026-11-11T17:19:48.106Z",
   "minecraft": {
     "version": "1.21.1",
-    "forgeVersion": "1.21.1-52.0.47"
+    "loaders": {
+      "neoforge": "21.1.250",
+      "forge": "",
+      "fabric": "",
+      "quilt": "",
+      "liteloader": "",
+      "optifine": "",
+      "rift": "",
+      "arclight": "",
+      "mohist": "",
+      "magma": "",
+      "banner": "",
+      "ketting": "",
+      "youer": "",
+      "catserver": "",
+      "crucible": "",
+      "spongeforge": "",
+      "sponge": "",
+      "paper": "",
+      "purpur": "",
+      "pufferfish": "",
+      "folia": "",
+      "spigot": "",
+      "bukkit": "",
+      "craftbukkit": "",
+      "glowstone": "",
+      "velocity": "",
+      "bungeecord": "",
+      "waterfall": "",
+      "vanilla": ""
+    }
   },
   "server": {
     "ip": "doralandmc.holyhosting.club",

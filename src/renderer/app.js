@@ -34,13 +34,18 @@ async function init() {
 function applyConfig(cfg) {
   if (!cfg) return;
 
+  const mcVer = cfg.minecraft?.version || '1.21.1';
+  const loaderName = cfg.activeLoader?.name || 'NeoForge';
+  const loaderDisplay = cfg.activeLoader?.display || `${loaderName} ${mcVer}`;
+
   // Versión del launcher y del juego
   safeText('launcherVersion', `v${cfg.launcher?.version || '1.0.0'}`);
-  safeText('mcVersion', cfg.minecraft?.version || '1.21.1');
+  safeText('loaderBadge', `${loaderName} ${mcVer}`);
+  safeText('playLoaderText', `${loaderName} ${mcVer}`);
   safeText('serverIp', cfg.server?.ip || '');
   safeText('playServerIp', cfg.server?.ip || '');
   safeText('wbServerIp', cfg.server?.ip || '');
-  safeText('wbForgeVersion', cfg.minecraft?.forgeVersion || '1.21.1');
+  safeText('wbForgeVersion', `${loaderDisplay} (${mcVer})`);
 
   // Redes sociales
   buildSocialLinks(cfg.ui);
@@ -53,8 +58,8 @@ function applySettings(settings) {
   const slider = document.getElementById('ramSlider');
   const closeToggle = document.getElementById('closeOnLaunch');
   if (slider) {
-    slider.value = settings.ram || 4096;
-    updateRamDisplay(settings.ram || 4096);
+    slider.value = settings.ram || 6144;
+    updateRamDisplay(settings.ram || 6144);
   }
   if (closeToggle) closeToggle.checked = settings.closeOnLaunch || false;
 }
@@ -360,10 +365,11 @@ function setupLaunchEvents() {
   });
 
   window.doraland.onLaunchStatus((data) => {
+    const loaderLabel = data.loader || config?.activeLoader?.display || 'NeoForge 1.21.1';
     if (data.status === 'launched') {
       setPlayButtonState('running');
-      updateProgress(100, '¡Minecraft Forge 1.21.1 iniciado!');
-      logToConsole('✅ ¡Minecraft Forge 1.21.1 iniciado correctamente!', 'info');
+      updateProgress(100, `¡Minecraft (${loaderLabel}) iniciado!`);
+      logToConsole(`✅ ¡Minecraft (${loaderLabel}) iniciado correctamente!`, 'info');
     } else if (data.status === 'error') {
       isLaunching = false;
       setPlayButtonState('ready');

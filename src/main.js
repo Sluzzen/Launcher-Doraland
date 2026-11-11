@@ -2,14 +2,16 @@
 // Incluye:
 // 1. Auto-actualización de Launcher (electron-updater con GitHub Releases)
 // 2. Auto-actualización de Mods y Config remota (Sincronización de Manifiesto en GitHub/Hosting)
-// 3. Suite completa de protecciones, validaciones e integridad
+// 3. Sincronización de Overrides (configs, FancyMenu, DrippyLoadingScreen, shaderpacks)
+// 4. Gestor multimotor dinámico (NeoForge, Forge, Fabric, Quilt, Híbridos, Plugins y Vanilla)
+// 5. Suite completa de protecciones, validaciones e integridad
 
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const https = require('https');
 const os = require('os');
-const { spawnSync, execSync } = require('child_process');
+const { spawn, spawnSync, execSync } = require('child_process');
 const { autoUpdater } = require('electron-updater');
 
 // ============================================================================
@@ -22,21 +24,85 @@ if (!gotTheLock) {
 }
 
 // ============================================================================
-// 2. CONFIGURACIÓN PREDETERMINADA Y DEFENSA ANTE ARCHIVOS CORRUPTOS
+// 2. CONFIGURACIÓN PREDETERMINADA Y GESTORES DE MODS/PLUGINS
 // ============================================================================
+const DEFAULT_LOADERS = {
+  neoforge: "21.1.250",
+  forge: "",
+  fabric: "",
+  quilt: "",
+  liteloader: "",
+  optifine: "",
+  rift: "",
+  arclight: "",
+  mohist: "",
+  magma: "",
+  banner: "",
+  ketting: "",
+  youer: "",
+  catserver: "",
+  crucible: "",
+  spongeforge: "",
+  sponge: "",
+  paper: "",
+  purpur: "",
+  pufferfish: "",
+  folia: "",
+  spigot: "",
+  bukkit: "",
+  craftbukkit: "",
+  glowstone: "",
+  velocity: "",
+  bungeecord: "",
+  waterfall: "",
+  vanilla: ""
+};
+
+const LOADER_DISPLAY_NAMES = {
+  neoforge: "NeoForge",
+  forge: "Forge",
+  fabric: "Fabric",
+  quilt: "Quilt",
+  liteloader: "LiteLoader",
+  optifine: "OptiFine",
+  rift: "Rift",
+  arclight: "Arclight",
+  mohist: "Mohist",
+  magma: "Magma",
+  banner: "Banner",
+  ketting: "Ketting",
+  youer: "Youer",
+  catserver: "CatServer",
+  crucible: "Crucible",
+  spongeforge: "SpongeForge",
+  sponge: "Sponge",
+  paper: "Paper",
+  purpur: "Purpur",
+  pufferfish: "Pufferfish",
+  folia: "Folia",
+  spigot: "Spigot",
+  bukkit: "Bukkit",
+  craftbukkit: "CraftBukkit",
+  glowstone: "Glowstone",
+  velocity: "Velocity",
+  bungeecord: "BungeeCord",
+  waterfall: "Waterfall",
+  vanilla: "Vanilla"
+};
+
 const DEFAULT_CONFIG = {
   server: {
     name: "Doraland",
     ip: "doralandmc.holyhosting.club",
     port: 25565,
     autoConnect: true,
-    description: "Servidor de Minecraft Forge 1.21.1"
+    description: "Servidor de Minecraft NeoForge 1.21.1"
   },
   minecraft: {
     version: "1.21.1",
-    forgeVersion: "1.21.1-52.0.47",
-    recommendedRamMb: 4096,
-    minRamMb: 2048,
+    loaders: { ...DEFAULT_LOADERS },
+    recommendedRamMb: 6144,
+    minRamMb: 4096,
     maxRamMb: 16384,
     jvmArgs: [
       "-XX:+UseG1GC",
@@ -55,14 +121,15 @@ const DEFAULT_CONFIG = {
   },
   mods: {
     enabled: true,
-    source: "auto", // "auto" (prioriza remoto si está configurado, o local bundled), "remote", "bundled"
-    remoteManifestUrl: "", // URL directa a mods-manifest.json en GitHub Raw o hosting
-    cleanOldMods: true
+    source: "auto",
+    remoteManifestUrl: "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods-manifest.json",
+    cleanOldMods: true,
+    syncOverrides: true
   },
   updates: {
     autoUpdateLauncher: true,
-    githubOwner: "Doraland",
-    githubRepo: "launcher-doraland"
+    githubOwner: "Sluzzen",
+    githubRepo: "Launcher-Doraland"
   },
   ui: {
     discordUrl: "",
@@ -77,6 +144,45 @@ const DEFAULT_CONFIG = {
     closeOnLaunch: false
   }
 };
+
+// Detecta el gestor activo: el único (o primero) que tenga versión no vacía en cfg.minecraft.loaders
+function getActiveLoader(cfg) {
+  const loaders = cfg?.minecraft?.loaders;
+  if (loaders && typeof loaders === 'object') {
+    for (const [key, val] of Object.entries(loaders)) {
+      if (typeof val === 'string' && val.trim().length > 0) {
+        const cleanType = key.toLowerCase().trim();
+        const version = val.trim();
+        const name = LOADER_DISPLAY_NAMES[cleanType] || key;
+        return {
+          type: cleanType,
+          name,
+          version,
+          display: `${name} ${version}`
+        };
+      }
+    }
+  }
+
+  // Compatibilidad hacia atrás si existiera forgeVersion antiguo
+  if (cfg?.minecraft?.forgeVersion && String(cfg.minecraft.forgeVersion).trim()) {
+    const version = String(cfg.minecraft.forgeVersion).trim();
+    return {
+      type: 'forge',
+      name: 'Forge',
+      version,
+      display: `Forge ${version}`
+    };
+  }
+
+  const mcVer = cfg?.minecraft?.version || '1.21.1';
+  return {
+    type: 'vanilla',
+    name: 'Vanilla',
+    version: mcVer,
+    display: `Vanilla ${mcVer}`
+  };
+}
 
 let _store = null;
 function getStore() {
@@ -102,7 +208,14 @@ function loadConfig() {
         ...DEFAULT_CONFIG,
         ...parsed,
         server: { ...DEFAULT_CONFIG.server, ...(parsed.server || {}) },
-        minecraft: { ...DEFAULT_CONFIG.minecraft, ...(parsed.minecraft || {}) },
+        minecraft: {
+          ...DEFAULT_CONFIG.minecraft,
+          ...(parsed.minecraft || {}),
+          loaders: {
+            ...DEFAULT_LOADERS,
+            ...(parsed.minecraft?.loaders || {})
+          }
+        },
         mods: { ...DEFAULT_CONFIG.mods, ...(parsed.mods || {}) },
         updates: { ...DEFAULT_CONFIG.updates, ...(parsed.updates || {}) },
         ui: { ...DEFAULT_CONFIG.ui, ...(parsed.ui || {}) },
@@ -163,7 +276,6 @@ function setupLauncherAutoUpdater() {
     appendLauncherLog(`Aviso Auto-Updater: ${err.message}`);
   });
 
-  // Comprobar actualizaciones automáticamente al iniciar si está empaquetado
   if (app.isPackaged && launcherConfig?.updates?.autoUpdateLauncher !== false) {
     setTimeout(() => {
       try {
@@ -173,7 +285,6 @@ function setupLauncherAutoUpdater() {
   }
 }
 
-// IPCs para el auto-updater del launcher
 ipcMain.handle('check-launcher-update', async () => {
   try {
     const res = await autoUpdater.checkForUpdates();
@@ -284,7 +395,13 @@ ipcMain.on('window-maximize', () => {
 });
 ipcMain.on('window-close', () => mainWindow?.close());
 
-ipcMain.handle('get-config', () => loadConfig());
+ipcMain.handle('get-config', () => {
+  const cfg = loadConfig();
+  return {
+    ...cfg,
+    activeLoader: getActiveLoader(cfg)
+  };
+});
 
 ipcMain.handle('get-session', () => {
   try {
@@ -324,10 +441,11 @@ ipcMain.handle('get-system-info', () => {
 });
 
 ipcMain.handle('get-settings', () => {
+  const cfg = loadConfig();
   const totalMb = Math.round(os.totalmem() / 1024 / 1024);
   const safeMaxMb = Math.max(2048, totalMb - 1536);
-  const savedRam = getStore().get('ram', launcherConfig?.minecraft?.recommendedRamMb || 4096);
-  const clampedRam = Math.min(safeMaxMb, Math.max(1024, savedRam));
+  const savedRam = getStore().get('ram', cfg?.minecraft?.recommendedRamMb || 6144);
+  const clampedRam = Math.min(safeMaxMb, Math.max(2048, savedRam));
 
   return {
     ram: clampedRam,
@@ -339,7 +457,7 @@ ipcMain.handle('save-settings', (_, settings) => {
   if (settings && typeof settings === 'object') {
     const totalMb = Math.round(os.totalmem() / 1024 / 1024);
     const safeMaxMb = Math.max(2048, totalMb - 1536);
-    const safeRam = Math.min(safeMaxMb, Math.max(1024, parseInt(settings.ram) || 4096));
+    const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(settings.ram) || 6144));
 
     getStore().set('ram', safeRam);
     getStore().set('closeOnLaunch', Boolean(settings.closeOnLaunch));
@@ -355,7 +473,7 @@ ipcMain.on('open-external', (_, url) => {
 });
 
 // ============================================================================
-// 6. IPC HANDLERS: AUTENTICACIÓN
+// 6. IPC HANDLERS: AUTENTICACIÓN (PREMIUM Y NO PREMIUM)
 // ============================================================================
 ipcMain.handle('auth-microsoft', async () => {
   try {
@@ -444,7 +562,7 @@ function checkJavaExecutable(javaBin) {
       return {
         valid: false,
         major,
-        reason: `Java ${major} detectado. Forge 1.21.1 requiere obligatoriamente Java 21+`,
+        reason: `Java ${major} detectado. Minecraft 1.21.1 requiere obligatoriamente Java 21+`,
         path: javaBin
       };
     }
@@ -466,6 +584,9 @@ async function findAndValidateJava() {
     'C:\\Program Files\\Java\\jdk-21\\bin\\java.exe',
     'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.1.12-hotspot\\bin\\java.exe',
     'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.2.13-hotspot\\bin\\java.exe',
+    'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.3.9-hotspot\\bin\\java.exe',
+    'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.4.7-hotspot\\bin\\java.exe',
+    'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.5.11-hotspot\\bin\\java.exe',
     'C:\\Program Files\\Microsoft\\jdk-21.0.1.12-hotspot\\bin\\java.exe',
     'C:\\Program Files\\Zulu\\zulu-21\\bin\\java.exe',
     'C:\\Program Files\\Java\\jdk-21.0.1\\bin\\java.exe',
@@ -556,7 +677,6 @@ function downloadFile(url, dest, onProgress) {
   });
 }
 
-// Validación de cabecera JAR (PK\x03\x04)
 function isValidJarFile(filePath) {
   try {
     const stat = fs.statSync(filePath);
@@ -574,43 +694,129 @@ function isValidJarFile(filePath) {
 }
 
 // ============================================================================
-// 9. SINCRONIZACIÓN DE MODS HÍBRIDA (REMOTA Y LOCAL BUNDLED)
+// 9. SINCRONIZACIÓN DE OVERRIDES (CONFIGS, FANCYMENU, SHADERPACKS)
+// ============================================================================
+async function syncOverridesProtected(gameDir, cfg, event) {
+  if (cfg.mods?.syncOverrides === false) return;
+
+  let bundledOverridesPath;
+  if (app.isPackaged) {
+    bundledOverridesPath = path.join(path.dirname(app.getPath('exe')), 'overrides');
+    if (!fs.existsSync(bundledOverridesPath)) {
+      bundledOverridesPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'overrides');
+    }
+    if (!fs.existsSync(bundledOverridesPath)) {
+      bundledOverridesPath = path.join(process.resourcesPath, 'overrides');
+    }
+    if (!fs.existsSync(bundledOverridesPath)) {
+      bundledOverridesPath = path.join(__dirname, '..', 'overrides');
+    }
+  } else {
+    bundledOverridesPath = path.join(__dirname, '..', 'overrides');
+  }
+
+  if (!fs.existsSync(bundledOverridesPath)) {
+    return;
+  }
+
+  event?.sender.send('launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland y shaders...' });
+
+  // Archivos de preferencias personales que no deben sobrescribirse si el jugador ya los modificó
+  const userProtectedRelPaths = new Set([
+    'options.txt',
+    'servers.dat',
+    path.normalize('config/sodium-options.json'),
+    path.normalize('config/iris.properties'),
+    path.normalize('config/ImmediatelyFast.json')
+  ]);
+
+  let syncedFiles = 0;
+
+  async function copyDirSelective(srcDir, destDir, relBase = '') {
+    await fs.ensureDir(destDir);
+    const entries = await fs.readdir(srcDir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const srcFull = path.join(srcDir, entry.name);
+      const destFull = path.join(destDir, entry.name);
+      const relPath = path.normalize(relBase ? path.join(relBase, entry.name) : entry.name);
+
+      if (entry.isDirectory()) {
+        await copyDirSelective(srcFull, destFull, relPath);
+      } else if (entry.isFile()) {
+        const exists = fs.existsSync(destFull);
+        if (exists && userProtectedRelPaths.has(relPath)) {
+          continue;
+        }
+
+        let shouldCopy = !exists;
+        if (exists) {
+          try {
+            const sStat = await fs.stat(srcFull);
+            const dStat = await fs.stat(destFull);
+            // Actualizar siempre los recursos de FancyMenu / DrippyLoadingScreen si cambiaron de tamaño
+            if (relPath.startsWith(path.normalize('config/fancymenu')) || relPath.startsWith(path.normalize('config/drippyloadingscreen'))) {
+              shouldCopy = sStat.size !== dStat.size;
+            }
+          } catch {}
+        }
+
+        if (shouldCopy) {
+          await fs.copy(srcFull, destFull, { overwrite: true });
+          syncedFiles++;
+        }
+      }
+    }
+  }
+
+  try {
+    await copyDirSelective(bundledOverridesPath, gameDir);
+    if (syncedFiles > 0) {
+      event?.sender.send('launch-log', { type: 'info', msg: `✔️ Se aplicaron ${syncedFiles} archivos de configuración/interfaz de Doraland.` });
+    } else {
+      event?.sender.send('launch-log', { type: 'info', msg: '✔️ Configuraciones e interfaz de Doraland al día.' });
+    }
+  } catch (err) {
+    event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Aviso sincronizando overrides: ${err.message}` });
+  }
+}
+
+// ============================================================================
+// 10. SINCRONIZACIÓN DE MODS HÍBRIDA (REMOTA Y LOCAL BUNDLED)
 // ============================================================================
 async function syncModsProtected(gameDir, cfg, event) {
   const targetModsPath = path.join(gameDir, 'mods');
   await fs.ensureDir(targetModsPath);
 
-  // 1. SI HAY MANIFIESTO REMOTO CONFIGURADO (Actualización automática remota)
   if (cfg.mods?.remoteManifestUrl && cfg.mods?.source !== 'bundled') {
     try {
-      event?.sender.send('launch-log', { type: 'info', msg: '🌐 Conectando con el servidor para buscar actualizaciones de mods...' });
+      event?.sender.send('launch-log', { type: 'info', msg: '🌐 Conectando con el repositorio para verificar actualizaciones de mods...' });
       const manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
 
       if (manifest && Array.isArray(manifest.mods)) {
-        event?.sender.send('launch-log', { type: 'info', msg: `📦 Manifiesto remoto recibido: ${manifest.mods.length} mods disponibles.` });
-        
-        // Actualizar IP o Forge en vivo si el manifiesto lo especifica
         if (manifest.server?.ip) cfg.server.ip = manifest.server.ip;
-        if (manifest.minecraft?.forgeVersion) cfg.minecraft.forgeVersion = manifest.minecraft.forgeVersion;
+        if (manifest.minecraft?.loaders && typeof manifest.minecraft.loaders === 'object') {
+          cfg.minecraft.loaders = { ...cfg.minecraft.loaders, ...manifest.minecraft.loaders };
+        }
 
-        await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event);
-        return;
+        if (manifest.mods.length > 0) {
+          event?.sender.send('launch-log', { type: 'info', msg: `📦 Manifiesto remoto recibido: ${manifest.mods.length} mods.` });
+          await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event);
+          return;
+        }
       }
     } catch (err) {
-      event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Servidor remoto no disponible (${err.message}). Usando respaldo local.` });
+      event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Manifiesto remoto no disponible (${err.message}). Usando paquete local.` });
     }
   }
 
-  // 2. RESPALDO LOCAL (MODS BUNDLED)
   await syncLocalBundledMods(targetModsPath, cfg, event);
 }
 
-// Sincronización remota desde manifiesto
 async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   const remoteNames = remoteMods.map(m => m.name.toLowerCase());
 
-  // Limpieza de mods eliminados del servidor
-  if (cfg.mods?.cleanOldMods) {
+  if (cfg.mods?.cleanOldMods && remoteMods.length > 0) {
     const localFiles = await fs.readdir(targetModsPath);
     for (const file of localFiles) {
       if (file.toLowerCase().endsWith('.jar') && !remoteNames.includes(file.toLowerCase())) {
@@ -636,7 +842,6 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
     if (needsDownload) {
       event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando mod (${i + 1}/${remoteMods.length}): ${mod.name}...` });
 
-      // Resolver URL de descarga (absoluta o relativa a la URL del manifest)
       let modUrl = mod.url;
       if (!modUrl && cfg.mods.remoteManifestUrl) {
         const baseUrl = cfg.mods.remoteManifestUrl.substring(0, cfg.mods.remoteManifestUrl.lastIndexOf('/'));
@@ -666,13 +871,12 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 
   if (updatedCount === 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Todos los mods remotos están al día (${remoteMods.length} mods).` });
+    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods).` });
   } else {
     event?.sender.send('launch-log', { type: 'info', msg: `🎉 Se actualizaron ${updatedCount} mods automáticamente.` });
   }
 }
 
-// Sincronización local de la carpeta mods/
 async function syncLocalBundledMods(targetModsPath, cfg, event) {
   let bundledModsPath;
   if (app.isPackaged) {
@@ -685,14 +889,19 @@ async function syncLocalBundledMods(targetModsPath, cfg, event) {
   }
 
   if (!fs.existsSync(bundledModsPath)) {
-    event?.sender.send('launch-log', { type: 'warn', msg: 'Carpeta mods/ local no encontrada.' });
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: '📦 Sincronizando mods desde el paquete local...' });
-
   const rawFiles = await fs.readdir(bundledModsPath);
   const bundledJars = rawFiles.filter(f => f.toLowerCase().endsWith('.jar'));
+
+  if (bundledJars.length === 0) {
+    const existing = (await fs.readdir(targetModsPath)).filter(f => f.toLowerCase().endsWith('.jar'));
+    event?.sender.send('launch-log', { type: 'info', msg: `📦 Mods instalados en carpeta del juego: ${existing.length} mods.` });
+    return;
+  }
+
+  event?.sender.send('launch-log', { type: 'info', msg: `📦 Sincronizando ${bundledJars.length} mods desde el paquete local...` });
 
   if (cfg.mods?.cleanOldMods) {
     const currentFiles = await fs.readdir(targetModsPath);
@@ -733,44 +942,241 @@ async function syncLocalBundledMods(targetModsPath, cfg, event) {
 }
 
 // ============================================================================
-// 10. FORGE 1.21.1 INSTALLER
+// 11. INSTALADOR MULTIMOTOR (NEOFORGE, FORGE, FABRIC, QUILT, VANILLA/PLUGINS)
 // ============================================================================
-async function ensureForgeProtected(gameDir, rawVersion, event) {
-  const version = rawVersion.includes('-') ? rawVersion : `1.21.1-${rawVersion}`;
+
+// Resuelve los placeholders de arguments.jvm de NeoForge / Forge moderno (BootstrapLauncher)
+function resolveModernLoaderJvmArgs(versionJson, gameDir, customVersion, mcVersion) {
+  if (!versionJson?.arguments?.jvm || !Array.isArray(versionJson.arguments.jvm)) {
+    return [];
+  }
+
+  const libDirNormalized = path.join(gameDir, 'libraries').replace(/\\/g, '/');
+  const cpSeparator = path.delimiter;
+  const resolved = [];
+
+  for (const rawArg of versionJson.arguments.jvm) {
+    if (typeof rawArg !== 'string') continue;
+
+    let arg = rawArg
+      .replace(/\$\{library_directory\}/g, libDirNormalized)
+      .replace(/\$\{classpath_separator\}/g, cpSeparator)
+      .replace(/\$\{version_name\}/g, customVersion);
+
+    // Asegurar que BootstrapLauncher ignore también el jar base si aparece en -cp
+    if (arg.startsWith('-DignoreList=') && !arg.includes(`${mcVersion}.jar`)) {
+      arg = `${arg},${mcVersion}.jar`;
+    }
+
+    resolved.push(arg);
+  }
+
+  return resolved;
+}
+
+// Ejecuta un instalador CLI en Java (--install-client / --installClient)
+function runJavaInstallerCli(javaPath, args, cwd, event, label) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(javaPath, args, { cwd });
+
+    proc.stdout.on('data', (data) => {
+      const lines = data.toString('utf8').trim().split(/\r?\n/);
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        if (line.includes('Downloading') || line.includes('Processor') || line.includes('Splitting') || line.includes('Patching') || line.includes('Renaming') || line.includes('Successfully')) {
+          event?.sender.send('launch-log', { type: 'info', msg: `[${label}] ${line.trim()}` });
+        } else {
+          event?.sender.send('launch-log', { type: 'debug', msg: `[${label}] ${line.trim()}` });
+        }
+      }
+    });
+
+    proc.stderr.on('data', (data) => {
+      const text = data.toString('utf8').trim();
+      if (text) {
+        event?.sender.send('launch-log', { type: 'debug', msg: `[${label}] ${text}` });
+      }
+    });
+
+    proc.on('error', reject);
+    proc.on('close', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`El instalador de ${label} terminó con código ${code}`));
+    });
+  });
+}
+
+async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath, event) {
   const installersDir = path.join(gameDir, 'installers');
   await fs.ensureDir(installersDir);
 
-  const installerName = `forge-${version}-installer.jar`;
-  const installerPath = path.join(installersDir, installerName);
-
-  if (fs.existsSync(installerPath) && isValidJarFile(installerPath)) {
-    event?.sender.send('launch-log', { type: 'info', msg: `🔨 Forge ${version} verificado en caché.` });
-    return installerPath;
+  // Asegurar que exista launcher_profiles.json (requerido por los instaladores de NeoForge y Forge)
+  const profilesPath = path.join(gameDir, 'launcher_profiles.json');
+  if (!fs.existsSync(profilesPath)) {
+    await fs.writeJson(profilesPath, { profiles: {} }, { spaces: 2 });
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando instalador de Forge ${version}...` });
+  const type = loader.type;
+  const ver = loader.version;
 
-  const downloadUrl = `https://maven.minecraftforge.net/net/minecraftforge/forge/${version}/${installerName}`;
+  // ── CASO 1: NEOFORGE (y servidores híbridos basados en NeoForge como Youer) ──
+  if (type === 'neoforge' || type === 'youer') {
+    const customId = `neoforge-${ver}`;
+    const versionJsonPath = path.join(gameDir, 'versions', customId, `${customId}.json`);
+    const patchedClientJar = path.join(gameDir, 'libraries', 'net', 'neoforged', 'neoforge', ver, `neoforge-${ver}-client.jar`);
 
-  await downloadFile(downloadUrl, installerPath, (pct) => {
-    event?.sender.send('launch-progress', {
-      type: `Forge 1.21.1 Installer`,
-      task: pct,
-      total: 100
-    });
-  });
+    if (!fs.existsSync(versionJsonPath) || !fs.existsSync(patchedClientJar)) {
+      const installerName = `neoforge-${ver}-installer.jar`;
+      const installerPath = path.join(installersDir, installerName);
 
-  if (!isValidJarFile(installerPath)) {
-    await fs.remove(installerPath);
-    throw new Error('Instalador de Forge corrupto.');
+      if (!fs.existsSync(installerPath) || !isValidJarFile(installerPath)) {
+        event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando instalador oficial de NeoForge ${ver}...` });
+        const downloadUrl = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${ver}/${installerName}`;
+
+        await downloadFile(downloadUrl, installerPath, (pct) => {
+          event?.sender.send('launch-progress', {
+            type: `NeoForge ${ver} Installer`,
+            task: pct,
+            total: 100
+          });
+        });
+
+        if (!isValidJarFile(installerPath)) {
+          await fs.remove(installerPath);
+          throw new Error(`El instalador descargado de NeoForge ${ver} está corrupto.`);
+        }
+      }
+
+      event?.sender.send('launch-log', { type: 'info', msg: `⚙️ Instalando NeoForge ${ver} (primera vez, esto puede tardar 1-2 minutos)...` });
+      event?.sender.send('launch-progress', { type: `Instalando NeoForge ${ver}`, task: 50, total: 100 });
+
+      await runJavaInstallerCli(
+        javaPath,
+        ['-jar', installerPath, '--install-client', gameDir],
+        gameDir,
+        event,
+        `NeoForge ${ver}`
+      );
+
+      event?.sender.send('launch-log', { type: 'info', msg: `✅ NeoForge ${ver} instalado correctamente.` });
+    } else {
+      event?.sender.send('launch-log', { type: 'info', msg: `⚡ NeoForge ${ver} verificado en caché.` });
+    }
+
+    const versionJson = await fs.readJson(versionJsonPath);
+    const extraJvmArgs = resolveModernLoaderJvmArgs(versionJson, gameDir, customId, mcVersion);
+
+    return {
+      customVersion: customId,
+      extraJvmArgs,
+      forgeInstaller: null
+    };
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: `✅ Forge ${version} listo.` });
-  return installerPath;
+  // ── CASO 2: FORGE (y servidores híbridos Forge como Mohist, Arclight, Magma, CatServer, Ketting, SpongeForge, Crucible) ──
+  if (['forge', 'mohist', 'arclight', 'magma', 'catserver', 'ketting', 'spongeforge', 'crucible'].includes(type)) {
+    const fullVer = ver.includes('-') ? ver : `${mcVersion}-${ver}`;
+    const shortVer = fullVer.startsWith(`${mcVersion}-`) ? fullVer.slice(mcVersion.length + 1) : ver;
+    const customId = `${mcVersion}-forge-${shortVer}`;
+    const versionJsonPath = path.join(gameDir, 'versions', customId, `${customId}.json`);
+
+    const installerName = `forge-${fullVer}-installer.jar`;
+    const installerPath = path.join(installersDir, installerName);
+
+    if (!fs.existsSync(installerPath) || !isValidJarFile(installerPath)) {
+      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando instalador de Forge ${fullVer}...` });
+      const downloadUrl = `https://maven.minecraftforge.net/net/minecraftforge/forge/${fullVer}/${installerName}`;
+
+      await downloadFile(downloadUrl, installerPath, (pct) => {
+        event?.sender.send('launch-progress', {
+          type: `Forge ${fullVer} Installer`,
+          task: pct,
+          total: 100
+        });
+      });
+
+      if (!isValidJarFile(installerPath)) {
+        await fs.remove(installerPath);
+        throw new Error(`El instalador de Forge ${fullVer} está corrupto.`);
+      }
+    }
+
+    if (fs.existsSync(versionJsonPath)) {
+      const versionJson = await fs.readJson(versionJsonPath);
+      const extraJvmArgs = resolveModernLoaderJvmArgs(versionJson, gameDir, customId, mcVersion);
+      return {
+        customVersion: customId,
+        extraJvmArgs,
+        forgeInstaller: null
+      };
+    }
+
+    return {
+      customVersion: null,
+      extraJvmArgs: [],
+      forgeInstaller: installerPath
+    };
+  }
+
+  // ── CASO 3: FABRIC (y Banner) ──
+  if (type === 'fabric' || type === 'banner') {
+    const customId = `fabric-loader-${ver}-${mcVersion}`;
+    const versionDir = path.join(gameDir, 'versions', customId);
+    const versionJsonPath = path.join(versionDir, `${customId}.json`);
+
+    if (!fs.existsSync(versionJsonPath)) {
+      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Fabric Loader ${ver}...` });
+      await fs.ensureDir(versionDir);
+      const profileUrl = `https://meta.fabricmc.net/v2/versions/loader/${mcVersion}/${ver}/profile/json`;
+      const profileJson = await fetchRemoteJson(profileUrl);
+      await fs.writeJson(versionJsonPath, profileJson, { spaces: 2 });
+      event?.sender.send('launch-log', { type: 'info', msg: `✅ Fabric Loader ${ver} listo.` });
+    } else {
+      event?.sender.send('launch-log', { type: 'info', msg: `⚡ Fabric Loader ${ver} verificado en caché.` });
+    }
+
+    return {
+      customVersion: customId,
+      extraJvmArgs: [],
+      forgeInstaller: null
+    };
+  }
+
+  // ── CASO 4: QUILT ──
+  if (type === 'quilt') {
+    const customId = `quilt-loader-${ver}-${mcVersion}`;
+    const versionDir = path.join(gameDir, 'versions', customId);
+    const versionJsonPath = path.join(versionDir, `${customId}.json`);
+
+    if (!fs.existsSync(versionJsonPath)) {
+      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Quilt Loader ${ver}...` });
+      await fs.ensureDir(versionDir);
+      const profileUrl = `https://meta.quiltmc.org/v3/versions/loader/${mcVersion}/${ver}/profile/json`;
+      const profileJson = await fetchRemoteJson(profileUrl);
+      await fs.writeJson(versionJsonPath, profileJson, { spaces: 2 });
+      event?.sender.send('launch-log', { type: 'info', msg: `✅ Quilt Loader ${ver} listo.` });
+    } else {
+      event?.sender.send('launch-log', { type: 'info', msg: `⚡ Quilt Loader ${ver} verificado en caché.` });
+    }
+
+    return {
+      customVersion: customId,
+      extraJvmArgs: [],
+      forgeInstaller: null
+    };
+  }
+
+  // ── CASO 5: VANILLA O GESTORES DE PLUGINS DE SERVIDOR (Paper, Purpur, Spigot, Folia, Bukkit, Velocity, etc.) ──
+  event?.sender.send('launch-log', { type: 'info', msg: `⚡ Modo de cliente activo: ${loader.display} (Cliente estándar ${mcVersion}).` });
+  return {
+    customVersion: null,
+    extraJvmArgs: [],
+    forgeInstaller: null
+  };
 }
 
 // ============================================================================
-// 11. LANZADOR DE MINECRAFT CON PROTECCIONES
+// 12. LANZADOR DE MINECRAFT CON PROTECCIONES
 // ============================================================================
 ipcMain.handle('launch-game', async (event, { session, ram }) => {
   if (isGameRunning) {
@@ -779,6 +1185,8 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
 
   isGameRunning = true;
   const cfg = loadConfig();
+  const activeLoader = getActiveLoader(cfg);
+  const mcVersion = cfg.minecraft?.version || '1.21.1';
   const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
 
   try {
@@ -790,54 +1198,47 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       return { error: 'Sesión no válida. Por favor inicia sesión de nuevo.' };
     }
 
-    event.sender.send('launch-log', { type: 'info', msg: '🔍 Verificando entorno de Java 21...' });
+    event.sender.send('launch-log', { type: 'info', msg: `🔍 Verificando entorno de Java 21 para ${activeLoader.display}...` });
     const javaCheck = await findAndValidateJava();
     if (!javaCheck.valid) {
       isGameRunning = false;
       event.sender.send('launch-status', {
         status: 'error',
-        message: `${javaCheck.reason} Por favor instala Java 21 para jugar Forge 1.21.1.`
+        message: `${javaCheck.reason} Por favor instala Java 21 para jugar ${activeLoader.display}.`
       });
       return;
     }
 
     event.sender.send('launch-log', { type: 'info', msg: `☕ Java 21 válido detectado: ${javaCheck.path}` });
 
-    // Sincronizar mods (remoto o local según config)
+    // 1. Sincronizar overrides del modpack (config/, defaultconfigs/, shaderpacks/, FancyMenu)
+    await syncOverridesProtected(gameDir, cfg, event);
+
+    // 2. Sincronizar mods (remoto o local según config)
     if (cfg.mods?.enabled) {
       await syncModsProtected(gameDir, cfg, event);
     }
 
-    const forgeVersion = cfg.minecraft?.forgeVersion || '1.21.1-52.0.47';
-    let forgeInstaller = null;
-    try {
-      forgeInstaller = await ensureForgeProtected(gameDir, forgeVersion, event);
-    } catch (err) {
-      event.sender.send('launch-log', { type: 'warn', msg: `Aviso Forge: ${err.message}` });
-    }
+    // 3. Asegurar instalación del gestor activo (actualmente NeoForge 21.1.250)
+    const loaderSetup = await ensureActiveLoaderInstalled(gameDir, mcVersion, activeLoader, javaCheck.path, event);
 
     const totalMb = Math.round(os.totalmem() / 1024 / 1024);
     const safeMaxMb = Math.max(2048, totalMb - 1536);
-    const safeRam = Math.min(safeMaxMb, Math.max(1024, parseInt(ram) || 4096));
-    const minRam = Math.max(512, Math.floor(safeRam / 2));
+    const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(ram) || cfg.minecraft?.recommendedRamMb || 6144));
+    const minRam = Math.max(1024, Math.floor(safeRam / 2));
 
     event.sender.send('launch-log', { type: 'info', msg: `📊 Asignando RAM: ${safeRam}MB (Mínimo: ${minRam}MB)` });
 
-    const jvmArgs = [...(cfg.minecraft?.jvmArgs || [])];
-    const customLaunchArgs = [];
-
-    if (cfg.server?.autoConnect !== false && cfg.server?.ip) {
-      customLaunchArgs.push('--server', String(cfg.server.ip).replace(/[^a-zA-Z0-9.-]/g, ''));
-      if (cfg.server.port && cfg.server.port !== 25565) {
-        customLaunchArgs.push('--port', String(parseInt(cfg.server.port) || 25565));
-      }
-    }
+    const jvmArgs = [
+      ...(cfg.minecraft?.jvmArgs || []),
+      ...(loaderSetup.extraJvmArgs || [])
+    ];
 
     const opts = {
       authorization: session,
       root: gameDir,
       version: {
-        number: cfg.minecraft?.version || '1.21.1',
+        number: mcVersion,
         type: 'release'
       },
       memory: {
@@ -846,11 +1247,27 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       },
       javaPath: javaCheck.path,
       customArgs: jvmArgs,
-      customLaunchArgs: customLaunchArgs
+      overrides: {
+        assetIndex: mcVersion
+      }
     };
 
-    if (forgeInstaller && fs.existsSync(forgeInstaller)) {
-      opts.forge = forgeInstaller;
+    if (loaderSetup.customVersion) {
+      opts.version.custom = loaderSetup.customVersion;
+    }
+
+    if (loaderSetup.forgeInstaller && fs.existsSync(loaderSetup.forgeInstaller)) {
+      opts.forge = loaderSetup.forgeInstaller;
+    }
+
+    // Auto-conexión al servidor en Minecraft 1.21.1 (QuickPlay Multiplayer)
+    if (cfg.server?.autoConnect !== false && cfg.server?.ip) {
+      const cleanIp = String(cfg.server.ip).replace(/[^a-zA-Z0-9.-]/g, '');
+      const cleanPort = parseInt(cfg.server.port) || 25565;
+      opts.quickPlay = {
+        type: 'multiplayer',
+        identifier: `${cleanIp}:${cleanPort}`
+      };
     }
 
     const { Client } = require('minecraft-launcher-core');
@@ -866,9 +1283,9 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       appendLauncherLog(`Minecraft cerrado con código: ${code}`);
     });
 
-    appendLauncherLog(`Lanzando Minecraft Forge 1.21.1 para el usuario: ${session.name}`);
+    appendLauncherLog(`Lanzando Minecraft ${mcVersion} (${activeLoader.display}) para el usuario: ${session.name}`);
     await launcher.launch(opts);
-    event.sender.send('launch-status', { status: 'launched' });
+    event.sender.send('launch-status', { status: 'launched', loader: activeLoader.display });
 
     if (getStore().get('closeOnLaunch', false)) {
       setTimeout(() => app.quit(), 2500);
