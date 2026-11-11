@@ -256,17 +256,188 @@ function appendLauncherLog(message) {
 }
 
 // ============================================================================
-// 3. AUTO-UPDATER DEL LAUNCHER (electron-updater)
+// 3. SISTEMA DOBLE DE AUTO-ACTUALIZACIÓN DEL LAUNCHER
+//    A) electron-updater (GitHub Releases / Instalador NSIS)
+//    B) Live Self-Updater desde rama main de GitHub (Funciona en CUALQUIER versión sin requerir Release)
 // ============================================================================
-autoUpdater.autoDownload = false;
+autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
+
+let isUpdatingLauncher = false;
+let pendingUpdateMode = null; // 'release' | 'live-branch'
+
+function parseSemverParts(verStr) {
+  const clean = String(verStr || '0.0.0').trim().replace(/^v/i, '').split('-')[0];
+  const parts = clean.split('.').map(n => parseInt(n, 10) || 0);
+  while (parts.length < 3) parts.push(0);
+  return parts;
+}
+
+function isNewerVersion(remoteVer, localVer) {
+  const r = parseSemverParts(remoteVer);
+  const l = parseSemverParts(localVer);
+  for (let i = 0; i < 3; i++) {
+    if (r[i] > l[i]) return true;
+    if (r[i] < l[i]) return false;
+  }
+  return false;
+}
+
+function getHighestVersion(v1, v2) {
+  if (!v1) return v2 || '1.0.0';
+  if (!v2) return v1 || '1.0.0';
+  return isNewerVersion(v1, v2) ? v1 : v2;
+}
+
+function getLocalLauncherVersion() {
+  const cfg = loadConfig();
+  return getHighestVersion(cfg?.launcher?.version, app.getVersion());
+}
+
+// Descarga texto/código desde GitHub Raw con validación
+function fetchRemoteText(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'DoralandLauncher', 'Cache-Control': 'no-cache' } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetchRemoteText(res.headers.location).then(resolve).catch(reject);
+      }
+      if (res.statusCode !== 200) {
+        return reject(new Error(`HTTP ${res.statusCode}`));
+      }
+      let raw = '';
+      res.on('data', chunk => raw += chunk);
+      res.on('end', () => resolve(raw));
+    }).on('error', reject);
+  });
+}
+
+// Auto-actualizador directo desde la rama main de GitHub (actualiza cualquier versión automáticamente)
+async function checkAndApplyGitBranchSelfUpdate() {
+  if (isUpdatingLauncher) return { updated: false };
+
+  const cfg = loadConfig();
+  if (cfg?.updates?.autoUpdateLauncher === false) return { updated: false };
+
+  const owner = cfg?.updates?.githubOwner || 'Sluzzen';
+  const repo = cfg?.updates?.githubRepo || 'Launcher-Doraland';
+  const baseUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main`;
+  const cacheBust = `?t=${Date.now()}`;
+
+  try {
+    const localVer = getLocalLauncherVersion();
+    const [remoteCfg, remotePkg] = await Promise.all([
+      fetchRemoteJson(`${baseUrl}/launcher-config.json${cacheBust}`).catch(() => null),
+      fetchRemoteJson(`${baseUrl}/package.json${cacheBust}`).catch(() => null)
+    ]);
+
+    if (!remoteCfg && !remotePkg) {
+      return { updated: false };
+    }
+
+    const remoteVer = getHighestVersion(remoteCfg?.launcher?.version, remotePkg?.version);
+    if (!isNewerVersion(remoteVer, localVer)) {
+      appendLauncherLog(`Launcher al día (versión actual: v${localVer}, remota: v${remoteVer}).`);
+      return { updated: false, currentVersion: localVer, remoteVersion: remoteVer };
+    }
+
+    isUpdatingLauncher = true;
+    pendingUpdateMode = 'live-branch';
+    appendLauncherLog(`Nueva versión detectada en GitHub: v${remoteVer} (actual: v${localVer}). Aplicando auto-actualización...`);
+
+    mainWindow?.webContents.send('launcher-update-available', {
+      version: remoteVer,
+      currentVersion: localVer,
+      autoApplying: true,
+      releaseNotes: 'Actualizando automáticamente a la última versión de Doraland Launcher...'
+    });
+
+    const appRootDir = path.join(__dirname, '..');
+    const filesToSync = [
+      { rel: 'package.json', isJson: true },
+      { rel: 'launcher-config.json', isJson: true },
+      { rel: 'mods-manifest.json', isJson: true },
+      { rel: 'src/preload.js', isJson: false },
+      { rel: 'src/renderer/index.html', isJson: false },
+      { rel: 'src/renderer/app.js', isJson: false },
+      { rel: 'src/renderer/style.css', isJson: false },
+      { rel: 'src/main.js', isJson: false }
+    ];
+
+    for (let i = 0; i < filesToSync.length; i++) {
+      const item = filesToSync[i];
+      const fileUrl = `${baseUrl}/${item.rel}${cacheBust}`;
+      const content = await fetchRemoteText(fileUrl);
+
+      if (!content || content.trim().length < 10) {
+        throw new Error(`Contenido inválido al descargar ${item.rel}`);
+      }
+
+      if (item.isJson) {
+        const parsed = JSON.parse(content);
+        if (item.rel === 'package.json') parsed.version = remoteVer;
+        if (item.rel === 'launcher-config.json' && parsed.launcher) parsed.launcher.version = remoteVer;
+        const targetPath = path.join(appRootDir, item.rel);
+        await fs.ensureDir(path.dirname(targetPath));
+        await fs.writeJson(targetPath, parsed, { spaces: 2 });
+
+        // Si existe un launcher-config.json externo junto al ejecutable, sincronizarlo también
+        if (item.rel === 'launcher-config.json' && app.isPackaged) {
+          const extDirs = [
+            process.env.PORTABLE_EXECUTABLE_DIR,
+            path.dirname(app.getPath('exe'))
+          ].filter(Boolean);
+          for (const d of extDirs) {
+            const extCfg = path.join(d, 'launcher-config.json');
+            if (fs.existsSync(extCfg)) {
+              await fs.writeJson(extCfg, parsed, { spaces: 2 });
+            }
+          }
+        }
+      } else {
+        const targetPath = path.join(appRootDir, item.rel);
+        await fs.ensureDir(path.dirname(targetPath));
+        await fs.writeFile(targetPath, content, 'utf8');
+      }
+
+      const pct = Math.round(((i + 1) / filesToSync.length) * 100);
+      mainWindow?.webContents.send('launcher-update-progress', {
+        percent: pct,
+        speed: 'GitHub Direct'
+      });
+    }
+
+    appendLauncherLog(`Auto-actualización a v${remoteVer} aplicada con éxito. Reiniciando launcher...`);
+    mainWindow?.webContents.send('launcher-update-downloaded', {
+      version: remoteVer,
+      autoRestart: true
+    });
+
+    setTimeout(() => {
+      app.relaunch();
+      app.exit(0);
+    }, 2200);
+
+    return { updated: true, remoteVersion: remoteVer };
+  } catch (err) {
+    isUpdatingLauncher = false;
+    appendLauncherLog(`Aviso en verificación de auto-actualización directa: ${err.message}`);
+    return { updated: false, error: err.message };
+  }
+}
 
 function setupLauncherAutoUpdater() {
   autoUpdater.on('update-available', (info) => {
-    appendLauncherLog(`Actualización de Launcher disponible: v${info.version}`);
+    const localVer = getLocalLauncherVersion();
+    if (!isNewerVersion(info.version, localVer)) return;
+
+    isUpdatingLauncher = true;
+    pendingUpdateMode = 'release';
+    appendLauncherLog(`Actualización de Release disponible: v${info.version} (actual: v${localVer})`);
     mainWindow?.webContents.send('launcher-update-available', {
       version: info.version,
-      releaseNotes: info.releaseNotes || 'Mejoras y nuevas funciones de Doraland.'
+      currentVersion: localVer,
+      autoApplying: true,
+      releaseNotes: info.releaseNotes || 'Descargando nueva versión de Doraland Launcher...'
     });
   });
 
@@ -278,29 +449,42 @@ function setupLauncherAutoUpdater() {
   });
 
   autoUpdater.on('update-downloaded', (info) => {
-    appendLauncherLog(`Actualización de Launcher descargada: v${info.version}`);
+    appendLauncherLog(`Instalador de actualización descargado: v${info.version}. Reiniciando...`);
     mainWindow?.webContents.send('launcher-update-downloaded', {
-      version: info.version
+      version: info.version,
+      autoRestart: true
     });
+    setTimeout(() => {
+      autoUpdater.quitAndInstall(false, true);
+    }, 2200);
   });
 
   autoUpdater.on('error', (err) => {
-    appendLauncherLog(`Aviso Auto-Updater: ${err.message}`);
+    appendLauncherLog(`Aviso electron-updater (usando actualizador directo de rama como respaldo): ${err.message}`);
   });
 
-  if (app.isPackaged && launcherConfig?.updates?.autoUpdateLauncher !== false) {
-    setTimeout(() => {
+  // Ejecutar verificación inmediata al abrir cualquier versión del launcher
+  setTimeout(async () => {
+    const branchRes = await checkAndApplyGitBranchSelfUpdate();
+    if (!branchRes.updated && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
       try {
-        autoUpdater.checkForUpdates().catch(() => {});
+        await autoUpdater.checkForUpdates();
       } catch {}
-    }, 3000);
-  }
+    }
+  }, 1500);
 }
 
 ipcMain.handle('check-launcher-update', async () => {
   try {
-    const res = await autoUpdater.checkForUpdates();
-    return { success: true, updateAvailable: !!res?.updateInfo };
+    const branchRes = await checkAndApplyGitBranchSelfUpdate();
+    if (branchRes.updated) {
+      return { success: true, updateAvailable: true, version: branchRes.remoteVersion };
+    }
+    if (app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
+      const res = await autoUpdater.checkForUpdates();
+      return { success: true, updateAvailable: !!res?.updateInfo };
+    }
+    return { success: true, updateAvailable: false };
   } catch (err) {
     return { success: false, error: err.message };
   }
@@ -308,6 +492,8 @@ ipcMain.handle('check-launcher-update', async () => {
 
 ipcMain.handle('download-launcher-update', async () => {
   try {
+    const branchRes = await checkAndApplyGitBranchSelfUpdate();
+    if (branchRes.updated) return { success: true };
     await autoUpdater.downloadUpdate();
     return { success: true };
   } catch (err) {
@@ -316,7 +502,12 @@ ipcMain.handle('download-launcher-update', async () => {
 });
 
 ipcMain.handle('install-launcher-update', () => {
-  autoUpdater.quitAndInstall();
+  if (pendingUpdateMode === 'release') {
+    autoUpdater.quitAndInstall(false, true);
+  } else {
+    app.relaunch();
+    app.exit(0);
+  }
 });
 
 // ============================================================================
@@ -1251,6 +1442,15 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
 ipcMain.handle('launch-game', async (event, { session, ram }) => {
   if (isGameRunning) {
     return { error: 'El juego ya se está iniciando o ejecutando.' };
+  }
+  if (isUpdatingLauncher) {
+    return { error: 'El launcher se está actualizando a la última versión. Espera unos segundos.' };
+  }
+
+  // Verificar antes de lanzar que el launcher esté en la última versión
+  const preLaunchUpdate = await checkAndApplyGitBranchSelfUpdate();
+  if (preLaunchUpdate.updated) {
+    return { error: `Actualizando el launcher a la versión v${preLaunchUpdate.remoteVersion}. Se reiniciará en unos segundos.` };
   }
 
   isGameRunning = true;

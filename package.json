@@ -35,6 +35,7 @@
     "appId": "net.doraland.launcher",
     "productName": "Doraland Launcher",
     "copyright": "Copyright © 2024 Doraland",
+    "asar": false,
     "icon": "assets/logo.png",
     "publish": [
       {

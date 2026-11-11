@@ -575,26 +575,34 @@ function setupLauncherAutoUpdater() {
 
   window.doraland.onLauncherUpdateAvailable((data) => {
     banner.style.display = 'flex';
-    if (ubTitle) ubTitle.textContent = `¡Nueva versión disponible: v${data.version}!`;
-    if (ubDesc) ubDesc.textContent = 'Hay mejoras del launcher listas para instalar.';
-    ubBtn.textContent = 'Descargar';
-    ubBtn.onclick = async () => {
+    if (ubTitle) ubTitle.textContent = `¡Actualizando a la versión v${data.version}!`;
+    if (ubDesc) ubDesc.textContent = data.releaseNotes || 'Aplicando la última actualización del launcher automáticamente...';
+    if (data.autoApplying) {
       ubBtn.disabled = true;
-      ubBtn.textContent = 'Descargando... (0%)';
-      await window.doraland.downloadLauncherUpdate();
-    };
+      ubBtn.textContent = 'Actualizando...';
+    } else {
+      ubBtn.disabled = false;
+      ubBtn.textContent = 'Descargar';
+      ubBtn.onclick = async () => {
+        ubBtn.disabled = true;
+        ubBtn.textContent = 'Descargando... (0%)';
+        await window.doraland.downloadLauncherUpdate();
+      };
+    }
   });
 
   window.doraland.onLauncherUpdateProgress((data) => {
-    if (ubBtn) ubBtn.textContent = `Descargando... (${data.percent}%)`;
+    if (ubBtn) ubBtn.textContent = `Actualizando... (${data.percent}%)`;
   });
 
   window.doraland.onLauncherUpdateDownloaded((data) => {
     banner.style.display = 'flex';
-    if (ubTitle) ubTitle.textContent = 'Actualización descargada';
-    if (ubDesc) ubDesc.textContent = 'La nueva versión se descargó. Haz clic para reiniciar y aplicar.';
+    if (ubTitle) ubTitle.textContent = `¡Launcher actualizado a v${data.version}!`;
+    if (ubDesc) ubDesc.textContent = data.autoRestart
+      ? 'Reiniciando automáticamente en 2 segundos para aplicar los cambios...'
+      : 'La nueva versión se descargó. Haz clic para reiniciar y aplicar.';
     ubBtn.disabled = false;
-    ubBtn.textContent = 'Reiniciar launcher';
+    ubBtn.textContent = 'Reiniciar ahora';
     ubBtn.onclick = () => {
       window.doraland.installLauncherUpdate();
     };
