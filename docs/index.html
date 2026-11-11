@@ -803,16 +803,318 @@
       z-index: 1;
     }
 
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12.5px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    /* ── SHOWCASE, GUÍA, REGLAS, CHANGELOG Y FAQ ──────────────── */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+    .showcase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: all 0.25s;
+    }
+    .showcase-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+    .sc-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid var(--border);
+      color: var(--green-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .sc-icon-box.gold {
+      background: rgba(245, 158, 11, 0.14);
+      border-color: var(--border-gold);
+      color: var(--gold-light);
+    }
+    .sc-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+    .sc-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      position: relative;
+    }
+    .guide-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #140B00;
+      font-weight: 900;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .rules-commands-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(34, 197, 94, 0.16);
+      border-radius: 12px;
+      padding: 13px 15px;
+    }
+    .rule-item strong { display: block; font-size: 14px; color: var(--text-primary); margin-bottom: 2px; }
+    .rule-item span { font-size: 13px; color: var(--text-secondary); }
+
+    .commands-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .cmd-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.42);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cmd-chip:hover {
+      border-color: var(--gold);
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .cmd-code {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+    .cmd-desc { font-size: 12px; color: var(--text-secondary); }
+    .cmd-copy-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--green-neon);
+      background: rgba(34, 197, 94, 0.14);
+      padding: 3px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Changelog en vivo */
+    .cl-filters {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .cl-filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cl-filter-btn.active {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      border-color: var(--gold);
+      color: #140B00;
+    }
+    .cl-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .cl-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .cl-tag {
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      font-size: 10.5px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.6px;
+    }
+    .cl-title { font-size: 17px; font-weight: 900; color: var(--text-primary); }
+    .cl-date { font-size: 12px; color: var(--text-muted); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+    .cl-summary { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; }
+    .cl-groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .cl-box {
+      background: rgba(0, 0, 0, 0.34);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .cl-box-title {
+      font-size: 11.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cl-box-title.launcher { color: var(--blue-water); }
+    .cl-box-title.added    { color: var(--green-neon); }
+    .cl-box-title.updated  { color: var(--gold-light); }
+    .cl-box-title.removed  { color: #FCA5A5; }
+    .cl-box ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .cl-box li { font-size: 12.5px; color: var(--text-secondary); padding-left: 12px; position: relative; }
+    .cl-box li::before { content: '•'; position: absolute; left: 0; color: var(--gold); }
+
+    /* FAQ acordeón */
+    .faq-list {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item.open { border-color: var(--gold); }
+    .faq-q {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      padding: 18px 22px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .faq-chevron { transition: transform 0.25s; color: var(--gold-light); flex-shrink: 0; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+      padding: 0 22px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .faq-item.open .faq-a {
+      max-height: 260px;
+      padding-bottom: 18px;
+    }
+
+    /* Banner discreto de Cookies para AdSense */
+    .cookie-banner {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 760px);
+      background: rgba(8, 17, 11, 0.96);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 9999;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(14px);
+    }
+    .cookie-banner.show { display: flex; }
+    .cookie-text { font-size: 12.5px; color: var(--text-secondary); }
+    .cookie-text a { color: var(--gold-light); font-weight: 700; }
+
     @media (max-width: 880px) {
 
       .hero,
       .players-panel,
-      .launcher-showcase {
+      .launcher-showcase,
+      .rules-commands-wrap {
         grid-template-columns: 1fr;
       }
 
       .nav-links {
         display: none;
+      }
+
+      .cookie-banner {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   </style>
@@ -838,9 +1140,11 @@
 
       <ul class="nav-links">
         <li><a href="#estadisticas">Estadísticas</a></li>
+        <li><a href="#guia">Guía</a></li>
+        <li><a href="#changelog">Changelog</a></li>
         <li><a href="#launcher">Launcher</a></li>
-        <li><a href="#staff">Staff Team</a></li>
-        <li><a href="#discord">Discord</a></li>
+        <li><a href="#staff">Staff</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
 
       <div class="nav-cta">
@@ -885,13 +1189,13 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
+          <a href="https://github.com/Sluzzen/Launcher-Doraland/releases/latest" id="btnHeroDownload" target="_blank" rel="noopener" class="btn btn-emerald">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
               <path
                 d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-            </svg> Descargar Doraland Launcher
+            </svg> <span id="btnHeroDownloadLabel">Descargar Doraland Launcher</span>
           </a>
           <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -944,18 +1248,18 @@
       <div class="section-header">
         <span class="section-tag">MÉTRICAS EN TIEMPO REAL</span>
         <h2 class="section-title">Estadísticas Generales de <span class="text-gold">Doraland</span></h2>
-        <p class="section-desc">Monitoreo en vivo del estado del servidor y jugadores activos.</p>
+        <p class="section-desc">Monitoreo en vivo del servidor de Minecraft, comunidad en Discord y agenda de eventos.</p>
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card">
+        <div class="stat-card" id="copyIpStatCard" style="cursor:pointer;" title="Haz clic para copiar la IP">
           <span class="stat-icon" style="color:var(--green-neon);"><svg width="28" height="28" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg></span>
           <div class="stat-value" id="statServerState">Verificando...</div>
           <div class="stat-label">Estado del Servidor</div>
-          <div class="stat-sub" id="statServerMotd">doralandmc.holyhosting.club</div>
+          <div class="stat-sub" id="statServerMotd">doralandmc.holyhosting.club (Clic para copiar IP)</div>
         </div>
 
         <div class="stat-card">
@@ -968,7 +1272,269 @@
             </svg></span>
           <div class="stat-value" id="statPlayersCount">0 / 100</div>
           <div class="stat-label">Jugadores en Línea</div>
-          <div class="stat-sub">Capacidad dinámica activa</div>
+          <div class="stat-sub" id="statPlayersSample">Capacidad dinámica activa</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon" style="color:var(--blue-water);"><svg width="28" height="28" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg></span>
+          <div class="stat-value" id="statDiscordMembers">Comunidad</div>
+          <div class="stat-label">Miembros en Discord</div>
+          <div class="stat-sub" id="statDiscordOnline">Soporte y anuncios en vivo</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon" style="color:var(--purple-shroom);"><svg width="28" height="28" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg></span>
+          <div class="stat-value" style="font-size:21px; padding-top:4px;">Eventos Activos</div>
+          <div class="stat-label">Fines de Semana & Jefes</div>
+          <div class="stat-sub">Anuncios y recompensas en Discord</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SHOWCASE DEL UNIVERSO DORALAND
+    ════════════════════════════════════════════ -->
+    <section class="section" id="universo">
+      <div class="section-header">
+        <span class="section-tag">EXPERIENCIA DE JUEGO</span>
+        <h2 class="section-title">¿Qué encontrarás en <span class="text-gold">Doraland</span>?</h2>
+        <p class="section-desc">Un entorno optimizado para combinar aventura, exploración, personalización y rendimiento fluido.</p>
+      </div>
+
+      <div class="showcase-grid">
+        <article class="showcase-card">
+          <div class="sc-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h3 class="sc-title">Modpack Sincronizado</h3>
+          <p class="sc-desc">Olvídate de buscar archivos sueltos. El launcher verifica automáticamente la integridad de cada mod y configuración para evitar errores de entrada.</p>
+        </article>
+
+        <article class="showcase-card">
+          <div class="sc-icon-box gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 class="sc-title">Estudio Pro de Skins & Capas</h3>
+          <p class="sc-desc">Previsualiza tu personaje con poses animadas, ajusta las 6 zonas 3D, sube tu skin `.PNG` y equipa Capas exclusivas con tu cuenta Premium.</p>
+        </article>
+
+        <article class="showcase-card">
+          <div class="sc-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/></svg>
+          </div>
+          <h3 class="sc-title">Complementos de Cliente & Shaders</h3>
+          <p class="sc-desc">Instala mods visuales de cliente, Resource Packs o Shaders compatibles en 1 clic desde el Centro de Complementos sin perder compatibilidad con el servidor.</p>
+        </article>
+
+        <article class="showcase-card">
+          <div class="sc-icon-box gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3 class="sc-title">Rendimiento Turbo</h3>
+          <p class="sc-desc">Descargas paralelas con Keep-Alive, caché inteligente de Java 21, modo ligero y argumentos JVM optimizados para jugar con FPS estables.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         GUÍA DE INICIO EN 4 PASOS
+    ════════════════════════════════════════════ -->
+    <section class="section" id="guia">
+      <div class="section-header">
+        <span class="section-tag">GUÍA PARA NUEVOS JUGADORES</span>
+        <h2 class="section-title">Cómo Empezar a Jugar en <span class="text-gold">4 Pasos</span></h2>
+        <p class="section-desc">En menos de 3 minutos estarás dentro del mundo de Doraland.</p>
+      </div>
+
+      <div class="guide-grid">
+        <article class="guide-step">
+          <span class="guide-num">1</span>
+          <h3 class="sc-title">Descarga el Launcher</h3>
+          <p class="sc-desc">Obtén el instalador oficial para Windows (64-bit) desde el botón superior y asegúrate de tener Java 21 instalado.</p>
+        </article>
+        <article class="guide-step">
+          <span class="guide-num">2</span>
+          <h3 class="sc-title">Elige tu Cuenta</h3>
+          <p class="sc-desc">Inicia sesión con tu cuenta oficial de Microsoft (Premium) o ingresa con un nickname como jugador No Premium.</p>
+        </article>
+        <article class="guide-step">
+          <span class="guide-num">3</span>
+          <h3 class="sc-title">Personaliza y Ajusta</h3>
+          <p class="sc-desc">Sube tu Skin `.PNG`, equipa tu Capa si eres Premium, asigna entre 4 y 6 GB de RAM en Ajustes y elige tus Shaders favoritos.</p>
+        </article>
+        <article class="guide-step">
+          <span class="guide-num">4</span>
+          <h3 class="sc-title">Pulsa Jugar y Disfruta</h3>
+          <p class="sc-desc">El launcher sincronizará todo automáticamente y te conectará directamente al servidor oficial de Doraland.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN DEL LAUNCHER OFICIAL
+    ════════════════════════════════════════════ -->
+    <section class="section" id="launcher">
+      <div class="launcher-showcase">
+        <div>
+          <span class="section-tag">WINDOWS 10 / 11 (64-BIT)</span>
+          <h2 class="section-title">Doraland <span class="text-gold">Launcher</span></h2>
+          <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente todos los mods
+            y shaders sin que tengas que configurar nada manualmente.</p>
+
+          <ul class="feature-list">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg> <span><strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium
+                (Offline).</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg> <span><strong>Estudio de Skin + Capas:</strong> Sube tu propia skin en `.PNG` y equipa Capas
+                exclusivas para usuarios Premium.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg> <span><strong>Complementos & Ajustes:</strong> Instala Mods de Cliente, Resource Packs, Shaders y
+                configura Resolución/RAM.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10" />
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+              </svg> <span><strong>Auto-Actualización en Primer Plano:</strong> El launcher y los mods se sincronizan
+                solos con barra de progreso en vivo.</span></li>
+          </ul>
+
+          <div class="hero-buttons">
+            <a href="https://github.com/Sluzzen/Launcher-Doraland/releases/latest" id="btnSetupDownload" target="_blank" rel="noopener"
+              class="btn btn-emerald">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg> <span id="btnSetupDownloadLabel">Descargar Instalador Setup</span>
+            </a>
+            <a href="https://adoptium.net/temurin/releases/?version=21" target="_blank" rel="noopener"
+              class="btn btn-outline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                <line x1="6" y1="1" x2="6" y2="4" />
+                <line x1="10" y1="1" x2="10" y2="4" />
+                <line x1="14" y1="1" x2="14" y2="4" />
+              </svg> Descargar Java 21 Oficial
+            </a>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <img src="assets/logo.png"
+            style="max-width: 260px; filter: drop-shadow(0 12px 28px rgba(245, 158, 11, 0.35));"
+            alt="Doraland Launcher" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         CHANGELOG EN VIVO (CONECTADO CON GITHUB)
+    ════════════════════════════════════════════ -->
+    <section class="section" id="changelog">
+      <div class="section-header">
+        <span class="section-tag">HISTORIAL EN VIVO</span>
+        <h2 class="section-title">Novedades y <span class="text-gold">Changelog</span></h2>
+        <p class="section-desc">Consulta las últimas mejoras del Launcher y los cambios en la lista de mods del servidor.</p>
+      </div>
+
+      <div class="cl-filters">
+        <button class="cl-filter-btn active" data-cl-filter="all">Todo</button>
+        <button class="cl-filter-btn" data-cl-filter="launcher">Solo Launcher</button>
+        <button class="cl-filter-btn" data-cl-filter="mods">Solo Mods</button>
+      </div>
+
+      <div class="cl-timeline" id="webChangelogTimeline">
+        <div class="cl-card">
+          <div class="cl-summary" style="margin:0;">Cargando historial de actualizaciones desde el repositorio oficial...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         NORMATIVA DEL SERVIDOR Y COMANDOS ÚTILES
+    ════════════════════════════════════════════ -->
+    <section class="section" id="reglas">
+      <div class="section-header">
+        <span class="section-tag">CONVIVENCIA Y UTILIDADES</span>
+        <h2 class="section-title">Reglas y <span class="text-gold">Comandos Útiles</span></h2>
+        <p class="section-desc">Mantén una comunidad sana y aprovecha los comandos esenciales dentro del juego.</p>
+      </div>
+
+      <div class="rules-commands-wrap">
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green-neon)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Normativa Básica de Doraland
+          </h3>
+          <div class="rules-list" style="margin-top:14px;">
+            <div class="rule-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <div>
+                <strong>Cero Hacks ni Ventajas Ilegales</strong>
+                <span>Prohibido el uso de X-Ray, autoclickers, clientes de trampa o aprovechamiento de bugs.</span>
+              </div>
+            </div>
+            <div class="rule-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green-neon)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <div>
+                <strong>Respeto en Chat y Discord</strong>
+                <span>Evita insultos, toxicidad, spam o publicidad externa. Respeta siempre a jugadores y Staff.</span>
+              </div>
+            </div>
+            <div class="rule-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue-water)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <div>
+                <strong>Cuida tus Construcciones y las Ajenas</strong>
+                <span>No destruyas bases ajenas ni hagas lag machines que afecten el rendimiento del servidor.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Comandos Rápidos (Clic para copiar)
+          </h3>
+          <div class="commands-grid">
+            <div class="cmd-chip" data-cmd="/spawn">
+              <div><div class="cmd-code">/spawn</div><div class="cmd-desc">Volver al punto de aparición principal</div></div>
+              <span class="cmd-copy-tag">COPIAR</span>
+            </div>
+            <div class="cmd-chip" data-cmd="/sethome casa">
+              <div><div class="cmd-code">/sethome casa</div><div class="cmd-desc">Guardar la ubicación actual como tu hogar</div></div>
+              <span class="cmd-copy-tag">COPIAR</span>
+            </div>
+            <div class="cmd-chip" data-cmd="/home casa">
+              <div><div class="cmd-code">/home casa</div><div class="cmd-desc">Teletransportarte a tu hogar guardado</div></div>
+              <span class="cmd-copy-tag">COPIAR</span>
+            </div>
+            <div class="cmd-chip" data-cmd="/tpa ">
+              <div><div class="cmd-code">/tpa &lt;jugador&gt;</div><div class="cmd-desc">Enviar solicitud de teletransporte a un amigo</div></div>
+              <span class="cmd-copy-tag">COPIAR</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1068,72 +1634,77 @@
     </section>
 
     <!-- ═══════════════════════════════════════════
-         SECCIÓN DEL LAUNCHER OFICIAL
+         PREGUNTAS FRECUENTES (FAQ)
     ════════════════════════════════════════════ -->
-    <section class="section" id="launcher">
-      <div class="launcher-showcase">
-        <div>
-          <span class="section-tag">WINDOWS 10 / 11 (64-BIT)</span>
-          <h2 class="section-title">Doraland <span class="text-gold">Launcher</span></h2>
-          <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente todos los mods
-            y shaders sin que tengas que configurar nada manualmente.</p>
+    <section class="section" id="faq">
+      <div class="section-header">
+        <span class="section-tag">CENTRO DE AYUDA</span>
+        <h2 class="section-title">Preguntas <span class="text-gold">Frecuentes</span></h2>
+        <p class="section-desc">Resuelve al instante las dudas más comunes sobre instalación, cuentas, skins y rendimiento.</p>
+      </div>
 
-          <ul class="feature-list">
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg> <span><strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium
-                (Offline).</span></li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg> <span><strong>Estudio de Skin + Capas:</strong> Sube tu propia skin en `.PNG` y equipa Capas
-                exclusivas para usuarios Premium.</span></li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3" />
-                <path
-                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg> <span><strong>Complementos & Ajustes:</strong> Instala Mods de Cliente, Resource Packs, Shaders y
-                configura Resolución/RAM.</span></li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 4 23 10 17 10" />
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-              </svg> <span><strong>Auto-Actualización en Primer Plano:</strong> El launcher y los mods se sincronizan
-                solos con barra de progreso en vivo.</span></li>
-          </ul>
-
-          <div class="hero-buttons">
-            <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener"
-              class="btn btn-emerald">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg> Descargar Instalador Setup
-            </a>
-            <a href="https://adoptium.net/temurin/releases/?version=21" target="_blank" rel="noopener"
-              class="btn btn-outline">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-                <line x1="6" y1="1" x2="6" y2="4" />
-                <line x1="10" y1="1" x2="10" y2="4" />
-                <line x1="14" y1="1" x2="14" y2="4" />
-              </svg> Descargar Java 21 Oficial
-            </a>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-q">
+            <span>¿Puedo entrar siendo jugador No Premium o necesito cuenta de Microsoft?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            Puedes entrar con ambos tipos de cuenta. Doraland Launcher permite iniciar sesión con tu cuenta oficial de Microsoft (Premium) o acceder con un nickname personalizado en modo No Premium.
           </div>
         </div>
 
-        <div style="text-align: center;">
-          <img src="assets/logo.png"
-            style="max-width: 260px; filter: drop-shadow(0 12px 28px rgba(245, 158, 11, 0.35));"
-            alt="Doraland Launcher" />
+        <div class="faq-item">
+          <button class="faq-q">
+            <span>¿Cómo funcionan las Capas y el Estudio de Skins?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            Todos los jugadores pueden subir su propia skin en formato `.PNG` o importarla por nickname desde la pestaña "Mi Skin". El Selector de Capas es un beneficio cosmético exclusivo desbloqueado para jugadores con cuenta Premium de Microsoft.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            <span>¿Cuánta memoria RAM se recomienda asignar y qué Java necesito?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            Se recomienda asignar entre 4 GB y 6 GB de RAM desde los sliders de inicio o Ajustes, y contar con Java 21 de 64 bits (puedes descargarlo desde el enlace oficial de Eclipse Adoptium en la sección Launcher).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            <span>¿Puedo añadir mis propios Shaders, Resource Packs o Mods visuales?</span>
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            Sí. Dentro del Launcher tienes la pestaña "Mods & Shaders" para instalar mods de cliente compatibles, paquetes de texturas y shaders sin que el sincronizador del servidor los borre.
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         COMUNIDAD DE DISCORD
+    ════════════════════════════════════════════ -->
+    <section id="discord" class="discord-banner">
+      <div>
+        <span class="pill pill-blue">COMUNIDAD OFICIAL</span>
+        <h2 style="font-size: 28px; font-weight: 900; margin: 10px 0 6px;">Únete al Discord de Doraland</h2>
+        <p style="color: var(--text-secondary); max-width: 560px;">
+          Entérate de todas las actualizaciones del modpack, abre tickets de soporte con el Staff Team, comparte
+          capturas y juega con toda la comunidad.
+        </p>
+      </div>
+      <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold"
+        style="font-size: 16px; padding: 14px 28px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg> Entrar al Servidor de Discord
+      </a>
     </section>
 
     <!-- ═══════════════════════════════════════════
@@ -1165,35 +1736,28 @@
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         COMUNIDAD DE DISCORD
-    ════════════════════════════════════════════ -->
-    <section id="discord" class="discord-banner">
-      <div>
-        <span class="pill pill-blue">COMUNIDAD OFICIAL</span>
-        <h2 style="font-size: 28px; font-weight: 900; margin: 10px 0 6px;">Únete al Discord de Doraland</h2>
-        <p style="color: var(--text-secondary); max-width: 560px;">
-          Entérate de todas las actualizaciones del modpack, abre tickets de soporte con el Staff Team, comparte
-          capturas y juega con toda la comunidad.
-        </p>
-      </div>
-      <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold"
-        style="font-size: 16px; padding: 14px 28px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg> Entrar al Servidor de Discord
-      </a>
-    </section>
-
   </main>
 
   <footer>
+    <div class="footer-links">
+      <a href="privacy.html">Política de Privacidad y Cookies</a>
+      <a href="terms.html">Términos de Uso y Reglas</a>
+      <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener">Contacto y Soporte (Discord)</a>
+      <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener">Repositorio Oficial</a>
+    </div>
     <p>© 2025 - 2026 <strong>Doraland Server</strong> • Desarrollado por el Staff Team (Dacota10, Yanah_, OmniAzkeel,
-        SLuzzen).</p>
+      SLuzzen).</p>
     <p>© 2026 <strong>Doraland Launcher & InfraEstructura Web</strong> • Desarrollado por SLuzzen.</p>
     <p style="margin-top: 6px; font-size: 11px;">No afiliado oficialmente con Mojang AB o Microsoft.</p>
   </footer>
+
+  <!-- Aviso de Cookies (Cumplimiento Google AdSense) -->
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-text">
+      Utilizamos cookies técnicas y de Google AdSense para mostrar anuncios y mejorar tu experiencia. Consulta nuestra <a href="privacy.html">Política de Privacidad</a>.
+    </div>
+    <button class="btn btn-gold" id="btnAcceptCookies" style="padding:8px 16px;font-size:12.5px;flex-shrink:0;">Aceptar</button>
+  </div>
 
   <script>
     // 1. Luciérnagas animadas del bosque Doraland
@@ -1236,21 +1800,62 @@
     }
     requestAnimationFrame(drawFireflies);
 
-    // 2. Copiar IP del servidor
-    document.getElementById('copyIpBox')?.addEventListener('click', () => {
+    function escHtml(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // 2. Copiar IP y Comandos Rápidos
+    document.getElementById('copyIpStatCard')?.addEventListener('click', () => {
       navigator.clipboard?.writeText('doralandmc.holyhosting.club');
-      const chip = document.getElementById('copyChipText');
-      if (chip) {
-        chip.textContent = '¡IP COPIADA!';
-        setTimeout(() => { chip.textContent = 'COPIAR IP'; }, 2500);
+      const sub = document.getElementById('statServerMotd');
+      if (sub) {
+        const old = sub.textContent;
+        sub.textContent = 'IP copiada al portapapeles';
+        sub.style.color = '#4ADE80';
+        setTimeout(() => { sub.textContent = old; sub.style.color = ''; }, 2400);
       }
     });
 
-    // 3. Consultar Estado del Servidor en Vivo
+    document.querySelectorAll('.cmd-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cmd = chip.dataset.cmd || '';
+        if (!cmd) return;
+        navigator.clipboard?.writeText(cmd);
+        const tag = chip.querySelector('.cmd-copy-tag');
+        if (tag) {
+          tag.textContent = 'COPIADO';
+          setTimeout(() => { tag.textContent = 'COPIAR'; }, 1800);
+        }
+      });
+    });
+
+    // 3. FAQ Acordeón
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        if (!item) return;
+        item.classList.toggle('open');
+      });
+    });
+
+    // 4. Aviso de Cookies
+    (function setupCookies() {
+      const banner = document.getElementById('cookieBanner');
+      if (!banner) return;
+      if (!localStorage.getItem('doraland_cookies_ok')) {
+        banner.classList.add('show');
+      }
+      document.getElementById('btnAcceptCookies')?.addEventListener('click', () => {
+        localStorage.setItem('doraland_cookies_ok', '1');
+        banner.classList.remove('show');
+      });
+    })();
+
+    // 5. Consultar Estado del Servidor Minecraft y Miembros de Discord en Vivo
     async function fetchServerStatus() {
       const stateEl = document.getElementById('statServerState');
       const playersEl = document.getElementById('statPlayersCount');
-      const dotEl = document.getElementById('heroStatusDot');
+      const sampleEl = document.getElementById('statPlayersSample');
 
       try {
         const res = await fetch('https://api.mcstatus.io/v2/status/java/doralandmc.holyhosting.club');
@@ -1259,7 +1864,10 @@
           stateEl.textContent = 'En Línea';
           stateEl.style.color = '#4ADE80';
           playersEl.textContent = `${data.players?.online || 0} / ${data.players?.max || 100}`;
-          if (dotEl) dotEl.style.background = '#22C55E';
+          const list = data.players?.list || [];
+          if (sampleEl && list.length > 0) {
+            sampleEl.textContent = 'Conectados: ' + list.slice(0, 4).map(p => p.name_clean || p.name_raw).join(', ');
+          }
         } else {
           throw new Error('offline');
         }
@@ -1267,10 +1875,130 @@
         stateEl.textContent = 'Mantenimiento / Offline';
         stateEl.style.color = '#F59E0B';
         playersEl.textContent = '0 / 100';
-        if (dotEl) dotEl.style.background = '#F59E0B';
       }
     }
+
+    async function fetchDiscordStats() {
+      const totalEl = document.getElementById('statDiscordMembers');
+      const onlineEl = document.getElementById('statDiscordOnline');
+      try {
+        const res = await fetch('https://discord.com/api/v9/invites/nR9c4czkt7?with_counts=true');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (totalEl && data.approximate_member_count) {
+          totalEl.textContent = `${data.approximate_member_count}`;
+        }
+        if (onlineEl && typeof data.approximate_presence_count === 'number') {
+          onlineEl.textContent = `${data.approximate_presence_count} activos en Discord ahora`;
+        }
+      } catch {}
+    }
+
+    // 6. Enlace Directo al Último Instalador desde GitHub Releases (sin mostrar número de versión)
+    async function resolveLatestLauncherDownload() {
+      try {
+        const res = await fetch('https://api.github.com/repos/Sluzzen/Launcher-Doraland/releases/latest');
+        if (!res.ok) return;
+        const rel = await res.json();
+        const exeAsset = (rel.assets || []).find(a => /\.exe$/i.test(a.name));
+        const dlUrl = exeAsset ? exeAsset.browser_download_url : rel.html_url;
+        if (!dlUrl) return;
+        const heroBtn = document.getElementById('btnHeroDownload');
+        const setupBtn = document.getElementById('btnSetupDownload');
+        if (heroBtn) heroBtn.href = dlUrl;
+        if (setupBtn) setupBtn.href = dlUrl;
+        if (exeAsset) {
+          const setupLbl = document.getElementById('btnSetupDownloadLabel');
+          if (setupLbl) setupLbl.textContent = 'Descargar Instalador Directo (.EXE)';
+        }
+      } catch {}
+    }
+
+    // 7. Changelog en Vivo conectado a launcher-config.json (sin mostrar versión)
+    let webChangelogEntries = [
+      {
+        date: '2026-11-11',
+        title: 'Estudio Pro de Skins & Capas (Premium), Banner Flotante e Iconografía SVG',
+        summary: 'Poses animadas en el Estudio de Skins, Selector de Capas exclusivo Premium, notificación de actualización en primer plano e iconografía SVG.',
+        launcherChanges: [
+          'Estudio Pro de Skins con poses animadas, ambientes de estudio, inspector UV y presets del Staff.',
+          'Selector de Capas (Capes) exclusivo para cuentas Premium Microsoft.',
+          'Banner y barra de progreso de auto-actualización fijados en primer plano.'
+        ],
+        modsAdded: [],
+        modsUpdated: ['Sincronización optimizada de recursos para clientes Premium'],
+        modsRemoved: []
+      }
+    ];
+    let webChangelogFilter = 'all';
+
+    function renderWebChangelog() {
+      const container = document.getElementById('webChangelogTimeline');
+      if (!container) return;
+      container.innerHTML = '';
+
+      for (const entry of webChangelogEntries) {
+        const showLauncher = webChangelogFilter === 'all' || webChangelogFilter === 'launcher';
+        const showMods = webChangelogFilter === 'all' || webChangelogFilter === 'mods';
+
+        const launcherList = showLauncher ? (entry.launcherChanges || []) : [];
+        const addedList = showMods ? (entry.modsAdded || []) : [];
+        const updatedList = showMods ? (entry.modsUpdated || []) : [];
+        const removedList = showMods ? (entry.modsRemoved || []) : [];
+
+        if (!launcherList.length && !addedList.length && !updatedList.length && !removedList.length) continue;
+
+        const card = document.createElement('article');
+        card.className = 'cl-card';
+        card.innerHTML = `
+          <div class="cl-top">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span class="cl-tag">ACTUALIZACIÓN</span>
+              <h3 class="cl-title">${escHtml(entry.title || 'Actualización Doraland')}</h3>
+            </div>
+            <span class="cl-date">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              ${escHtml(entry.date || '')}
+            </span>
+          </div>
+          <p class="cl-summary">${escHtml(entry.summary || '')}</p>
+          <div class="cl-groups">
+            ${launcherList.length ? `<div class="cl-box"><div class="cl-box-title launcher">Novedades del Launcher</div><ul>${launcherList.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul></div>` : ''}
+            ${addedList.length ? `<div class="cl-box"><div class="cl-box-title added">Mods Agregados</div><ul>${addedList.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul></div>` : ''}
+            ${updatedList.length ? `<div class="cl-box"><div class="cl-box-title updated">Mods Actualizados</div><ul>${updatedList.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul></div>` : ''}
+            ${removedList.length ? `<div class="cl-box"><div class="cl-box-title removed">Mods Retirados</div><ul>${removedList.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul></div>` : ''}
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    async function fetchLiveChangelog() {
+      try {
+        const res = await fetch('https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/launcher-config.json?t=' + Date.now());
+        if (res.ok) {
+          const cfg = await res.json();
+          if (Array.isArray(cfg?.changelog) && cfg.changelog.length > 0) {
+            webChangelogEntries = cfg.changelog;
+          }
+        }
+      } catch {}
+      renderWebChangelog();
+    }
+
+    document.querySelectorAll('.cl-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cl-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        webChangelogFilter = btn.dataset.clFilter || 'all';
+        renderWebChangelog();
+      });
+    });
+
     fetchServerStatus();
+    fetchDiscordStats();
+    resolveLatestLauncherDownload();
+    fetchLiveChangelog();
   </script>
 </body>
 
