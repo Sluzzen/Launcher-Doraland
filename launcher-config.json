@@ -86,15 +86,15 @@
     },
     "adServerUrl": "https://sluzzen.github.io/Launcher-Doraland/ads.html",
     "fallbackPromo": {
-      "badge": "GOOGLE ADS • PATROCINADO",
+      "badge": "PATROCINADO",
       "title": "Comunidad Oficial Doraland • Eventos y Rangos",
-      "subtitle": "Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.",
+      "subtitle": "Únete a nuestro Discord oficial novedades del servidor.",
       "ctaText": "Unirse al Discord",
       "ctaUrl": "https://discord.gg/nR9c4czkt7"
     }
   },
   "launcher": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "allowPremium": true,
     "allowOffline": true,
     "gameDataFolder": ".doraland",
