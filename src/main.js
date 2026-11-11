@@ -144,8 +144,7 @@ const DEFAULT_CONFIG = {
       homeHorizontal: "1234567890",
       sidebarBanner: "0987654321"
     },
-    adServerUrl: "https://sluzzen.github.io/Launcher-Doraland/ads-home.html",
-    sidebarAdServerUrl: "https://sluzzen.github.io/Launcher-Doraland/ads-sidebar.html",
+    adServerUrl: "https://sluzzen.github.io/Launcher-Doraland/ads.html",
     fallbackPromo: {
       badge: "GOOGLE ADS • PATROCINADO",
       title: "Comunidad Oficial Doraland • Eventos y Rangos",

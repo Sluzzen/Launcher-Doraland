@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doraland — Servidor Oficial Minecraft NeoForge 1.21.1 & Launcher</title>
+  <meta name="description" content="Sitio web oficial del servidor Doraland (Minecraft NeoForge 1.21.1). Descarga el Launcher oficial, consulta estadísticas en vivo, conoce al Staff Team y únete a nuestro Discord." />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <!-- =========================================================================
+       MONETIZACIÓN PASIVA GOOGLE ADSENSE
+       Reemplaza ca-pub-0000000000000000 con tu ID real de Google AdSense
+  ========================================================================== -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --bg-deep: #050906;
+      --bg-dark: #09120C;
+      --bg-card: rgba(15, 28, 19, 0.78);
+      --bg-glass: rgba(12, 23, 16, 0.88);
+      --green-bright: #22C55E;
+      --green-neon: #4ADE80;
+      --green-mid: #16A34A;
+      --green-dark: #14532D;
+      --gold: #F59E0B;
+      --gold-light: #FCD34D;
+      --gold-dark: #B45309;
+      --blue-water: #38BDF8;
+      --purple-shroom: #A855F7;
+      --crimson: #EC4899;
+      --text-primary: #F0FDF4;
+      --text-secondary: #9CC2A5;
+      --text-muted: #5C8065;
+      --border: rgba(34, 197, 94, 0.2);
+      --border-gold: rgba(245, 158, 11, 0.35);
+      --radius-lg: 20px;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --max-w: 1220px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Fondo ambiental animado */
+    #firefliesCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
+    .bg-glow-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(34, 197, 94, 0.14) 0%, transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 45%);
+    }
+
+    /* Barra de navegación */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5, 10, 7, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.4));
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green-neon);
+      letter-spacing: 1.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.22s;
+    }
+
+    .btn-emerald {
+      background: linear-gradient(135deg, var(--green-bright), var(--green-mid));
+      color: #041308;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.35);
+    }
+    .btn-emerald:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #140B00;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245, 158, 11, 0.5);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+    }
+    .btn-outline:hover {
+      background: rgba(245, 158, 11, 0.14);
+      transform: translateY(-2px);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── HERO PRINCIPAL ───────────────────────────────────────── */
+    .hero {
+      padding: 64px 0 42px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 13px;
+      border-radius: 999px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    .pill-gold {
+      background: rgba(245, 158, 11, 0.16);
+      color: var(--gold-light);
+      border: 1px solid var(--border-gold);
+    }
+    .pill-green {
+      background: rgba(34, 197, 94, 0.16);
+      color: var(--green-neon);
+      border: 1px solid var(--border);
+    }
+    .pill-blue {
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--blue-water);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4.5vw, 54px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .text-gold {
+      background: linear-gradient(90deg, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-green {
+      color: var(--green-neon);
+    }
+
+    .hero p {
+      font-size: 16.5px;
+      color: var(--text-secondary);
+      margin-bottom: 26px;
+      max-width: 600px;
+    }
+
+    .server-ip-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(12, 24, 16, 0.92);
+      border: 1px solid var(--border-gold);
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 26px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .server-ip-bar:hover {
+      border-color: var(--green-bright);
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.22);
+    }
+
+    .live-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--green-bright);
+      box-shadow: 0 0 10px var(--green-bright);
+    }
+
+    .ip-code {
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .copy-chip {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--green-neon);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-art {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-logo-float {
+      width: 100%;
+      max-width: 350px;
+      filter: drop-shadow(0 16px 36px rgba(34, 197, 94, 0.42));
+      animation: floatIsland 4.5s ease-in-out infinite;
+    }
+
+    @keyframes floatIsland {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ── BLOQUES PUBLICITARIOS GOOGLE ADS (MONETIZACIÓN PASIVA) ── */
+    .ad-slot-container {
+      margin: 28px 0;
+      background: linear-gradient(135deg, rgba(16, 29, 20, 0.88), rgba(26, 20, 10, 0.85));
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-slot-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+
+    .ad-fallback-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      flex-wrap: wrap;
+    }
+
+    .afb-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .afb-icon {
+      font-size: 28px;
+    }
+
+    .afb-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .afb-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ── SECCIONES GENERALES ──────────────────────────────────── */
+    .section {
+      padding: 52px 0 20px;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 36px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid var(--border-gold);
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3.2vw, 36px);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* ── ESTADÍSTICAS DEL SERVIDOR ────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      backdrop-filter: blur(14px);
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .stat-icon {
+      font-size: 26px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ── STAFF TEAM SHOWCASE ──────────────────────────────────── */
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .staff-card {
+      background:
+        radial-gradient(circle at 50% 28%, rgba(34, 197, 94, 0.18), transparent 65%),
+        var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.28s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .staff-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 24px rgba(245, 158, 11, 0.2);
+    }
+
+    .staff-card.owner-card {
+      border-color: var(--border-gold);
+      background:
+        radial-gradient(circle at 50% 25%, rgba(245, 158, 11, 0.24), transparent 65%),
+        var(--bg-card);
+    }
+
+    .staff-role-pill {
+      font-size: 10.5px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 14px;
+    }
+
+    .role-owner {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--gold-light);
+      border: 1px solid var(--gold);
+    }
+    .role-admin {
+      background: rgba(236, 72, 153, 0.18);
+      color: #F472B6;
+      border: 1px solid rgba(236, 72, 153, 0.45);
+    }
+    .role-mods {
+      background: rgba(34, 197, 94, 0.18);
+      color: var(--green-neon);
+      border: 1px solid var(--green-bright);
+    }
+    .role-web {
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--blue-water);
+      border: 1px solid var(--blue-water);
+    }
+
+    .staff-skin-stage {
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 6px 0 14px;
+    }
+
+    .staff-body-img {
+      max-height: 200px;
+      width: auto;
+      object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.7));
+      transition: transform 0.3s ease;
+    }
+
+    .staff-card:hover .staff-body-img {
+      transform: scale(1.06) translateY(-4px);
+    }
+
+    .staff-head-Row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .staff-head-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 2px solid var(--gold);
+      image-rendering: pixelated;
+    }
+
+    .staff-name {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-primary);
+    }
+
+    .staff-subrole {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .staff-bio {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .staff-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-staff-mini {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-staff-mini:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    /* ── JUGADORES EN VIVO Y BUSCADOR DE SKINS ────────────────── */
+    .players-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(14px);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .online-players-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .player-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .player-chip img {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      image-rendering: pixelated;
+    }
+
+    .skin-search-form {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .skin-search-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+    }
+    .skin-search-input:focus {
+      border-color: var(--green-bright);
+    }
+
+    .inspector-result {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .inspector-body {
+      height: 140px;
+      width: auto;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+    }
+
+    /* ── SECCIÓN LAUNCHER Y DISCORD ───────────────────────────── */
+    .launcher-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+      background:
+        radial-gradient(circle at 85% 50%, rgba(34, 197, 94, 0.18), transparent 60%),
+        var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 18px 0 24px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .discord-banner {
+      margin-top: 48px;
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.24) 0%, rgba(16, 28, 20, 0.92) 100%);
+      border: 1px solid rgba(88, 101, 242, 0.45);
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 880px) {
+      .hero, .players-panel, .launcher-showcase {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="firefliesCanvas"></canvas>
+  <div class="bg-glow-overlay"></div>
+
+  <!-- ═══════════════════════════════════════════
+       BARRA DE NAVEGACIÓN
+  ════════════════════════════════════════════ -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <img src="assets/logo.png" alt="Doraland Logo" />
+        <div>
+          <span class="brand-title">DORALAND</span>
+          <span class="brand-sub">SERVIDOR & LAUNCHER 1.21.1</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#estadisticas">Estadísticas</a></li>
+        <li><a href="#launcher">Launcher v1.0.1</a></li>
+        <li><a href="#jugadores">Jugadores</a></li>
+        <li><a href="#staff">Staff Team</a></li>
+        <li><a href="#discord">Discord</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-outline">💬 Discord</a>
+        <a href="#launcher" class="btn btn-emerald">⬇️ Descargar Launcher</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════
+         HERO PRINCIPAL
+    ════════════════════════════════════════════ -->
+    <section class="hero">
+      <div>
+        <div class="hero-badge-row">
+          <span class="pill pill-gold">✨ TEMPORADA OFICIAL</span>
+          <span class="pill pill-green">⚡ NEOFORGE 21.1.250 • MC 1.21.1</span>
+          <span class="pill pill-blue">🎨 PREMIUM & NO PREMIUM</span>
+        </div>
+
+        <h1>Vive la Aventura Definitiva en <span class="text-gold">Doraland</span></h1>
+        <p>
+          Explora un mundo diseñado al detalle con <strong>149 mods sincronizados automáticamente</strong>, más de <strong>1,510 emotes de Emotecraft</strong>, shaders preconfigurados y nuestro propio Launcher con Estudio de Skins integrado.
+        </p>
+
+        <div class="server-ip-bar" id="copyIpBox" title="Haz clic para copiar la IP del servidor">
+          <span class="live-dot" id="heroStatusDot"></span>
+          <span class="ip-code">doralandmc.holyhosting.club</span>
+          <span class="copy-chip" id="copyChipText">COPIAR IP</span>
+        </div>
+
+        <div class="hero-buttons">
+          <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
+            🚀 Descargar Doraland Launcher v1.0.1
+          </a>
+          <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold">
+            💬 Unirse al Discord Oficial
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <img src="assets/logo.png" class="hero-logo-float" alt="Isla Doraland" />
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         BLOQUE GOOGLE ADS #1 (TOP LEADERBOARD)
+    ════════════════════════════════════════════ -->
+    <div class="ad-slot-container">
+      <div class="ad-slot-header">
+        <span>GOOGLE ADS • ESPACIO PUBLICITARIO PATROCINADO</span>
+        <span>AdSense Monetization</span>
+      </div>
+      <!-- Bloque oficial Google AdSense -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-0000000000000000"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <!-- Banner Patrocinado de Respaldo -->
+      <div class="ad-fallback-banner">
+        <div class="afb-left">
+          <span class="afb-icon">💎</span>
+          <div>
+            <div class="afb-title">Comunidad Oficial Doraland • Eventos, Sorteos y Soporte</div>
+            <div class="afb-desc">Conéctate a doralandmc.holyhosting.club con el Launcher Oficial y participa en los eventos semanales.</div>
+          </div>
+        </div>
+        <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold">Entrar al Discord →</a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         ESTADÍSTICAS GENERALES DEL SERVIDOR
+    ════════════════════════════════════════════ -->
+    <section class="section" id="estadisticas">
+      <div class="section-header">
+        <span class="section-tag">MÉTRICAS EN TIEMPO REAL</span>
+        <h2 class="section-title">Estadísticas Generales de <span class="text-gold">Doraland</span></h2>
+        <p class="section-desc">Monitoreo en vivo del estado del servidor, jugadores activos y paquetes sincronizados en nuestro repositorio oficial.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">🟢</span>
+          <div class="stat-value" id="statServerState">Verificando...</div>
+          <div class="stat-label">Estado del Servidor</div>
+          <div class="stat-sub" id="statServerMotd">doralandmc.holyhosting.club</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon">👥</span>
+          <div class="stat-value" id="statPlayersCount">0 / 100</div>
+          <div class="stat-label">Jugadores en Línea</div>
+          <div class="stat-sub">Capacidad dinámica activa</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon">📦</span>
+          <div class="stat-value">149 Mods</div>
+          <div class="stat-label">Modpack NeoForge 1.21.1</div>
+          <div class="stat-sub">Verificados con SHA-1 automático</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon">💃</span>
+          <div class="stat-value">1,510+</div>
+          <div class="stat-label">Emotes & Animaciones</div>
+          <div class="stat-sub">Emotecraft + Shaders incluidos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         STAFF TEAM OFICIAL CON SUS SKINS DE MINECRAFT
+    ════════════════════════════════════════════ -->
+    <section class="section" id="staff">
+      <div class="section-header">
+        <span class="section-tag">EQUIPO DIRECTIVO Y DESARROLLO</span>
+        <h2 class="section-title">Nuestro <span class="text-gold">Staff Team</span></h2>
+        <p class="section-desc">Conoce a los creadores, administradores y desarrolladores detrás del universo de Doraland con sus cuentas y skins oficiales de Minecraft.</p>
+      </div>
+
+      <div class="staff-grid">
+
+        <!-- 1. Dacota10 (Owner) -->
+        <article class="staff-card owner-card">
+          <span class="staff-role-pill role-owner">👑 OWNER</span>
+          <div class="staff-skin-stage">
+            <img class="staff-body-img"
+                 src="https://mc-heads.net/body/Dacota10/220"
+                 onerror="this.src='https://minotar.net/armor/body/Dacota10/200.png'"
+                 alt="Skin de Dacota10" />
+          </div>
+          <div class="staff-head-Row">
+            <img class="staff-head-icon" src="https://mc-heads.net/avatar/Dacota10/48" alt="Avatar Dacota10" />
+            <h3 class="staff-name">Dacota10</h3>
+          </div>
+          <div class="staff-subrole">Owner & Fundador General</div>
+          <p class="staff-bio">Creador y director general del proyecto Doraland, coordinación de comunidad, eventos y visión del servidor.</p>
+          <div class="staff-actions">
+            <button class="btn-staff-mini" onclick="inspectPlayerSkin('Dacota10')">🔍 Ver Skin en Inspector</button>
+          </div>
+        </article>
+
+        <!-- 2. Yanah_ (Developer / Head Admin) -->
+        <article class="staff-card">
+          <span class="staff-role-pill role-admin">🛡️ DEVELOPER / HEAD ADMIN</span>
+          <div class="staff-skin-stage">
+            <img class="staff-body-img"
+                 src="https://mc-heads.net/body/Yanah_/220"
+                 onerror="this.src='https://minotar.net/armor/body/Yanah_/200.png'"
+                 alt="Skin de Yanah_" />
+          </div>
+          <div class="staff-head-Row">
+            <img class="staff-head-icon" src="https://mc-heads.net/avatar/Yanah_/48" alt="Avatar Yanah_" />
+            <h3 class="staff-name">Yanah_</h3>
+          </div>
+          <div class="staff-subrole">Developer / Head Admin</div>
+          <p class="staff-bio">Jefa de administración y desarrollo del servidor, gestión de balance, normativas, seguridad y experiencia in-game.</p>
+          <div class="staff-actions">
+            <button class="btn-staff-mini" onclick="inspectPlayerSkin('Yanah_')">🔍 Ver Skin en Inspector</button>
+          </div>
+        </article>
+
+        <!-- 3. OnmiAzkeel (Developer / Mods Developer) -->
+        <article class="staff-card">
+          <span class="staff-role-pill role-mods">⚒️ DEVELOPER / MODS DEV</span>
+          <div class="staff-skin-stage">
+            <img class="staff-body-img"
+                 src="https://mc-heads.net/body/OnmiAzkeel/220"
+                 onerror="this.src='https://minotar.net/armor/body/OnmiAzkeel/200.png'"
+                 alt="Skin de OnmiAzkeel" />
+          </div>
+          <div class="staff-head-Row">
+            <img class="staff-head-icon" src="https://mc-heads.net/avatar/OnmiAzkeel/48" alt="Avatar OnmiAzkeel" />
+            <h3 class="staff-name">OnmiAzkeel</h3>
+          </div>
+          <div class="staff-subrole">Developer / Mods Developer</div>
+          <p class="staff-bio">Ingeniero del modpack NeoForge 1.21.1, optimización de los 149 mods, configuraciones personalizadas e integración de sistemas.</p>
+          <div class="staff-actions">
+            <button class="btn-staff-mini" onclick="inspectPlayerSkin('OnmiAzkeel')">🔍 Ver Skin en Inspector</button>
+          </div>
+        </article>
+
+        <!-- 4. SLuzzen (Developer / Web Developer) -->
+        <article class="staff-card">
+          <span class="staff-role-pill role-web">💻 DEVELOPER / WEB DEV</span>
+          <div class="staff-skin-stage">
+            <img class="staff-body-img"
+                 src="https://mc-heads.net/body/SLuzzen/220"
+                 onerror="this.src='https://minotar.net/armor/body/SLuzzen/200.png'"
+                 alt="Skin de SLuzzen" />
+          </div>
+          <div class="staff-head-Row">
+            <img class="staff-head-icon" src="https://mc-heads.net/avatar/SLuzzen/48" alt="Avatar SLuzzen" />
+            <h3 class="staff-name">SLuzzen</h3>
+          </div>
+          <div class="staff-subrole">Developer / Web & Launcher Dev</div>
+          <p class="staff-bio">Desarrollador de Doraland Launcher, sistema de actualizaciones automáticas en GitHub, Estudio de Skins e infraestructura web.</p>
+          <div class="staff-actions">
+            <button class="btn-staff-mini" onclick="inspectPlayerSkin('SLuzzen')">🔍 Ver Skin en Inspector</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         JUGADORES EN LÍNEA E INSPECTOR DE SKINS
+    ════════════════════════════════════════════ -->
+    <section class="section" id="jugadores">
+      <div class="section-header">
+        <span class="section-tag">COMUNIDAD Y AVATARES</span>
+        <h2 class="section-title">Jugadores Activos & <span class="text-gold">Visor de Skins</span></h2>
+        <p class="section-desc">Consulta quién está conectado ahora mismo en Doraland o busca cualquier cuenta de Minecraft para visualizar y descargar su Skin.</p>
+      </div>
+
+      <div class="players-panel">
+        <!-- Jugadores conectados en tiempo real -->
+        <div class="glass-panel">
+          <h3 class="panel-title">🟢 Jugadores Conectados en Doraland</h3>
+          <p style="font-size: 13px; color: var(--text-secondary);">Actualizado automáticamente desde <code>doralandmc.holyhosting.club</code></p>
+          <div class="online-players-list" id="onlinePlayersList">
+            <div class="player-chip">
+              <img src="https://mc-heads.net/avatar/Dacota10/32" alt="Dacota10" />
+              <span>Consultando servidor en vivo...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buscador e Inspector de Skins -->
+        <div class="glass-panel">
+          <h3 class="panel-title">🎨 Inspector y Descargador de Skins</h3>
+          <p style="font-size: 13px; color: var(--text-secondary);">Escribe cualquier Nickname de Minecraft para ver su Skin completa o descargar el `.PNG` para usarlo en el Launcher.</p>
+          <form class="skin-search-form" id="skinSearchForm">
+            <input type="text" class="skin-search-input" id="skinSearchInput" placeholder="Ej: SLuzzen, Dacota10, Yanah_, OnmiAzkeel..." maxlength="16" />
+            <button type="submit" class="btn btn-emerald">Buscar</button>
+          </form>
+
+          <div class="inspector-result">
+            <img id="inspectorBodyImg" class="inspector-body" src="https://mc-heads.net/body/SLuzzen/180" alt="Vista previa de Skin" />
+            <div>
+              <div style="font-size: 11px; font-weight: 800; color: var(--gold-light);">JUGADOR SELECCIONADO</div>
+              <div id="inspectorName" style="font-size: 20px; font-weight: 900; margin-bottom: 8px;">SLuzzen</div>
+              <a id="inspectorDownloadBtn" href="https://mc-heads.net/download/SLuzzen" target="_blank" rel="noopener" class="btn btn-outline" style="padding: 8px 14px; font-size: 12px;">
+                📥 Descargar Skin .PNG
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN DEL LAUNCHER OFICIAL v1.0.1
+    ════════════════════════════════════════════ -->
+    <section class="section" id="launcher">
+      <div class="launcher-showcase">
+        <div>
+          <span class="section-tag">WINDOWS 10 / 11 (64-BIT)</span>
+          <h2 class="section-title">Doraland Launcher <span class="text-gold">v1.0.1</span></h2>
+          <p class="section-desc">Nuestro launcher oficial descarga, verifica e instala automáticamente NeoForge 21.1.250, los 149 mods, shaders y emotes sin que tengas que configurar nada manualmente.</p>
+
+          <ul class="feature-list">
+            <li>✅ <strong>Soporte Dual:</strong> Cuentas Oficiales Microsoft (Premium) y Cuentas No Premium (Offline).</li>
+            <li>🎨 <strong>Estudio de Skin Integrado:</strong> Los jugadores No Premium pueden subir su propia skin en `.PNG`.</li>
+            <li>⚙️ <strong>Ajustes Avanzados:</strong> Configuración de Resolución (720p, 1080p, 2K, Pantalla Completa) y Memoria RAM.</li>
+            <li>🔄 <strong>Auto-Actualización Inteligente:</strong> Cualquier versión se actualiza sola cuando hay cambios en el servidor.</li>
+          </ul>
+
+          <div class="hero-buttons">
+            <a href="https://github.com/Sluzzen/Launcher-Doraland" target="_blank" rel="noopener" class="btn btn-emerald">
+              ⬇️ Descargar Instalador Setup (v1.0.1)
+            </a>
+            <a href="https://adoptium.net/temurin/releases/?version=21" target="_blank" rel="noopener" class="btn btn-outline">
+              ☕ Descargar Java 21 Oficial
+            </a>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <img src="assets/logo.png" style="max-width: 260px; filter: drop-shadow(0 12px 28px rgba(245, 158, 11, 0.35));" alt="Doraland Launcher" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         BLOQUE GOOGLE ADS #2 (FOOTER / IN-CONTENT)
+    ════════════════════════════════════════════ -->
+    <div class="ad-slot-container">
+      <div class="ad-slot-header">
+        <span>GOOGLE ADS • CONTENIDO PATROCINADO</span>
+        <span>AdSense Slot #2</span>
+      </div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-0000000000000000"
+           data-ad-slot="0987654321"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <div class="ad-fallback-banner">
+        <div class="afb-left">
+          <span class="afb-icon">🚀</span>
+          <div>
+            <div class="afb-title">¿Ya tienes instalado Doraland Launcher v1.0.1?</div>
+            <div class="afb-desc">Personaliza tu resolución, sube tu Skin .PNG y entra con un solo clic al servidor.</div>
+          </div>
+        </div>
+        <a href="#launcher" class="btn btn-emerald">Ver Descargas</a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         COMUNIDAD DE DISCORD
+    ════════════════════════════════════════════ -->
+    <section id="discord" class="discord-banner">
+      <div>
+        <span class="pill pill-blue">COMUNIDAD OFICIAL</span>
+        <h2 style="font-size: 28px; font-weight: 900; margin: 10px 0 6px;">Únete al Discord de Doraland</h2>
+        <p style="color: var(--text-secondary); max-width: 560px;">
+          Entérate de todas las actualizaciones del modpack, abre tickets de soporte con el Staff Team, comparte capturas y juega con toda la comunidad.
+        </p>
+      </div>
+      <a href="https://discord.gg/nR9c4czkt7" target="_blank" rel="noopener" class="btn btn-gold" style="font-size: 16px; padding: 14px 28px;">
+        💬 Entrar al Servidor de Discord
+      </a>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2025 - 2026 <strong>Doraland Server & Launcher</strong> • Desarrollado por el Staff Team (Dacota10, Yanah_, OnmiAzkeel, SLuzzen).</p>
+    <p style="margin-top: 6px; font-size: 11px;">No afiliado oficialmente con Mojang AB o Microsoft.</p>
+  </footer>
+
+  <script>
+    // 1. Luciérnagas animadas del bosque Doraland
+    const canvas = document.getElementById('firefliesCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const pts = Array.from({ length: 42 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 1.2 + Math.random() * 2.3,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -0.15 - Math.random() * 0.35,
+      gold: Math.random() > 0.45,
+      a: 0.25 + Math.random() * 0.55
+    }));
+
+    function drawFireflies() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of pts) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y < -10) p.y = canvas.height + 10;
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+        ctx.beginPath();
+        const col = p.gold ? `rgba(252,211,77,${p.a})` : `rgba(74,222,128,${p.a})`;
+        ctx.fillStyle = col;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = col;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(drawFireflies);
+    }
+    requestAnimationFrame(drawFireflies);
+
+    // 2. Copiar IP del servidor
+    document.getElementById('copyIpBox')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText('doralandmc.holyhosting.club');
+      const chip = document.getElementById('copyChipText');
+      if (chip) {
+        chip.textContent = '¡IP COPIADA!';
+        setTimeout(() => { chip.textContent = 'COPIAR IP'; }, 2500);
+      }
+    });
+
+    // 3. Consultar Estado del Servidor y Jugadores en Vivo
+    async function fetchServerStatus() {
+      const stateEl = document.getElementById('statServerState');
+      const playersEl = document.getElementById('statPlayersCount');
+      const listEl = document.getElementById('onlinePlayersList');
+      const dotEl = document.getElementById('heroStatusDot');
+
+      try {
+        const res = await fetch('https://api.mcstatus.io/v2/status/java/doralandmc.holyhosting.club');
+        const data = await res.json();
+        if (data && data.online) {
+          stateEl.textContent = 'En Línea';
+          stateEl.style.color = '#4ADE80';
+          playersEl.textContent = `${data.players?.online || 0} / ${data.players?.max || 100}`;
+          if (dotEl) dotEl.style.background = '#22C55E';
+
+          const sampleList = data.players?.list || [];
+          if (sampleList.length > 0) {
+            listEl.innerHTML = sampleList.map(p => {
+              const clean = p.name_clean || p.name_raw || 'Jugador';
+              return `
+                <div class="player-chip" onclick="inspectPlayerSkin('${clean}')" style="cursor:pointer">
+                  <img src="https://mc-heads.net/avatar/${encodeURIComponent(clean)}/32" alt="${clean}" />
+                  <span>${clean}</span>
+                </div>
+              `;
+            }).join('');
+          } else {
+            listEl.innerHTML = `
+              <div class="player-chip">
+                <span>🟢 Servidor abierto (${data.players?.online || 0} jugadores conectados)</span>
+              </div>
+            `;
+          }
+        } else {
+          throw new Error('offline');
+        }
+      } catch {
+        stateEl.textContent = 'Mantenimiento / Offline';
+        stateEl.style.color = '#F59E0B';
+        playersEl.textContent = '0 / 100';
+        if (dotEl) dotEl.style.background = '#F59E0B';
+        listEl.innerHTML = `
+          <div class="player-chip" onclick="inspectPlayerSkin('Dacota10')" style="cursor:pointer">
+            <img src="https://mc-heads.net/avatar/Dacota10/32" alt="Dacota10" />
+            <span>Dacota10 (Owner)</span>
+          </div>
+          <div class="player-chip" onclick="inspectPlayerSkin('Yanah_')" style="cursor:pointer">
+            <img src="https://mc-heads.net/avatar/Yanah_/32" alt="Yanah_" />
+            <span>Yanah_ (Head Admin)</span>
+          </div>
+          <div class="player-chip" onclick="inspectPlayerSkin('OnmiAzkeel')" style="cursor:pointer">
+            <img src="https://mc-heads.net/avatar/OnmiAzkeel/32" alt="OnmiAzkeel" />
+            <span>OnmiAzkeel (Mods Dev)</span>
+          </div>
+          <div class="player-chip" onclick="inspectPlayerSkin('SLuzzen')" style="cursor:pointer">
+            <img src="https://mc-heads.net/avatar/SLuzzen/32" alt="SLuzzen" />
+            <span>SLuzzen (Web Dev)</span>
+          </div>
+        `;
+      }
+    }
+    fetchServerStatus();
+
+    // 4. Inspector de Skins de Jugadores y Staff
+    function inspectPlayerSkin(username) {
+      const clean = String(username || 'SLuzzen').trim();
+      if (!clean) return;
+      const img = document.getElementById('inspectorBodyImg');
+      const nameEl = document.getElementById('inspectorName');
+      const dlBtn = document.getElementById('inspectorDownloadBtn');
+      const input = document.getElementById('skinSearchInput');
+
+      if (input) input.value = clean;
+      if (nameEl) nameEl.textContent = clean;
+      if (img) {
+        img.src = `https://mc-heads.net/body/${encodeURIComponent(clean)}/180`;
+        img.onerror = () => {
+          img.src = `https://minotar.net/armor/body/${encodeURIComponent(clean)}/180.png`;
+        };
+      }
+      if (dlBtn) {
+        dlBtn.href = `https://mc-heads.net/download/${encodeURIComponent(clean)}`;
+      }
+      document.getElementById('jugadores')?.scrollIntoView({ behavior: 'smooth' });
+    }
+    window.inspectPlayerSkin = inspectPlayerSkin;
+
+    document.getElementById('skinSearchForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = document.getElementById('skinSearchInput')?.value?.trim();
+      if (val) inspectPlayerSkin(val);
+    });
+  </script>
+</body>
+</html>
