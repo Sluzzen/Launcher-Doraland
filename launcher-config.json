@@ -1,0 +1,54 @@
+{
+  "server": {
+    "name": "Doraland",
+    "ip": "doralandmc.holyhosting.club",
+    "port": 25565,
+    "description": "Servidor de Minecraft Forge 1.21.1"
+  },
+  "minecraft": {
+    "version": "1.21.1",
+    "forgeVersion": "1.21.1-52.0.47",
+    "recommendedRamMb": 4096,
+    "minRamMb": 2048,
+    "maxRamMb": 16384,
+    "jvmArgs": [
+      "-XX:+UseG1GC",
+      "-XX:+ParallelRefProcEnabled",
+      "-XX:MaxGCPauseMillis=200",
+      "-XX:+UnlockExperimentalVMOptions",
+      "-XX:+DisableExplicitGC",
+      "-XX:G1HeapWastePercent=5",
+      "-XX:G1MixedGCCountTarget=4",
+      "-XX:G1MixedGCLiveThresholdPercent=90",
+      "-XX:G1RSetUpdatingPauseTimePercent=5",
+      "-XX:SurvivorRatio=32",
+      "-XX:+PerfDisableSharedMem",
+      "-XX:MaxTenuringThreshold=1"
+    ]
+  },
+  "mods": {
+    "enabled": true,
+    "source": "auto",
+    "remoteManifestUrl": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods-manifest.json",
+    "cleanOldMods": true,
+    "list": []
+  },
+  "updates": {
+    "autoUpdateLauncher": true,
+    "githubOwner": "Sluzzen",
+    "githubRepo": "Launcher-Doraland"
+  },
+  "ui": {
+    "discordUrl": "",
+    "websiteUrl": "",
+    "youtubeUrl": "",
+    "backgroundVideoUrl": ""
+  },
+  "launcher": {
+    "version": "1.0.0",
+    "allowPremium": true,
+    "allowOffline": true,
+    "gameDataFolder": ".doraland",
+    "closeOnLaunch": false
+  }
+}

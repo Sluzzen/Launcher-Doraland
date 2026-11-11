@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doraland Launcher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       BARRA DE TÍTULO PERSONALIZADA
+  ════════════════════════════════════════════ -->
+  <div class="titlebar" id="titlebar">
+    <div class="titlebar-left">
+      <img src="../../assets/logo.png" class="titlebar-logo" alt="Doraland" />
+      <span class="titlebar-name">Doraland Launcher</span>
+      <span class="titlebar-version" id="launcherVersion">v1.0.0</span>
+    </div>
+    <div class="titlebar-controls">
+      <button class="tb-btn" id="btnMinimize" title="Minimizar">&#8722;</button>
+      <button class="tb-btn tb-close" id="btnClose" title="Cerrar">&#10005;</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CONTENIDO PRINCIPAL
+  ════════════════════════════════════════════ -->
+  <div class="app-container">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <!-- Logo Central -->
+      <div class="sidebar-logo-wrap">
+        <img src="../../assets/logo.png" class="sidebar-logo" id="mainLogo" alt="Doraland" />
+        <div class="logo-glow"></div>
+      </div>
+
+      <!-- Estado del Servidor -->
+      <div class="server-status-card" id="serverStatusCard">
+        <div class="status-dot" id="statusDot"></div>
+        <div class="status-info">
+          <span class="status-label" id="statusLabel">Verificando...</span>
+          <span class="status-players" id="statusPlayers"></span>
+        </div>
+        <span class="server-ip" id="serverIp"></span>
+      </div>
+
+      <!-- Usuario Conectado -->
+      <div class="user-card" id="userCard">
+        <div class="user-avatar-wrap">
+          <img class="user-avatar" id="userAvatar" src="" alt="Avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 8 8%22><rect width=%228%22 height=%228%22 fill=%22%2322C55E%22/></svg>'" />
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="userName">Sin sesión</span>
+          <span class="user-type" id="userType"></span>
+        </div>
+        <button class="btn-logout" id="btnLogout" title="Cerrar sesión">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+
+      <!-- Redes sociales (desde config) -->
+      <div class="social-links" id="socialLinks"></div>
+
+      <!-- Versión del juego -->
+      <div class="game-version-badge">
+        <span class="gv-mc">⚒️ Forge <span id="mcVersion">1.21.1</span></span>
+      </div>
+    </aside>
+
+    <!-- ── PANEL PRINCIPAL ── -->
+    <main class="main-panel">
+
+      <!-- Banner de Actualización del Launcher (Auto-updater) -->
+      <div class="update-banner" id="updateBanner" style="display: none;">
+        <div class="ub-icon">🚀</div>
+        <div class="ub-text">
+          <span class="ub-title" id="ubTitle">Nueva versión disponible</span>
+          <span class="ub-desc" id="ubDesc">Hay una actualización del launcher lista para descargar.</span>
+        </div>
+        <div class="ub-actions">
+          <button class="ub-btn" id="btnUpdateLauncher">Actualizar</button>
+        </div>
+      </div>
+
+      <!-- ---- PANTALLA: LOGIN ---- -->
+      <section class="screen active" id="screenLogin">
+        <div class="login-box">
+          <h2 class="login-title">Bienvenido a <span class="text-gold">Doraland</span></h2>
+          <p class="login-subtitle">Elige cómo quieres unirte al servidor</p>
+
+          <!-- Tabs Premium / No Premium -->
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tabPremium" data-tab="premium">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Premium (Microsoft)
+            </button>
+            <button class="auth-tab" id="tabOffline" data-tab="offline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              No Premium (Offline)
+            </button>
+          </div>
+
+          <!-- Panel Premium -->
+          <div class="auth-panel active" id="panelPremium">
+            <p class="auth-desc">Inicia sesión con tu cuenta oficial de Minecraft. Tu nombre, skin y capa originales serán usados en el servidor.</p>
+            <button class="btn-microsoft" id="btnMicrosoft">
+              <svg width="20" height="20" viewBox="0 0 23 23" fill="none"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+              Iniciar sesión con Microsoft
+            </button>
+            <div class="auth-loading" id="premiumLoading">
+              <div class="spinner"></div>
+              <span id="premiumLoadingText">Conectando con Microsoft...</span>
+            </div>
+          </div>
+
+          <!-- Panel Offline -->
+          <div class="auth-panel" id="panelOffline">
+            <p class="auth-desc">Juega sin cuenta oficial. Solo letras, números y guión bajo. Máximo 16 caracteres.</p>
+            <div class="input-group">
+              <label class="input-label" for="inputNickname">Tu Nickname en el Servidor</label>
+              <input class="input-field" id="inputNickname" type="text" placeholder="EjemploJugador123" maxlength="16" spellcheck="false" autocomplete="off" />
+              <span class="input-error" id="nicknameError"></span>
+            </div>
+            <button class="btn-primary" id="btnOfflineLogin">
+              Continuar como No Premium
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---- PANTALLA: HOME (JUGAR) ---- -->
+      <section class="screen" id="screenHome">
+
+        <!-- NEWS / Bienvenida -->
+        <div class="welcome-banner">
+          <div class="wb-text">
+            <h2 class="wb-title">¡Listo para explorar, <span class="text-green" id="wbUsername">Jugador</span>!</h2>
+            <p class="wb-subtitle">Servidor <strong id="wbServerIp">play.doraland.net</strong> • Forge <span id="wbForgeVersion">1.21.1</span></p>
+          </div>
+        </div>
+
+        <!-- RAM y Ajustes rápidos -->
+        <div class="settings-row">
+          <div class="ram-control">
+            <label class="setting-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"/></svg>
+              Memoria RAM
+            </label>
+            <div class="slider-wrap">
+              <input type="range" class="ram-slider" id="ramSlider" min="2048" max="16384" step="512" value="4096" />
+              <span class="ram-value" id="ramValue">4 GB</span>
+            </div>
+            <div class="ram-markers">
+              <span>2 GB</span>
+              <span class="text-green">Recomendado</span>
+              <span>16 GB</span>
+            </div>
+          </div>
+          <div class="close-on-launch-wrap">
+            <label class="toggle-label">
+              <input type="checkbox" id="closeOnLaunch" class="toggle-input" />
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              Cerrar launcher al iniciar
+            </label>
+          </div>
+        </div>
+
+        <!-- BARRA DE PROGRESO (oculta por defecto) -->
+        <div class="progress-section" id="progressSection" style="display:none">
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <div class="progress-info">
+            <span id="progressText">Preparando...</span>
+            <span id="progressPercent">0%</span>
+          </div>
+        </div>
+
+        <!-- BOTÓN JUGAR -->
+        <div class="play-wrap">
+          <button class="btn-play" id="btnPlay">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            ¡JUGAR EN DORALAND!
+          </button>
+          <span class="play-hint" id="playHint">Forge 1.21.1 · <span id="playServerIp"></span></span>
+        </div>
+
+        <!-- CONSOLA DE LOGS (desplegable) -->
+        <div class="console-section">
+          <button class="console-toggle" id="consoleToggle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Consola de depuración
+            <span class="console-arrow" id="consoleArrow">▼</span>
+          </button>
+          <div class="console-box" id="consoleBox">
+            <div class="console-output" id="consoleOutput">
+              <span class="console-line info">Consola de Doraland Launcher lista.</span>
+            </div>
+            <div class="console-actions">
+              <button class="console-clear" id="consoleClear">Limpiar</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

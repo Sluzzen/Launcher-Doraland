@@ -1,0 +1,80 @@
+{
+  "name": "doraland-launcher",
+  "version": "1.0.0",
+  "description": "Launcher oficial del servidor Doraland - Minecraft Forge 1.21.1",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node launch.js",
+    "dev": "node launch.js --dev",
+    "manifest": "node generate-manifest.js",
+    "build": "node node_modules/electron-builder/out/cli/cli.js --win",
+    "build:portable": "node node_modules/electron-builder/out/cli/cli.js --win portable"
+  },
+  "keywords": [
+    "minecraft",
+    "launcher",
+    "forge",
+    "doraland"
+  ],
+  "author": "Doraland Team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "electron-store": "^7.0.3",
+    "electron-updater": "^6.8.11",
+    "fs-extra": "^11.2.0",
+    "minecraft-launcher-core": "^3.14.0",
+    "msmc": "^4.1.0",
+    "node-fetch": "^2.7.0",
+    "uuid": "^9.0.1"
+  },
+  "build": {
+    "appId": "net.doraland.launcher",
+    "productName": "Doraland Launcher",
+    "copyright": "Copyright © 2024 Doraland",
+    "icon": "assets/logo.png",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Sluzzen",
+        "repo": "Launcher-Doraland"
+      }
+    ],
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "mods/**/*",
+      "launcher-config.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Doraland Launcher"
+    },
+    "portable": {
+      "artifactName": "DoralandLauncher-Portable.exe"
+    }
+  }
+}
