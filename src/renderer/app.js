@@ -168,10 +168,8 @@ function applyConfig(cfg) {
   const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
   safeText('loaderBadge', `${loaderName} ${mcVer}`);
-  safeText('playLoaderText', `${loaderName} ${mcVer}`);
   safeText('serverIp', ip);
   safeText('tbServerIp', ip);
-  safeText('playServerIp', ip);
   safeText('wbServerIp', ip);
   safeText('wbForgeVersion', `${loaderDisplay} • MC ${mcVer}`);
 
@@ -483,7 +481,6 @@ function applySettingsToUI(s) {
 function updateResolutionBadges(w, h, full) {
   const label = full ? 'Pantalla Completa' : `${w}×${h}`;
   safeText('heroResBadge', label);
-  safeText('playResText', label);
 }
 
 async function persistSettings(partial = {}) {
