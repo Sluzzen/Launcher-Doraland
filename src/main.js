@@ -154,18 +154,18 @@ const DEFAULT_CONFIG = {
   },
   ui: {
     discordUrl: "https://discord.gg/nR9c4czkt7",
-    websiteUrl: "https://sluzzen.github.io/Launcher-Doraland/",
+    websiteUrl: "https://sluzzen.github.io/",
     youtubeUrl: ""
   },
   ads: {
     enabled: true,
     provider: "google-adsense",
-    clientId: "ca-pub-0000000000000000",
+    clientId: "ca-pub-3117274501191063",
     slots: {
       homeHorizontal: "1234567890",
       sidebarBanner: "0987654321"
     },
-    adServerUrl: "https://sluzzen.github.io/Launcher-Doraland/ads.html",
+    adServerUrl: "https://sluzzen.github.io/ads.html",
     fallbackPromo: {
       badge: "GOOGLE ADS • PATROCINADO",
       title: "Comunidad Oficial Doraland • Eventos y Rangos",
