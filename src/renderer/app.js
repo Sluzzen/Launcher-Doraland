@@ -122,25 +122,24 @@ function applyConfig(cfg) {
   checkServerStatus(ip, cfg.server?.port);
 }
 
-// ── NAVEGACIÓN Y BARRA DE TÍTULO ───────────────────────────────
+// ── NAVEGACIÓN Y BARRA DE TÍTULO (1 BOTÓN POR FUNCIÓN) ─────────
 function setupTitlebarAndNavigation() {
   document.getElementById('btnMinimize')?.addEventListener('click', () => window.doraland.minimize());
   document.getElementById('btnMaximize')?.addEventListener('click', () => window.doraland.maximize());
   document.getElementById('btnClose')?.addEventListener('click', () => window.doraland.close());
 
-  // Copiar IP del servidor
-  const copyIpHandler = () => {
+  // Único botón para copiar IP del servidor (en la tarjeta del sidebar)
+  document.getElementById('btnCopyIpSidebar')?.addEventListener('click', () => {
     const ip = config?.server?.ip || 'doralandmc.holyhosting.club';
     navigator.clipboard?.writeText(ip);
     showNotification(`📋 IP copiada: ${ip}`, 'success');
-  };
-  document.getElementById('tbCopyIp')?.addEventListener('click', copyIpHandler);
-  document.getElementById('btnCopyIpSidebar')?.addEventListener('click', copyIpHandler);
+  });
+
   document.getElementById('btnRefreshServer')?.addEventListener('click', () => {
     checkServerStatus(config?.server?.ip, config?.server?.port);
   });
 
-  // Botones de navegación en el sidebar
+  // Único menú de navegación en el sidebar (Inicio / Mi Skin / Ajustes)
   document.querySelectorAll('.nav-item').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.screen;
@@ -149,36 +148,6 @@ function setupTitlebarAndNavigation() {
         return;
       }
       showScreen(target);
-    });
-  });
-
-  // Todos los accesos directos a Ajustes
-  const openSettings = () => showScreen('screenSettings');
-  document.getElementById('btnTopSettings')?.addEventListener('click', openSettings);
-  document.getElementById('btnQuickSettings')?.addEventListener('click', openSettings);
-  document.getElementById('btnLoginSettings')?.addEventListener('click', openSettings);
-  document.getElementById('btnHeroSettings')?.addEventListener('click', openSettings);
-  document.getElementById('btnDockSettings')?.addEventListener('click', openSettings);
-  document.getElementById('btnOpenResolutionSettings')?.addEventListener('click', openSettings);
-
-  // Todos los accesos directos al Estudio de Skin
-  const openSkinStudio = () => showScreen('screenSkin');
-  document.getElementById('btnQuickSkin')?.addEventListener('click', openSkinStudio);
-  document.getElementById('userAvatarClick')?.addEventListener('click', openSkinStudio);
-  document.getElementById('btnHeroSkin')?.addEventListener('click', openSkinStudio);
-  document.getElementById('btnHomeOpenSkinStudio')?.addEventListener('click', openSkinStudio);
-  document.getElementById('homeSkinCanvasWrap')?.addEventListener('click', openSkinStudio);
-
-  // Botón abrir carpeta .doraland desde el Hero
-  document.getElementById('btnHeroFolder')?.addEventListener('click', () => {
-    window.doraland.openGameFolder();
-  });
-
-  // Botones "Volver al Inicio"
-  document.querySelectorAll('.btn-back-home').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (currentSession) showScreen('screenHome');
-      else showScreen('screenLogin');
     });
   });
 }
@@ -572,8 +541,8 @@ async function setupRamAndSettingsControls() {
 
 function updateRamDisplay(mb) {
   const gb = (mb / 1024).toFixed(mb % 1024 === 0 ? 0 : 1);
-  safeText('ramValue', `${gb} GB`);
   safeText('settingsRamValue', `${gb} GB`);
+  safeText('heroRamBadge', `RAM: ${gb} GB`);
 }
 
 function updateSliderFill(slider) {
@@ -718,7 +687,7 @@ async function refreshSkinRenderer() {
   if (currentSkin && currentSkin.dataUrl) {
     safeText('skinCurrentName', `Skin activa: ${currentSkin.name || 'Personalizada.png'}`);
     safeText('homeSkinBadge', 'Personalizada');
-    safeText('loginSkinStatus', `✅ ${currentSkin.name || 'Skin lista'}`);
+    safeText('homeSkinNameLabel', currentSkin.name || 'Skin personalizada activa');
     try {
       loadedSkinImage = await loadImageElement(currentSkin.dataUrl);
       renderAllSkinCanvases();
@@ -727,10 +696,10 @@ async function refreshSkinRenderer() {
   }
 
   // Si no hay skin subida localmente, intentar cargar la skin online del jugador actual
-  safeText('loginSkinStatus', 'Sin skin personalizada aún');
   if (currentSession?.name) {
     safeText('skinCurrentName', `Skin de ${currentSession.name}`);
     safeText('homeSkinBadge', currentSession.meta?.type === 'msa' ? 'Premium' : 'Estándar');
+    safeText('homeSkinNameLabel', `Skin de ${currentSession.name}`);
     try {
       loadedSkinImage = await loadImageElement(`https://mc-heads.net/skin/${encodeURIComponent(currentSession.name)}`);
       renderAllSkinCanvases();
@@ -741,6 +710,7 @@ async function refreshSkinRenderer() {
   loadedSkinImage = null;
   safeText('skinCurrentName', 'Skin por defecto (Explorador Doraland)');
   safeText('homeSkinBadge', 'Por defecto');
+  safeText('homeSkinNameLabel', 'Explorador Doraland');
   renderAllSkinCanvases();
 }
 
@@ -930,32 +900,11 @@ function setupGoogleAds(adsCfg) {
   document.getElementById('adHomeCta')?.addEventListener('click', openPromo);
   document.getElementById('adSidebarCta')?.addEventListener('click', openPromo);
 
-  // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX) o Web de Ads (adServerUrl)
+  // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX)
   const clientId = adsCfg?.clientId || '';
   const hasRealAdSense = clientId.startsWith('ca-pub-') && !clientId.includes('0000000000');
-  const homeAdUrl = adsCfg?.adServerUrl || '';
-  const sideAdUrl = adsCfg?.sidebarAdServerUrl || '';
 
-  if (homeAdUrl && hasRealAdSense) {
-    // Cargar iframe desde la web oficial (GitHub Pages / Dominio propio) con soporte completo AdSense
-    fetch(homeAdUrl, { method: 'HEAD', signal: AbortSignal.timeout(4000) })
-      .then(res => {
-        if (!res.ok) return;
-        const mountHome = document.getElementById('adHomeMount');
-        if (mountHome) {
-          const qs = `?client=${encodeURIComponent(clientId)}&slot=${encodeURIComponent(adsCfg?.slots?.homeHorizontal || '')}`;
-          mountHome.innerHTML = `<iframe src="${homeAdUrl}${qs}" style="width:100%;height:62px;border:none;overflow:hidden;border-radius:8px;" scrolling="no"></iframe>`;
-        }
-        if (sideAdUrl) {
-          const mountSide = document.getElementById('adSidebarMount');
-          if (mountSide) {
-            const qsSide = `?client=${encodeURIComponent(clientId)}&slot=${encodeURIComponent(adsCfg?.slots?.sidebarBanner || '')}`;
-            mountSide.innerHTML = `<iframe src="${sideAdUrl}${qsSide}" style="width:100%;height:80px;border:none;overflow:hidden;border-radius:6px;" scrolling="no"></iframe>`;
-          }
-        }
-      })
-      .catch(() => {});
-  } else if (hasRealAdSense) {
+  if (hasRealAdSense) {
     try {
       const script = document.createElement('script');
       script.async = true;

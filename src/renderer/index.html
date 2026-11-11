@@ -13,7 +13,7 @@
   <div class="ambient-backdrop"></div>
 
   <!-- ═══════════════════════════════════════════
-       BARRA DE TÍTULO PERSONALIZADA
+       BARRA DE TÍTULO PERSONALIZADA (SIN DUPLICADOS)
   ════════════════════════════════════════════ -->
   <header class="titlebar" id="titlebar">
     <div class="titlebar-left">
@@ -23,17 +23,9 @@
         <span class="titlebar-sub">LAUNCHER</span>
       </div>
       <span class="titlebar-version" id="launcherVersion">v1.0.1</span>
-      <div class="tb-server-pill" id="tbCopyIp" title="Haz clic para copiar la IP del servidor">
-        <span class="tb-dot" id="tbStatusDot"></span>
-        <span id="tbServerIp">doralandmc.holyhosting.club</span>
-      </div>
     </div>
 
     <div class="titlebar-controls">
-      <button class="tb-action-btn" id="btnTopSettings" title="Abrir Ajustes del Launcher">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Ajustes</span>
-      </button>
       <button class="tb-btn" id="btnMinimize" title="Minimizar">&#8722;</button>
       <button class="tb-btn" id="btnMaximize" title="Maximizar">&#9633;</button>
       <button class="tb-btn tb-close" id="btnClose" title="Cerrar">&#10005;</button>
@@ -45,7 +37,7 @@
   ════════════════════════════════════════════ -->
   <div class="app-container">
 
-    <!-- ── SIDEBAR LATERAL ── -->
+    <!-- ── SIDEBAR LATERAL (MENÚ ÚNICO DE NAVEGACIÓN) ── -->
     <aside class="sidebar">
       <!-- Emblema flotante de Doraland -->
       <div class="sidebar-logo-wrap">
@@ -54,11 +46,11 @@
         <img src="../../assets/logo.png" class="sidebar-logo" id="mainLogo" alt="Doraland" />
       </div>
 
-      <!-- Menú de Navegación Principal -->
+      <!-- Menú de Navegación Principal (1 botón por sección) -->
       <nav class="sidebar-nav" id="sidebarNav">
         <button class="nav-item active" id="navHome" data-screen="screenHome">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span>Jugar / Inicio</span>
+          <span>Inicio / Jugar</span>
         </button>
         <button class="nav-item" id="navSkin" data-screen="screenSkin">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -71,7 +63,7 @@
         </button>
       </nav>
 
-      <!-- Estado del Servidor en Vivo -->
+      <!-- Estado del Servidor en Vivo (Único lugar para copiar IP) -->
       <div class="server-status-card" id="serverStatusCard">
         <div class="ssc-top">
           <div class="status-dot" id="statusDot"></div>
@@ -81,33 +73,18 @@
           </div>
           <button class="btn-icon-mini" id="btnRefreshServer" title="Actualizar estado del servidor">↻</button>
         </div>
-        <div class="ssc-ip-row" id="btnCopyIpSidebar" title="Copiar IP">
+        <div class="ssc-ip-row" id="btnCopyIpSidebar" title="Haz clic para copiar la IP">
           <span class="server-ip" id="serverIp">doralandmc.holyhosting.club</span>
           <span class="copy-tag">COPIAR</span>
         </div>
       </div>
 
-      <!-- ESPACIO MONETIZACIÓN GOOGLE ADS (SIDEBAR) -->
-      <div class="ad-card-sidebar" id="adSlotSidebar">
-        <div class="ad-header">
-          <span class="ad-badge" id="adSidebarBadge">GOOGLE ADS • PATROCINADO</span>
-          <span class="ad-info-dot" title="Espacio publicitario Google AdSense">Ad</span>
-        </div>
-        <div class="ad-body" id="adSidebarMount">
-          <div class="ad-fallback-content" id="adSidebarFallback">
-            <div class="ad-fallback-title" id="adSidebarTitle">Discord Oficial Doraland</div>
-            <div class="ad-fallback-desc" id="adSidebarDesc">Eventos, soporte y comunidad activa de Minecraft 1.21.1.</div>
-            <button class="ad-cta-btn" id="adSidebarCta">Unirse Ahora →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Redes sociales -->
+      <!-- Enlaces Oficiales (Discord y Web) -->
       <div class="social-links" id="socialLinks"></div>
 
-      <!-- Tarjeta de Usuario Conectado -->
+      <!-- Tarjeta de Usuario Conectado (Único botón de Cerrar Sesión) -->
       <div class="user-card" id="userCard">
-        <div class="user-avatar-wrap" id="userAvatarClick" title="Personalizar mi Skin">
+        <div class="user-avatar-wrap">
           <canvas id="sidebarAvatarCanvas" width="38" height="38" style="display:none"></canvas>
           <img class="user-avatar" id="userAvatar" src="" alt="Avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 8 8%22><rect width=%228%22 height=%228%22 fill=%22%2322C55E%22/></svg>'" />
         </div>
@@ -115,13 +92,9 @@
           <span class="user-name" id="userName">Sin sesión</span>
           <span class="user-type" id="userType">Inicia sesión</span>
         </div>
-        <div class="user-actions">
-          <button class="btn-user-action" id="btnQuickSkin" title="Subir / Cambiar Skin">🎨</button>
-          <button class="btn-user-action" id="btnQuickSettings" title="Ajustes">⚙️</button>
-          <button class="btn-logout" id="btnLogout" title="Cerrar sesión">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          </button>
-        </div>
+        <button class="btn-logout" id="btnLogout" title="Cerrar sesión">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
       </div>
 
       <!-- Badge versión del motor -->
@@ -171,7 +144,6 @@
                 <h2 class="login-title">Iniciar Sesión</h2>
                 <p class="login-subtitle">Selecciona tu tipo de cuenta para entrar a Doraland</p>
               </div>
-              <button class="btn-icon-settings" id="btnLoginSettings" title="Configurar resolución y ajustes">⚙️</button>
             </div>
 
             <!-- Selector Premium / No Premium -->
@@ -206,19 +178,12 @@
             <div class="auth-panel" id="panelOffline">
               <div class="auth-info-box offline-box">
                 <span class="aib-icon">🎮</span>
-                <p class="auth-desc">Accede gratis sin cuenta de Microsoft. Podrás subir tu propia <strong>Skin en formato .PNG</strong> dentro del launcher.</p>
+                <p class="auth-desc">Accede sin cuenta oficial. Puedes personalizar tu Skin `.PNG` desde la pestaña <strong>Mi Skin</strong> del menú lateral.</p>
               </div>
               <div class="input-group">
                 <label class="input-label" for="inputNickname">Tu Nickname en Doraland</label>
                 <input class="input-field" id="inputNickname" type="text" placeholder="Ej: Explorador_777" maxlength="16" spellcheck="false" autocomplete="off" />
                 <span class="input-error" id="nicknameError"></span>
-              </div>
-
-              <div class="login-skin-quick">
-                <button type="button" class="btn-secondary-outline" id="btnLoginPickSkin">
-                  🎨 Subir mi Skin (.PNG) (Opcional)
-                </button>
-                <span class="login-skin-status" id="loginSkinStatus">Sin skin personalizada aún</span>
               </div>
 
               <button class="btn-primary" id="btnOfflineLogin">
@@ -230,7 +195,7 @@
       </section>
 
       <!-- ════════════════════════════════════════════════════════
-           PANTALLA 2: HOME / DASHBOARD PRINCIPAL
+           PANTALLA 2: HOME / DASHBOARD PRINCIPAL (LIMPIO Y SIN DUPLICADOS)
       ═════════════════════════════════════════════════════════ -->
       <section class="screen" id="screenHome">
 
@@ -241,22 +206,12 @@
               <span class="hero-tag tag-gold">✨ TEMPORADA ACTIVA</span>
               <span class="hero-tag tag-green" id="wbForgeVersion">NeoForge 21.1.250</span>
               <span class="hero-tag tag-blue" id="heroResBadge">1280×720 HD</span>
+              <span class="hero-tag tag-green" id="heroRamBadge">RAM: 6 GB</span>
             </div>
             <h1 class="wb-title">¡Listo para la aventura, <span class="text-gold" id="wbUsername">Jugador</span>!</h1>
             <p class="wb-subtitle">
-              Conectando a <strong class="text-green" id="wbServerIp">doralandmc.holyhosting.club</strong> • 149 Mods y 1,510 Emotes sincronizados automáticamente.
+              Servidor <strong class="text-green" id="wbServerIp">doralandmc.holyhosting.club</strong> • 149 Mods y 1,510 Emotes verificados automáticamente.
             </p>
-            <div class="hero-quick-actions">
-              <button class="btn-chip" id="btnHeroSettings">
-                ⚙️ Ajustes y Resolución
-              </button>
-              <button class="btn-chip" id="btnHeroSkin">
-                🎨 Personalizar Skin
-              </button>
-              <button class="btn-chip" id="btnHeroFolder">
-                📂 Carpeta .doraland
-              </button>
-            </div>
           </div>
           <div class="hero-emblem-side">
             <img src="../../assets/logo.png" class="hero-floating-img" alt="Doraland Emblem" />
@@ -266,50 +221,32 @@
         <!-- GRID CENTRAL DEL DASHBOARD -->
         <div class="dashboard-grid">
 
-          <!-- Columna Izquierda: Controles Rápidos + Google Ads + Consola -->
+          <!-- Columna Izquierda: Estado del Modpack + Google Ads + Consola -->
           <div class="dash-left-col">
 
-            <!-- Tarjeta de Memoria RAM y Resumen de Lanzamiento -->
-            <div class="glass-card ram-card">
-              <div class="card-header-row">
-                <label class="setting-label">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"/></svg>
-                  Memoria RAM Asignada
-                </label>
-                <span class="ram-value" id="ramValue">6 GB</span>
+            <!-- Tarjetas de Resumen del Entorno -->
+            <div class="home-stats-cards">
+              <div class="glass-card mini-stat-card">
+                <span class="msc-icon">📦</span>
+                <div>
+                  <div class="msc-val">149 Mods</div>
+                  <div class="msc-lbl">NeoForge 1.21.1 Sincronizado</div>
+                </div>
               </div>
-              <div class="slider-wrap">
-                <input type="range" class="ram-slider" id="ramSlider" min="2048" max="16384" step="512" value="6144" />
-              </div>
-              <div class="ram-markers">
-                <span>2 GB</span>
-                <span class="text-green">★ Recomendado (6 GB - 8 GB)</span>
-                <span id="ramMaxLabel">16 GB</span>
-              </div>
-
-              <div class="quick-toggles-row">
-                <label class="toggle-label">
-                  <input type="checkbox" id="closeOnLaunch" class="toggle-input" />
-                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                  <span>Cerrar al iniciar</span>
-                </label>
-                <label class="toggle-label">
-                  <input type="checkbox" id="quickFullscreen" class="toggle-input" />
-                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                  <span>Pantalla completa</span>
-                </label>
-                <button class="link-btn" id="btnOpenResolutionSettings">Cambiar resolución →</button>
+              <div class="glass-card mini-stat-card">
+                <span class="msc-icon">💃</span>
+                <div>
+                  <div class="msc-val">1,510 Emotes</div>
+                  <div class="msc-lbl">Emotecraft & Shaders Listos</div>
+                </div>
               </div>
             </div>
 
-            <!-- BANNER HORIZONTAL DE MONETIZACIÓN GOOGLE ADS -->
+            <!-- ÚNICO BANNER DE MONETIZACIÓN GOOGLE ADS -->
             <div class="ad-banner-home" id="adSlotHome">
               <div class="ad-banner-top">
                 <span class="ad-badge" id="adHomeBadge">GOOGLE ADS • ESPACIO PATROCINADO</span>
-                <div class="ad-top-right">
-                  <button class="ad-refresh-btn" id="btnRefreshAds" title="Actualizar anuncio">↻</button>
-                  <span class="ad-tag-pill">AdSense</span>
-                </div>
+                <span class="ad-tag-pill">AdSense</span>
               </div>
               <div class="ad-banner-mount" id="adHomeMount">
                 <div class="ad-home-fallback" id="adHomeFallback">
@@ -318,7 +255,7 @@
                     <div class="ahf-title" id="adHomeTitle">Comunidad Oficial Doraland • Eventos y Rangos</div>
                     <div class="ahf-sub" id="adHomeSubtitle">Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.</div>
                   </div>
-                  <button class="ahf-cta" id="adHomeCta">Unirse al Discord</button>
+                  <button class="ahf-cta" id="adHomeCta">Abrir Enlace</button>
                 </div>
               </div>
             </div>
@@ -342,31 +279,24 @@
 
           </div>
 
-          <!-- Columna Derecha: Tarjeta de Personaje y Skin en Vivo -->
+          <!-- Columna Derecha: Vista Previa Limpia del Personaje -->
           <div class="dash-right-col">
             <div class="glass-card skin-preview-card">
               <div class="spc-header">
                 <span class="spc-title">Tu Personaje</span>
-                <span class="spc-badge" id="homeSkinBadge">Estándar</span>
+                <span class="spc-badge" id="homeSkinBadge">Activo</span>
               </div>
-              <div class="spc-canvas-wrap" id="homeSkinCanvasWrap" title="Haz clic para abrir el Estudio de Skin">
-                <canvas id="homeSkinCanvas" width="140" height="200"></canvas>
+              <div class="spc-canvas-wrap">
+                <canvas id="homeSkinCanvas" width="145" height="215"></canvas>
                 <div class="spc-platform"></div>
               </div>
-              <div class="spc-actions">
-                <button class="btn-skin-upload-mini" id="btnHomeUploadSkin">
-                  📤 Subir Skin (.PNG)
-                </button>
-                <button class="btn-skin-studio-mini" id="btnHomeOpenSkinStudio">
-                  🎨 Abrir Estudio de Skin
-                </button>
-              </div>
+              <span class="spc-footer-note" id="homeSkinNameLabel">Skin lista para jugar</span>
             </div>
           </div>
 
         </div>
 
-        <!-- DOCK INFERIOR DE LANZAMIENTO Y BARRA DE PROGRESO -->
+        <!-- DOCK INFERIOR: ÚNICO BOTÓN JUGAR -->
         <div class="launch-dock">
           <div class="progress-section" id="progressSection" style="display:none">
             <div class="progress-bar-wrap">
@@ -382,9 +312,6 @@
             <button class="btn-play" id="btnPlay">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               <span>¡JUGAR EN DORALAND!</span>
-            </button>
-            <button class="btn-dock-settings" id="btnDockSettings" title="Ajustes de Resolución y Cuenta">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </button>
           </div>
           <span class="play-hint" id="playHint">
@@ -403,7 +330,6 @@
             <h2 class="screen-title">🎨 Estudio de <span class="text-gold">Skin Personalizada</span></h2>
             <p class="screen-sub">Sube tu propio archivo <strong>.PNG (64×64 o 64×32)</strong> para tu cuenta No Premium o importa la skin de cualquier jugador.</p>
           </div>
-          <button class="btn-back-home" data-goto="screenHome">← Volver al Inicio</button>
         </div>
 
         <div class="skin-studio-grid">
@@ -435,7 +361,7 @@
           <!-- Controles de subida e importación -->
           <div class="skin-controls-col">
 
-            <!-- Subir PNG desde PC -->
+            <!-- Único Botón para Subir PNG desde PC -->
             <div class="glass-card">
               <h3 class="card-subtitle">📤 Subir Archivo de Skin (.PNG)</h3>
               <p class="card-desc">Selecciona una textura de skin de Minecraft desde tu computadora. Se aplicará automáticamente en tu cliente `.doraland` al jugar.</p>
@@ -462,9 +388,9 @@
             <!-- Importar desde un Nickname Premium -->
             <div class="glass-card">
               <h3 class="card-subtitle">🔎 Importar Skin por Nickname</h3>
-              <p class="card-desc">¿Te gusta la skin de algún creador o jugador Premium? Escribe su nombre y úsala al instante.</p>
+              <p class="card-desc">Escribe el nombre de cualquier jugador de Minecraft para importar su skin.</p>
               <div class="import-nick-row">
-                <input type="text" class="input-field" id="inputSkinNick" placeholder="Ej: Vegetta777, IlloJuan..." maxlength="16" />
+                <input type="text" class="input-field" id="inputSkinNick" placeholder="Ej: Dacota10, Yanah_, OnmiAzkeel, SLuzzen..." maxlength="16" />
                 <button class="btn-gold" id="btnImportSkinNick">Importar</button>
               </div>
               <div class="skin-actions-footer">
@@ -483,9 +409,8 @@
         <div class="screen-header">
           <div>
             <h2 class="screen-title">⚙️ Ajustes de <span class="text-gold">Doraland Launcher</span></h2>
-            <p class="screen-sub">Configura la resolución del juego, tu cuenta Premium de Minecraft, el rendimiento de Java 21 y el comportamiento del launcher.</p>
+            <p class="screen-sub">Configura la resolución del juego, tu cuenta Premium de Minecraft, la memoria RAM dedicada y las opciones de inicio.</p>
           </div>
-          <button class="btn-back-home" data-goto="screenHome">← Volver al Inicio</button>
         </div>
 
         <div class="settings-grid">
@@ -542,8 +467,8 @@
             <div class="sc-title-row">
               <span class="sc-icon">👑</span>
               <div>
-                <h3 class="card-subtitle">Launcher Settings (Premium Minecraft & Cuenta)</h3>
-                <p class="card-desc">Gestiona tu autenticación oficial con Microsoft (Premium) o cambia al modo No Premium en cualquier momento.</p>
+                <h3 class="card-subtitle">Launcher Settings (Premium Minecraft)</h3>
+                <p class="card-desc">Gestiona tu autenticación oficial con Microsoft (Premium) y el comportamiento del launcher al iniciar.</p>
               </div>
             </div>
 
@@ -557,9 +482,6 @@
                 <button class="btn-microsoft-mini" id="btnSettingsPremiumLogin">
                   <svg width="16" height="16" viewBox="0 0 23 23" fill="none"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
                   <span>Vincular / Usar Cuenta Premium</span>
-                </button>
-                <button class="btn-secondary-outline" id="btnSettingsSwitchAccount">
-                  🔄 Cambiar de Cuenta / Modo No Premium
                 </button>
               </div>
             </div>
@@ -594,13 +516,13 @@
             </div>
           </div>
 
-          <!-- TARJETA 3: MEMORIA RAM, JAVA 21 Y ARCHIVOS LOCALES -->
+          <!-- TARJETA 3: MEMORIA RAM, JAVA 21 Y ARCHIVOS LOCALES (ÚNICO CONTROL DE RAM) -->
           <div class="glass-card settings-card settings-card-wide">
             <div class="sc-title-row">
               <span class="sc-icon">⚡</span>
               <div>
-                <h3 class="card-subtitle">Rendimiento, Memoria RAM y Java 21</h3>
-                <p class="card-desc">Ajusta la memoria dedicada para los 149 mods de NeoForge 1.21.1 y los argumentos avanzados de la máquina virtual.</p>
+                <h3 class="card-subtitle">Rendimiento, Memoria RAM y Archivos</h3>
+                <p class="card-desc">Los cambios de RAM, resolución y opciones se guardan automáticamente al ajustarlos.</p>
               </div>
             </div>
 
@@ -613,6 +535,11 @@
                 <div class="slider-wrap" style="margin: 10px 0;">
                   <input type="range" class="ram-slider" id="settingsRamSlider" min="2048" max="16384" step="512" value="6144" />
                 </div>
+                <div class="ram-markers">
+                  <span>2 GB</span>
+                  <span class="text-green">★ Recomendado (6 GB - 8 GB)</span>
+                  <span id="ramMaxLabel">16 GB</span>
+                </div>
                 <div class="input-group" style="margin-top: 12px;">
                   <label class="input-label" for="inputCustomJvm">Argumentos JVM Adicionales (Opcional)</label>
                   <input type="text" class="input-field" id="inputCustomJvm" placeholder="Ej: -Dsun.rmi.dgc.server.gcInterval=2147483646" />
@@ -624,10 +551,7 @@
                   📂 Abrir Carpeta de Datos (.doraland)
                 </button>
                 <button class="btn-secondary-outline" id="btnSettingsCheckUpdate">
-                  🚀 Verificar Actualizaciones del Launcher (v1.0.1)
-                </button>
-                <button class="btn-primary" id="btnSaveAllSettings">
-                  💾 Guardar Todos los Ajustes
+                  🚀 Buscar Actualizaciones del Launcher
                 </button>
               </div>
             </div>

@@ -1875,3 +1875,49 @@ html, body {
   font-weight: 800;
   cursor: pointer;
 }
+
+/* ── TARJETAS DE ESTADO COMPACTAS EN EL HOME ─────────────── */
+.home-stats-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mini-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+}
+
+.msc-icon {
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.msc-val {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--gold-light);
+}
+
+.msc-lbl {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.spc-footer-note {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
