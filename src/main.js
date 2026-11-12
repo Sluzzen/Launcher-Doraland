@@ -20,7 +20,7 @@ try {
   });
 } catch {}
 
-const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog, screen } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const https = require('https');
@@ -803,14 +803,38 @@ ipcMain.handle('clear-session', () => {
   return true;
 });
 
+function getMonitorMaxResolution() {
+  try {
+    if (!app.isReady()) return { width: 1920, height: 1080 };
+    const displays = screen.getAllDisplays();
+    if (!Array.isArray(displays) || displays.length === 0) {
+      return { width: 1920, height: 1080 };
+    }
+    let best = { width: 0, height: 0 };
+    for (const d of displays) {
+      const scale = d.scaleFactor || 1;
+      const physW = Math.round((d.size?.width || 1920) * scale);
+      const physH = Math.round((d.size?.height || 1080) * scale);
+      if (physW * physH > best.width * best.height) {
+        best = { width: physW, height: physH };
+      }
+    }
+    return best.width >= 640 && best.height >= 480 ? best : { width: 1920, height: 1080 };
+  } catch {
+    return { width: 1920, height: 1080 };
+  }
+}
+
 ipcMain.handle('get-system-info', () => {
   const totalMb = Math.round(os.totalmem() / 1024 / 1024);
   const freeMb = Math.round(os.freemem() / 1024 / 1024);
   const safeMaxMb = Math.max(2048, totalMb - 1536);
+  const maxResolution = getMonitorMaxResolution();
   return {
     totalRamMb: totalMb,
     freeRamMb: freeMb,
-    safeMaxRamMb: safeMaxMb
+    safeMaxRamMb: safeMaxMb,
+    maxResolution
   };
 });
 
@@ -821,11 +845,14 @@ ipcMain.handle('get-settings', () => {
   const savedRam = getStore().get('ram', cfg?.minecraft?.recommendedRamMb || 6144);
   const clampedRam = Math.min(safeMaxMb, Math.max(2048, savedRam));
   const defRes = cfg?.launcher?.defaultResolution || { width: 1280, height: 720, fullscreen: false };
+  const maxRes = getMonitorMaxResolution();
+  const rawW = getStore().get('resolutionWidth', defRes.width || 1280);
+  const rawH = getStore().get('resolutionHeight', defRes.height || 720);
 
   return {
     ram: clampedRam,
-    resolutionWidth: getStore().get('resolutionWidth', defRes.width || 1280),
-    resolutionHeight: getStore().get('resolutionHeight', defRes.height || 720),
+    resolutionWidth: Math.min(maxRes.width, Math.max(640, parseInt(rawW) || 1280)),
+    resolutionHeight: Math.min(maxRes.height, Math.max(480, parseInt(rawH) || 720)),
     fullscreen: getStore().get('fullscreen', Boolean(defRes.fullscreen)),
     closeOnLaunch: getStore().get('closeOnLaunch', false),
     hideOnLaunch: getStore().get('hideOnLaunch', false),
@@ -840,16 +867,17 @@ ipcMain.handle('save-settings', (_, settings) => {
   if (settings && typeof settings === 'object') {
     const totalMb = Math.round(os.totalmem() / 1024 / 1024);
     const safeMaxMb = Math.max(2048, totalMb - 1536);
+    const maxRes = getMonitorMaxResolution();
     if (settings.ram !== undefined) {
       const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(settings.ram) || 6144));
       getStore().set('ram', safeRam);
     }
     if (settings.resolutionWidth !== undefined) {
-      const w = Math.min(7680, Math.max(640, parseInt(settings.resolutionWidth) || 1280));
+      const w = Math.min(maxRes.width, Math.max(640, parseInt(settings.resolutionWidth) || 1280));
       getStore().set('resolutionWidth', w);
     }
     if (settings.resolutionHeight !== undefined) {
-      const h = Math.min(4320, Math.max(480, parseInt(settings.resolutionHeight) || 720));
+      const h = Math.min(maxRes.height, Math.max(480, parseInt(settings.resolutionHeight) || 720));
       getStore().set('resolutionHeight', h);
     }
     if (settings.fullscreen !== undefined) {

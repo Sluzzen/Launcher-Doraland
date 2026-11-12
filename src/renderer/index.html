@@ -533,14 +533,13 @@
             </div>
 
             <div class="form-row">
-              <label class="input-label" for="selectResPreset">Preajustes de Resolución</label>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;">
+                <label class="input-label" for="selectResPreset" style="margin-bottom:0;">Preajustes de Resolución</label>
+                <span class="res-detected-note" id="maxMonitorResLabel" style="font-size:10.5px;color:var(--gold-light);font-weight:700;"></span>
+              </div>
               <select class="select-field" id="selectResPreset">
                 <option value="854x480">854 × 480 (Estándar Minecraft)</option>
                 <option value="1280x720" selected>1280 × 720 (HD 720p - Recomendado)</option>
-                <option value="1366x768">1366 × 768 (Laptop WXGA)</option>
-                <option value="1600x900">1600 × 900 (HD+ 900p)</option>
-                <option value="1920x1080">1920 × 1080 (Full HD 1080p)</option>
-                <option value="2560x1440">2560 × 1440 (2K QHD)</option>
                 <option value="custom">Personalizada (Manual)</option>
               </select>
             </div>

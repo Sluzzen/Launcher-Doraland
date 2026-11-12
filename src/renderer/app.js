@@ -509,17 +509,94 @@ async function persistSettings(partial = {}) {
   await window.doraland.saveSettings(currentSettings);
 }
 
+let maxMonitorRes = { width: 1920, height: 1080 };
+
+const STANDARD_RESOLUTIONS = [
+  { w: 854,  h: 480,  tag: 'Estándar Minecraft' },
+  { w: 1280, h: 720,  tag: 'HD 720p - Recomendado' },
+  { w: 1366, h: 768,  tag: 'Laptop WXGA' },
+  { w: 1440, h: 900,  tag: 'WXGA+' },
+  { w: 1600, h: 900,  tag: 'HD+ 900p' },
+  { w: 1920, h: 1080, tag: 'Full HD 1080p' },
+  { w: 1920, h: 1200, tag: 'WUXGA' },
+  { w: 2560, h: 1080, tag: 'UltraWide Full HD' },
+  { w: 2560, h: 1440, tag: '2K QHD' },
+  { w: 2560, h: 1600, tag: 'WQXGA' },
+  { w: 3440, h: 1440, tag: 'UltraWide QHD' },
+  { w: 3840, h: 2160, tag: '4K UHD' }
+];
+
+function populateResolutionOptions(maxW, maxH) {
+  maxMonitorRes = {
+    width: Math.max(640, parseInt(maxW) || 1920),
+    height: Math.max(480, parseInt(maxH) || 1080)
+  };
+
+  safeText('maxMonitorResLabel', `Máx. monitor: ${maxMonitorRes.width} × ${maxMonitorRes.height}`);
+
+  const inputW = document.getElementById('inputResWidth');
+  const inputH = document.getElementById('inputResHeight');
+  if (inputW) inputW.max = String(maxMonitorRes.width);
+  if (inputH) inputH.max = String(maxMonitorRes.height);
+
+  const presetSel = document.getElementById('selectResPreset');
+  if (!presetSel) return;
+
+  const allowed = STANDARD_RESOLUTIONS.filter(
+    r => r.w <= maxMonitorRes.width && r.h <= maxMonitorRes.height
+  );
+
+  // Añadir la resolución nativa exacta del monitor si no coincide con las estándar
+  const hasExactNative = allowed.some(r => r.w === maxMonitorRes.width && r.h === maxMonitorRes.height);
+  if (!hasExactNative) {
+    allowed.push({
+      w: maxMonitorRes.width,
+      h: maxMonitorRes.height,
+      tag: 'Nativa del Monitor'
+    });
+    allowed.sort((a, b) => (a.w * a.h) - (b.w * b.h));
+  }
+
+  presetSel.innerHTML = '';
+  for (const r of allowed) {
+    const opt = document.createElement('option');
+    opt.value = `${r.w}x${r.h}`;
+    const isMax = r.w === maxMonitorRes.width && r.h === maxMonitorRes.height;
+    opt.textContent = isMax && !r.tag.includes('Monitor')
+      ? `${r.w} × ${r.h} (${r.tag} • Máxima)`
+      : `${r.w} × ${r.h} (${r.tag})`;
+    presetSel.appendChild(opt);
+  }
+
+  const customOpt = document.createElement('option');
+  customOpt.value = 'custom';
+  customOpt.textContent = 'Personalizada (Manual)';
+  presetSel.appendChild(customOpt);
+}
+
 async function setupRamAndSettingsControls() {
   const homeSlider = document.getElementById('ramSlider');
   const setSlider = document.getElementById('settingsRamSlider');
 
   let safeMax = config?.minecraft?.maxRamMb || 16384;
+  let detectedW = Math.round((window.screen?.width || 1920) * (window.devicePixelRatio || 1));
+  let detectedH = Math.round((window.screen?.height || 1080) * (window.devicePixelRatio || 1));
+
   try {
     const sys = await window.doraland.getSystemInfo();
     if (sys && sys.safeMaxRamMb) {
       safeMax = Math.min(safeMax, sys.safeMaxRamMb);
     }
+    if (sys?.maxResolution?.width && sys?.maxResolution?.height) {
+      detectedW = sys.maxResolution.width;
+      detectedH = sys.maxResolution.height;
+    }
   } catch {}
+
+  populateResolutionOptions(detectedW, detectedH);
+  currentSettings.resolutionWidth = Math.min(maxMonitorRes.width, Math.max(640, currentSettings.resolutionWidth || 1280));
+  currentSettings.resolutionHeight = Math.min(maxMonitorRes.height, Math.max(480, currentSettings.resolutionHeight || 720));
+  applySettingsToUI(currentSettings);
 
   const min = config?.minecraft?.minRamMb || 2048;
   [homeSlider, setSlider].forEach(sl => {
@@ -566,8 +643,8 @@ async function setupRamAndSettingsControls() {
   });
 
   const onManualResChange = () => {
-    const w = Math.min(7680, Math.max(640, parseInt(inputW?.value) || 1280));
-    const h = Math.min(4320, Math.max(480, parseInt(inputH?.value) || 720));
+    const w = Math.min(maxMonitorRes.width, Math.max(640, parseInt(inputW?.value) || 1280));
+    const h = Math.min(maxMonitorRes.height, Math.max(480, parseInt(inputH?.value) || 720));
     persistSettings({ resolutionWidth: w, resolutionHeight: h });
   };
   inputW?.addEventListener('change', onManualResChange);
@@ -646,8 +723,8 @@ async function setupRamAndSettingsControls() {
   });
 
   document.getElementById('btnSaveAllSettings')?.addEventListener('click', async () => {
-    const w = Math.min(7680, Math.max(640, parseInt(inputW?.value) || 1280));
-    const h = Math.min(4320, Math.max(480, parseInt(inputH?.value) || 720));
+    const w = Math.min(maxMonitorRes.width, Math.max(640, parseInt(inputW?.value) || 1280));
+    const h = Math.min(maxMonitorRes.height, Math.max(480, parseInt(inputH?.value) || 720));
     const jvm = document.getElementById('inputCustomJvm')?.value?.trim() || '';
     await persistSettings({ resolutionWidth: w, resolutionHeight: h, customJvmArgs: jvm });
     showNotification('¡Ajustes guardados correctamente!', 'success');
