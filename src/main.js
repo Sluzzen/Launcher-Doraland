@@ -516,7 +516,7 @@ async function checkAndApplyGitBranchSelfUpdate() {
     pendingUpdateMode = 'live-branch';
     appendLauncherLog(`Nueva versión detectada en GitHub: v${remoteVer} (actual: v${localVer}). Aplicando auto-actualización...`);
 
-    mainWindow?.webContents.send('launcher-update-available', {
+    safeSend(mainWindow, 'launcher-update-available', {
       version: remoteVer,
       currentVersion: localVer,
       autoApplying: true,
@@ -572,14 +572,14 @@ async function checkAndApplyGitBranchSelfUpdate() {
       }
 
       const pct = Math.round(((i + 1) / filesToSync.length) * 100);
-      mainWindow?.webContents.send('launcher-update-progress', {
+      safeSend(mainWindow, 'launcher-update-progress', {
         percent: pct,
         speed: 'GitHub Direct'
       });
     }
 
     appendLauncherLog(`Auto-actualización a v${remoteVer} aplicada con éxito. Reiniciando launcher...`);
-    mainWindow?.webContents.send('launcher-update-downloaded', {
+    safeSend(mainWindow, 'launcher-update-downloaded', {
       version: remoteVer,
       autoRestart: true
     });
@@ -606,7 +606,7 @@ function setupLauncherAutoUpdater() {
       isUpdatingLauncher = true;
       pendingUpdateMode = 'release';
       appendLauncherLog(`Actualización de Release disponible: v${info.version} (actual: v${localVer})`);
-      mainWindow?.webContents.send('launcher-update-available', {
+      safeSend(mainWindow, 'launcher-update-available', {
         version: info.version,
         currentVersion: localVer,
         autoApplying: true,
@@ -615,7 +615,7 @@ function setupLauncherAutoUpdater() {
     });
 
     autoUpdater.on('download-progress', (progress) => {
-      mainWindow?.webContents.send('launcher-update-progress', {
+      safeSend(mainWindow, 'launcher-update-progress', {
         percent: Math.round(progress.percent),
         speed: (progress.bytesPerSecond / 1024 / 1024).toFixed(1)
       });
@@ -623,7 +623,7 @@ function setupLauncherAutoUpdater() {
 
     autoUpdater.on('update-downloaded', (info) => {
       appendLauncherLog(`Instalador de actualización descargado: v${info.version}. Reiniciando...`);
-      mainWindow?.webContents.send('launcher-update-downloaded', {
+      safeSend(mainWindow, 'launcher-update-downloaded', {
         version: info.version,
         autoRestart: true
       });
@@ -683,6 +683,19 @@ ipcMain.handle('install-launcher-update', () => {
     app.exit(0);
   }
 });
+
+function safeSend(target, channel, payload) {
+  try {
+    const wc = target?.sender || target?.webContents || target;
+    if (wc && typeof wc.send === 'function' && (typeof wc.isDestroyed !== 'function' || !wc.isDestroyed())) {
+      wc.send(channel, payload);
+      return;
+    }
+    if (mainWindow && !mainWindow.isDestroyed() && mainWindow.webContents && !mainWindow.webContents.isDestroyed()) {
+      safeSend(mainWindow, channel, payload);
+    }
+  } catch {}
+}
 
 // ============================================================================
 // 4. VENTANA PRINCIPAL Y PROTECCIONES WEB
@@ -2341,7 +2354,7 @@ ipcMain.handle('auth-microsoft', async () => {
     const authManager = new Auth('select_account');
 
     authManager.on('load', (e) => {
-      mainWindow?.webContents.send('auth-update', {
+      safeSend(mainWindow, 'auth-update', {
         title: typeof e === 'string' ? e : 'Conectando con servidores de Microsoft...'
       });
     });
@@ -2697,7 +2710,7 @@ async function syncOverridesProtected(gameDir, cfg, event) {
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland, emotes y shaders...' });
+  safeSend(event, 'launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland, emotes y shaders...' });
 
   // Archivos de preferencias personales que no deben sobrescribirse si el jugador ya los modificó
   const userProtectedRelPaths = new Set([
@@ -2752,12 +2765,12 @@ async function syncOverridesProtected(gameDir, cfg, event) {
     await copyDirSelective(bundledOverridesPath, gameDir);
     await ensureUserOptionsMerged(gameDir, userOptBackup);
     if (syncedFiles > 0) {
-      event?.sender.send('launch-log', { type: 'info', msg: `✔️ Se aplicaron ${syncedFiles} archivos de configuración/interfaz de Doraland.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Se aplicaron ${syncedFiles} archivos de configuración/interfaz de Doraland.` });
     } else {
-      event?.sender.send('launch-log', { type: 'info', msg: '✔️ Configuraciones e interfaz de Doraland al día.' });
+      safeSend(event, 'launch-log', { type: 'info', msg: '✔️ Configuraciones e interfaz de Doraland al día.' });
     }
   } catch (err) {
-    event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Aviso sincronizando overrides: ${err.message}` });
+    safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Aviso sincronizando overrides: ${err.message}` });
   }
 }
 
@@ -2775,10 +2788,10 @@ async function syncModsProtected(gameDir, cfg, event) {
   let manifest = null;
   if (cfg.mods?.remoteManifestUrl && cfg.mods?.source !== 'bundled') {
     try {
-      event?.sender.send('launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de mods en el servidor...' });
+      safeSend(event, 'launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de mods en el servidor...' });
       manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
     } catch (err) {
-      event?.sender.send('launch-log', { type: 'warn', msg: `⚠️ Servidor remoto ocupado (${err.message}). Usando manifiesto integrado.` });
+      safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Servidor remoto ocupado (${err.message}). Usando manifiesto integrado.` });
     }
   }
 
@@ -2853,7 +2866,7 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
       // Proteger los Mods de Cliente instalados por el jugador para que nunca se borren
       if (lower.endsWith('.jar') && !remoteNames.includes(lower) && !userClientModsSet.has(lower)) {
         await fs.remove(path.join(targetModsPath, file));
-        event?.sender.send('launch-log', { type: 'warn', msg: `🗑️ Mod antiguo retirado del servidor: ${file}` });
+        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod antiguo retirado del servidor: ${file}` });
       }
     }
   }
@@ -2875,11 +2888,11 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 
   if (pendingMods.length === 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods verificados).` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods verificados).` });
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} mods pendientes desde el repositorio...` });
+  safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} mods pendientes desde el repositorio...` });
 
   let updatedCount = 0;
   let completedTasks = 0;
@@ -2922,22 +2935,22 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
         await downloadWithRetry(modUrl, destPath, 3);
         updatedCount++;
         completedTasks++;
-        event?.sender.send('launch-progress', {
+        safeSend(event, 'launch-progress', {
           type: `Mods (${completedTasks}/${pendingMods.length}): ${mod.name}`,
           task: completedTasks,
           total: pendingMods.length
         });
-        event?.sender.send('launch-log', { type: 'info', msg: `✅ [${completedTasks}/${pendingMods.length}] Mod descargado: ${mod.name}` });
+        safeSend(event, 'launch-log', { type: 'info', msg: `✅ [${completedTasks}/${pendingMods.length}] Mod descargado: ${mod.name}` });
       } catch (dlErr) {
         completedTasks++;
         if (dlErr.message.includes('HTTP 404') && !warned404) {
           warned404 = true;
-          event?.sender.send('launch-log', {
+          safeSend(event, 'launch-log', {
             type: 'error',
             msg: '❌ Error HTTP 404 en GitHub: El repositorio Sluzzen/Launcher-Doraland está en modo PRIVADO. Cámbialo a PÚBLICO en GitHub (Settings -> Change visibility -> Public) para permitir la descarga automática de mods.'
           });
         } else {
-          event?.sender.send('launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
+          safeSend(event, 'launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
         }
       }
     }
@@ -2947,7 +2960,7 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   await Promise.all(workers);
 
   if (updatedCount > 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `🎉 Se descargaron/actualizaron ${updatedCount} mods automáticamente.` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `🎉 Se descargaron/actualizaron ${updatedCount} mods automáticamente.` });
   }
 }
 
@@ -2975,7 +2988,7 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
     return;
   }
 
-  event?.sender.send('launch-log', { type: 'info', msg: `📦 Verificando ${bundledJars.length} mods desde paquete local...` });
+  safeSend(event, 'launch-log', { type: 'info', msg: `📦 Verificando ${bundledJars.length} mods desde paquete local...` });
 
   if (cleanExtra && cfg.mods?.cleanOldMods) {
     const gameDir = path.dirname(targetModsPath);
@@ -2985,7 +2998,7 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
       const lower = file.toLowerCase();
       if (lower.endsWith('.jar') && !bundledJars.includes(file) && !userClientModsSet.has(lower)) {
         await fs.remove(path.join(targetModsPath, file));
-        event?.sender.send('launch-log', { type: 'warn', msg: `🗑️ Mod no requerido eliminado: ${file}` });
+        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod no requerido eliminado: ${file}` });
       }
     }
   }
@@ -3011,7 +3024,7 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
   }
 
   if (updatedCount > 0) {
-    event?.sender.send('launch-log', { type: 'info', msg: `✅ Se copiaron ${updatedCount} mods desde el paquete local.` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `✅ Se copiaron ${updatedCount} mods desde el paquete local.` });
   }
 }
 
@@ -3073,9 +3086,9 @@ function runJavaInstallerCli(javaPath, args, cwd, event, label) {
       for (const line of lines) {
         if (!line.trim()) continue;
         if (line.includes('Downloading') || line.includes('Processor') || line.includes('Splitting') || line.includes('Patching') || line.includes('Renaming') || line.includes('Successfully')) {
-          event?.sender.send('launch-log', { type: 'info', msg: `[${label}] ${line.trim()}` });
+          safeSend(event, 'launch-log', { type: 'info', msg: `[${label}] ${line.trim()}` });
         } else {
-          event?.sender.send('launch-log', { type: 'debug', msg: `[${label}] ${line.trim()}` });
+          safeSend(event, 'launch-log', { type: 'debug', msg: `[${label}] ${line.trim()}` });
         }
       }
     });
@@ -3083,7 +3096,7 @@ function runJavaInstallerCli(javaPath, args, cwd, event, label) {
     proc.stderr.on('data', (data) => {
       const text = data.toString('utf8').trim();
       if (text) {
-        event?.sender.send('launch-log', { type: 'debug', msg: `[${label}] ${text}` });
+        safeSend(event, 'launch-log', { type: 'debug', msg: `[${label}] ${text}` });
       }
     });
 
@@ -3119,11 +3132,11 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
       const installerPath = path.join(installersDir, installerName);
 
       if (!fs.existsSync(installerPath) || !isValidJarFile(installerPath)) {
-        event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando instalador oficial de NeoForge ${ver}...` });
+        safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando instalador oficial de NeoForge ${ver}...` });
         const downloadUrl = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${ver}/${installerName}`;
 
         await downloadFile(downloadUrl, installerPath, (pct) => {
-          event?.sender.send('launch-progress', {
+          safeSend(event, 'launch-progress', {
             type: `NeoForge ${ver} Installer`,
             task: pct,
             total: 100
@@ -3136,8 +3149,8 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
         }
       }
 
-      event?.sender.send('launch-log', { type: 'info', msg: `⚙️ Instalando NeoForge ${ver} (primera vez, esto puede tardar 1-2 minutos)...` });
-      event?.sender.send('launch-progress', { type: `Instalando NeoForge ${ver}`, task: 50, total: 100 });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⚙️ Instalando NeoForge ${ver} (primera vez, esto puede tardar 1-2 minutos)...` });
+      safeSend(event, 'launch-progress', { type: `Instalando NeoForge ${ver}`, task: 50, total: 100 });
 
       await runJavaInstallerCli(
         javaPath,
@@ -3147,9 +3160,9 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
         `NeoForge ${ver}`
       );
 
-      event?.sender.send('launch-log', { type: 'info', msg: `✅ NeoForge ${ver} instalado correctamente.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✅ NeoForge ${ver} instalado correctamente.` });
     } else {
-      event?.sender.send('launch-log', { type: 'info', msg: `⚡ NeoForge ${ver} verificado en caché.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⚡ NeoForge ${ver} verificado en caché.` });
     }
 
     const versionJson = await fs.readJson(versionJsonPath);
@@ -3173,11 +3186,11 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
     const installerPath = path.join(installersDir, installerName);
 
     if (!fs.existsSync(installerPath) || !isValidJarFile(installerPath)) {
-      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando instalador de Forge ${fullVer}...` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando instalador de Forge ${fullVer}...` });
       const downloadUrl = `https://maven.minecraftforge.net/net/minecraftforge/forge/${fullVer}/${installerName}`;
 
       await downloadFile(downloadUrl, installerPath, (pct) => {
-        event?.sender.send('launch-progress', {
+        safeSend(event, 'launch-progress', {
           type: `Forge ${fullVer} Installer`,
           task: pct,
           total: 100
@@ -3214,14 +3227,14 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
     const versionJsonPath = path.join(versionDir, `${customId}.json`);
 
     if (!fs.existsSync(versionJsonPath)) {
-      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Fabric Loader ${ver}...` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Fabric Loader ${ver}...` });
       await fs.ensureDir(versionDir);
       const profileUrl = `https://meta.fabricmc.net/v2/versions/loader/${mcVersion}/${ver}/profile/json`;
       const profileJson = await fetchRemoteJson(profileUrl);
       await fs.writeJson(versionJsonPath, profileJson, { spaces: 2 });
-      event?.sender.send('launch-log', { type: 'info', msg: `✅ Fabric Loader ${ver} listo.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✅ Fabric Loader ${ver} listo.` });
     } else {
-      event?.sender.send('launch-log', { type: 'info', msg: `⚡ Fabric Loader ${ver} verificado en caché.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⚡ Fabric Loader ${ver} verificado en caché.` });
     }
 
     return {
@@ -3238,14 +3251,14 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
     const versionJsonPath = path.join(versionDir, `${customId}.json`);
 
     if (!fs.existsSync(versionJsonPath)) {
-      event?.sender.send('launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Quilt Loader ${ver}...` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando perfil de Quilt Loader ${ver}...` });
       await fs.ensureDir(versionDir);
       const profileUrl = `https://meta.quiltmc.org/v3/versions/loader/${mcVersion}/${ver}/profile/json`;
       const profileJson = await fetchRemoteJson(profileUrl);
       await fs.writeJson(versionJsonPath, profileJson, { spaces: 2 });
-      event?.sender.send('launch-log', { type: 'info', msg: `✅ Quilt Loader ${ver} listo.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✅ Quilt Loader ${ver} listo.` });
     } else {
-      event?.sender.send('launch-log', { type: 'info', msg: `⚡ Quilt Loader ${ver} verificado en caché.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `⚡ Quilt Loader ${ver} verificado en caché.` });
     }
 
     return {
@@ -3256,7 +3269,7 @@ async function ensureActiveLoaderInstalled(gameDir, mcVersion, loader, javaPath,
   }
 
   // ── CASO 5: VANILLA O GESTORES DE PLUGINS DE SERVIDOR (Paper, Purpur, Spigot, Folia, Bukkit, Velocity, etc.) ──
-  event?.sender.send('launch-log', { type: 'info', msg: `⚡ Modo de cliente activo: ${loader.display} (Cliente estándar ${mcVersion}).` });
+  safeSend(event, 'launch-log', { type: 'info', msg: `⚡ Modo de cliente activo: ${loader.display} (Cliente estándar ${mcVersion}).` });
   return {
     customVersion: null,
     extraJvmArgs: [],
@@ -3296,18 +3309,18 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       return { error: 'Sesión no válida. Por favor inicia sesión de nuevo.' };
     }
 
-    event.sender.send('launch-log', { type: 'info', msg: `🔍 Verificando entorno de Java 21 para ${activeLoader.display}...` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `🔍 Verificando entorno de Java 21 para ${activeLoader.display}...` });
     const javaCheck = await findAndValidateJava();
     if (!javaCheck.valid) {
       isGameRunning = false;
-      event.sender.send('launch-status', {
+      safeSend(event, 'launch-status', {
         status: 'error',
         message: `${javaCheck.reason} Por favor instala Java 21 para jugar ${activeLoader.display}.`
       });
       return;
     }
 
-    event.sender.send('launch-log', { type: 'info', msg: `☕ Java 21 válido detectado: ${javaCheck.path}` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `☕ Java 21 válido detectado: ${javaCheck.path}` });
 
     // 1. Sincronizar overrides del modpack (config/, defaultconfigs/, shaderpacks/, FancyMenu)
     await syncOverridesProtected(gameDir, cfg, event);
@@ -3316,7 +3329,7 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     const savedSkin = getStore().get('customSkin', null);
     if (savedSkin && savedSkin.dataUrl) {
       await applyCustomSkinToGameDir(savedSkin, session.name);
-      event.sender.send('launch-log', { type: 'info', msg: `🎨 Skin personalizada aplicada para ${session.name} (${savedSkin.name || 'PNG'}).` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `🎨 Skin personalizada aplicada para ${session.name} (${savedSkin.name || 'PNG'}).` });
     }
 
     // 2. Sincronizar mods (remoto o local según config)
@@ -3339,7 +3352,7 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     const userJvmStr = String(getStore().get('customJvmArgs', '') || '').trim();
     const userJvmList = userJvmStr ? userJvmStr.split(/\s+/).filter(Boolean) : [];
 
-    event.sender.send('launch-log', {
+    safeSend(event, 'launch-log', {
       type: 'info',
       msg: `📊 Asignando RAM: ${safeRam}MB (Mínimo: ${minRam}MB) • Resolución: ${isFullscreen ? 'Pantalla Completa' : `${resW}x${resH}`}`
     });
@@ -3500,13 +3513,13 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
 
     launcher.on('debug', (msg) => {
       pushGameLog(msg);
-      event.sender.send('launch-log', { type: 'debug', msg });
+      safeSend(event, 'launch-log', { type: 'debug', msg });
     });
     launcher.on('data', (msg) => {
       pushGameLog(msg);
-      event.sender.send('launch-log', { type: 'data', msg });
+      safeSend(event, 'launch-log', { type: 'data', msg });
     });
-    launcher.on('progress', (progress) => event.sender.send('launch-progress', progress));
+    launcher.on('progress', (progress) => safeSend(event, 'launch-progress', progress));
 
     launcher.on('close', (code) => {
       isGameRunning = false;
@@ -3516,10 +3529,10 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
         if (mainWindow.isMinimized()) mainWindow.restore();
         mainWindow.focus();
       }
-      event?.sender?.send('launch-close', code);
+      safeSend(event, 'launch-close', code);
       if (typeof code === 'number' && code !== 0) {
         const report = analyzeMinecraftCrash(code, recentGameLogs);
-        mainWindow?.webContents.send('launch-crash-report', report);
+        safeSend(mainWindow, 'launch-crash-report', report);
       }
       appendLauncherLog(`Minecraft cerrado con código: ${code}`);
     });
@@ -3527,17 +3540,21 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     appendLauncherLog(`Lanzando Minecraft ${mcVersion} (${activeLoader.display}) para el usuario: ${session.name}`);
     discordRpc.setState('playing');
     await launcher.launch(opts);
-    event.sender.send('launch-status', { status: 'launched', loader: activeLoader.display });
+    safeSend(event, 'launch-status', { status: 'launched', loader: activeLoader.display });
 
     if (getStore().get('closeOnLaunch', false)) {
       setTimeout(() => app.quit(), 2500);
     } else if (getStore().get('hideOnLaunch', false)) {
-      setTimeout(() => mainWindow?.minimize(), 2000);
+      setTimeout(() => {
+        try {
+          if (mainWindow && !mainWindow.isDestroyed()) mainWindow.minimize();
+        } catch {}
+      }, 2000);
     }
   } catch (err) {
     isGameRunning = false;
     discordRpc.setState('launcher');
     appendLauncherLog(`Error al lanzar Minecraft: ${err.message}`);
-    event.sender.send('launch-status', { status: 'error', message: err.message });
+    safeSend(event, 'launch-status', { status: 'error', message: err.message });
   }
 });
