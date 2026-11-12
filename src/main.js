@@ -24,6 +24,7 @@ const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const https = require('https');
+const http = require('http');
 const os = require('os');
 const { spawn, spawnSync, execSync } = require('child_process');
 let autoUpdater = null;
@@ -1140,59 +1141,146 @@ function httpsJsonRequest(url, options = {}) {
 
 function fetchBinaryAsDataUrl(url, mimeType = 'image/png') {
   return new Promise((resolve) => {
-    https.get(url, { agent: keepAliveAgent, headers: { 'User-Agent': 'DoralandLauncher/1.0.6' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchBinaryAsDataUrl(res.headers.location, mimeType).then(resolve);
-      }
-      if (res.statusCode !== 200) return resolve(null);
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const buf = Buffer.concat(chunks);
-        resolve(buf.length > 0 ? `data:${mimeType};base64,${buf.toString('base64')}` : null);
-      });
-    }).on('error', () => resolve(null));
+    try {
+      const normalizedUrl = String(url || '').replace(/^http:\/\/textures\.minecraft\.net\//i, 'https://textures.minecraft.net/');
+      const parsed = new URL(normalizedUrl);
+      const client = parsed.protocol === 'http:' ? http : https;
+      const opts = {
+        headers: { 'User-Agent': 'DoralandLauncher/1.0.6' }
+      };
+      if (parsed.protocol === 'https:') opts.agent = keepAliveAgent;
+
+      client.get(normalizedUrl, opts, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          return fetchBinaryAsDataUrl(res.headers.location, mimeType).then(resolve);
+        }
+        if (res.statusCode !== 200) return resolve(null);
+        const chunks = [];
+        res.on('data', c => chunks.push(c));
+        res.on('end', () => {
+          const buf = Buffer.concat(chunks);
+          resolve(buf.length > 0 ? `data:${mimeType};base64,${buf.toString('base64')}` : null);
+        });
+      }).on('error', () => resolve(null));
+    } catch {
+      resolve(null);
+    }
   });
 }
 
-async function fetchOwnedMinecraftCapes(session) {
-  const isPremium = session?.meta?.type === 'msa';
-  if (!isPremium || !session?.uuid) {
-    return { isPremium: false, capes: [], activeCapeId: 'none' };
+async function refreshPremiumSession(session) {
+  const refreshToken = session?.meta?.refresh;
+  if (!refreshToken) return null;
+
+  try {
+    const { Auth } = require('msmc');
+    const authManager = new Auth('select_account');
+    const xboxManager = await authManager.refresh(refreshToken);
+    const token = await xboxManager.getMinecraft();
+    if (!token || (token.isDemo && token.isDemo())) return null;
+
+    const refreshed = token.mclc(true);
+    if (!refreshed || !refreshed.uuid) return null;
+
+    refreshed.capes = Array.isArray(token.profile?.capes) ? token.profile.capes : [];
+    getStore().set('session', refreshed);
+    appendLauncherLog(`Token Microsoft renovado silenciosamente para ${refreshed.name} (capas detectadas: ${refreshed.capes.length})`);
+    return refreshed;
+  } catch (err) {
+    appendLauncherLog(`No se pudo renovar el token Microsoft: ${err?.message || err}`);
+    return null;
+  }
+}
+
+function mapRawCapesList(capesArray) {
+  const list = [];
+  if (!Array.isArray(capesArray)) return list;
+  for (const c of capesArray) {
+    if (c?.id && c?.url) {
+      list.push({
+        id: String(c.id),
+        name: String(c.alias || c.name || 'Capa Oficial'),
+        state: String(c.state || 'INACTIVE').toUpperCase(),
+        url: String(c.url)
+      });
+    }
+  }
+  return list;
+}
+
+async function fetchOwnedMinecraftCapes(initialSession) {
+  let activeSession = initialSession;
+  const isPremium = activeSession?.meta?.type === 'msa';
+  if (!isPremium || !activeSession?.uuid) {
+    return { isPremium: false, capes: [], activeCapeId: 'none', updatedSession: null };
   }
 
-  const rawCapes = [];
+  let rawCapes = [];
   let tokenExpired = false;
+  let updatedSession = null;
 
-  // 1. Perfil autenticado de Minecraft Services (devuelve TODAS las capas propias de la cuenta)
-  if (session.access_token) {
+  // Si sabemos que el token ya venció por su marca exp, refrescar antes de llamar a Mojang
+  const isLikelyExpired = !activeSession.access_token ||
+    (typeof activeSession.meta?.exp === 'number' && Date.now() >= activeSession.meta.exp - 60000);
+
+  if (isLikelyExpired && activeSession.meta?.refresh) {
+    const refreshed = await refreshPremiumSession(activeSession);
+    if (refreshed) {
+      activeSession = refreshed;
+      updatedSession = refreshed;
+      if (Array.isArray(refreshed.capes)) {
+        rawCapes = mapRawCapesList(refreshed.capes);
+      }
+    }
+  }
+
+  // 1. Perfil autenticado de Minecraft Services (devuelve TODAS las capas propias, activas o inactivas)
+  if (rawCapes.length === 0 && activeSession.access_token) {
     try {
-      const res = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile', {
-        headers: { Authorization: `Bearer ${session.access_token}` }
+      let res = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile', {
+        headers: { Authorization: `Bearer ${activeSession.access_token}` }
       });
-      if (res.statusCode === 200 && Array.isArray(res.data?.capes)) {
-        for (const c of res.data.capes) {
-          if (c?.id && c?.url) {
-            rawCapes.push({
-              id: String(c.id),
-              name: String(c.alias || 'Capa Oficial'),
-              state: String(c.state || 'INACTIVE').toUpperCase(),
-              url: String(c.url)
+
+      if (res.statusCode === 401 || res.statusCode === 403) {
+        const refreshed = await refreshPremiumSession(activeSession);
+        if (refreshed) {
+          activeSession = refreshed;
+          updatedSession = refreshed;
+          if (Array.isArray(refreshed.capes) && refreshed.capes.length > 0) {
+            rawCapes = mapRawCapesList(refreshed.capes);
+          } else {
+            res = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile', {
+              headers: { Authorization: `Bearer ${refreshed.access_token}` }
             });
           }
+        } else {
+          tokenExpired = true;
         }
-      } else if (res.statusCode === 401 || res.statusCode === 403) {
-        tokenExpired = true;
       }
-    } catch {}
-  } else {
+
+      if (rawCapes.length === 0 && res.statusCode === 200) {
+        rawCapes = mapRawCapesList(res.data?.capes);
+        tokenExpired = false;
+      } else if (res.statusCode !== 200 && rawCapes.length === 0) {
+        appendLauncherLog(`Consulta de capas /minecraft/profile devolvió HTTP ${res.statusCode}`);
+        if (res.statusCode === 401 || res.statusCode === 403) tokenExpired = true;
+      }
+    } catch (err) {
+      appendLauncherLog(`Error consultando capas de Minecraft Services: ${err?.message || err}`);
+    }
+  } else if (!activeSession.access_token && rawCapes.length === 0) {
     tokenExpired = true;
   }
 
-  // 2. Fallback público a Mojang SessionServer si el token expiró (al menos obtiene la capa activa)
+  // 2. Respaldo usando capas guardadas en sesión si la API falló temporalmente por red
+  if (rawCapes.length === 0 && Array.isArray(activeSession.capes) && activeSession.capes.length > 0) {
+    rawCapes = mapRawCapesList(activeSession.capes);
+  }
+
+  // 3. Respaldo público a Mojang SessionServer si no hubo token válido (solo expone capa actualmente equipada)
   if (rawCapes.length === 0) {
     try {
-      const cleanUuid = String(session.uuid).replace(/-/g, '');
+      const cleanUuid = String(activeSession.uuid).replace(/-/g, '');
       const prof = await fetchRemoteJson(`https://sessionserver.mojang.com/session/minecraft/profile/${encodeURIComponent(cleanUuid)}`);
       const texProp = Array.isArray(prof?.properties) ? prof.properties.find(p => p.name === 'textures') : null;
       if (texProp?.value) {
@@ -1225,7 +1313,8 @@ async function fetchOwnedMinecraftCapes(session) {
     isPremium: true,
     tokenExpired,
     capes,
-    activeCapeId: activeAccountCape ? activeAccountCape.id : 'none'
+    activeCapeId: activeAccountCape ? activeAccountCape.id : 'none',
+    updatedSession
   };
 }
 
@@ -1255,14 +1344,14 @@ ipcMain.handle('get-owned-capes', async () => {
         updatedAt: stored.updatedAt || Date.now()
       };
       getStore().set('selectedCape', selectedCape);
-    } else {
+    } else if (!result.tokenExpired) {
       const active = result.capes.find(c => c.state === 'ACTIVE');
       selectedCape = active
         ? { id: active.id, name: active.name, url: active.url, dataUrl: active.dataUrl, updatedAt: Date.now() }
         : { id: 'none', name: 'Sin Capa', dataUrl: null, updatedAt: Date.now() };
       getStore().set('selectedCape', selectedCape);
     }
-  } else if (!stored?.updatedAt && result.activeCapeId !== 'none') {
+  } else if (result.activeCapeId !== 'none') {
     const active = result.capes.find(c => c.id === result.activeCapeId);
     if (active) {
       selectedCape = { id: active.id, name: active.name, url: active.url, dataUrl: active.dataUrl, updatedAt: Date.now() };
@@ -1274,12 +1363,13 @@ ipcMain.handle('get-owned-capes', async () => {
     isPremium: true,
     tokenExpired: Boolean(result.tokenExpired),
     capes: result.capes,
-    selectedCape
+    selectedCape,
+    updatedSession: result.updatedSession || null
   };
 });
 
 ipcMain.handle('equip-account-cape', async (_, payload) => {
-  const session = getStore().get('session', null);
+  let session = getStore().get('session', null);
   const isPremium = session?.meta?.type === 'msa';
   if (!isPremium) {
     return { error: 'El Selector de Capas es un beneficio exclusivo para cuentas Premium de Minecraft.' };
@@ -1289,10 +1379,20 @@ ipcMain.handle('equip-account-cape', async (_, payload) => {
   if (capeId === 'none') {
     if (session.access_token) {
       try {
-        await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile/capes/active', {
+        let delRes = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile/capes/active', {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${session.access_token}` }
         });
+        if (delRes.statusCode === 401 || delRes.statusCode === 403) {
+          const refreshed = await refreshPremiumSession(session);
+          if (refreshed?.access_token) {
+            session = refreshed;
+            await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile/capes/active', {
+              method: 'DELETE',
+              headers: { Authorization: `Bearer ${refreshed.access_token}` }
+            });
+          }
+        }
       } catch {}
     }
     const noneObj = { id: 'none', name: 'Sin Capa', dataUrl: null, updatedAt: Date.now() };
@@ -1301,8 +1401,9 @@ ipcMain.handle('equip-account-cape', async (_, payload) => {
     return { success: true, cape: noneObj };
   }
 
-  // Verificar que la capa solicitada realmente pertenezca a la cuenta del jugador
+  // Verificar que la capa solicitada realmente pertenezca a la cuenta del jugador (y refrescar sesión si caducó)
   const owned = await fetchOwnedMinecraftCapes(session);
+  session = owned.updatedSession || getStore().get('session', session);
   const match = owned.capes.find(c => c.id === capeId);
   if (!match) {
     return { error: 'Solo puedes equipar capas oficiales que posea tu cuenta Premium.' };
@@ -1938,8 +2039,9 @@ ipcMain.handle('auth-microsoft', async () => {
       return { error: 'No se pudo generar un token válido de Minecraft.' };
     }
 
+    session.capes = Array.isArray(token.profile?.capes) ? token.profile.capes : [];
     getStore().set('session', session);
-    appendLauncherLog(`Login exitoso (Microsoft): ${session.name}`);
+    appendLauncherLog(`Login exitoso (Microsoft): ${session.name} (capas: ${session.capes.length})`);
     return { success: true, session };
   } catch (err) {
     appendLauncherLog(`Error login Microsoft: ${err}`);

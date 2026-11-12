@@ -234,6 +234,9 @@ function showScreen(screenId) {
     safeText('wbUsername', currentSession?.name || 'Jugador');
     setupPlayButton();
   } else if (screenId === 'screenSkin') {
+    if (currentSession?.meta?.type === 'msa' && !lastCapeSyncOk) {
+      updateCapeUIForSession(currentSession, true);
+    }
     renderAllSkinCanvases();
   } else if (screenId === 'screenAddons') {
     refreshUserAddonsAndCatalog();
@@ -299,6 +302,9 @@ async function loginMicrosoft() {
 
     if (result && result.session) {
       currentSession = result.session;
+      lastLoadedCapeUuid = null;
+      lastCapeSyncOk = false;
+      await updateCapeUIForSession(currentSession, true);
       await refreshSkinRenderer();
       showScreen('screenHome');
       showNotification(`¡Conectado como ${currentSession.name} (Premium Microsoft)!`, 'success');
@@ -375,6 +381,8 @@ function validateNickname(value, showErrors) {
 async function logout() {
   await window.doraland.clearSession();
   currentSession = null;
+  lastLoadedCapeUuid = null;
+  lastCapeSyncOk = false;
   showScreen('screenLogin');
 }
 
@@ -861,11 +869,31 @@ function setupSkinStudio() {
 
 // ── SELECTOR DE CAPAS OFICIALES DE CUENTA (EXCLUSIVO PREMIUM) ─
 let lastLoadedCapeUuid = null;
+let lastCapeSyncOk = false;
 let ownedAccountCapes = [];
+let capeSyncInFlight = null;
 
 function setupCapeSelector() {
   document.getElementById('btnUnlockCapesPremium')?.addEventListener('click', () => {
     loginMicrosoft();
+  });
+
+  document.getElementById('btnRefreshCapes')?.addEventListener('click', async () => {
+    if (currentSession?.meta?.type !== 'msa') {
+      showNotification('Conecta tu cuenta Premium de Microsoft para sincronizar tus capas.', 'info');
+      return;
+    }
+    const res = await updateCapeUIForSession(currentSession, true);
+    if (res?.tokenExpired) {
+      showNotification('Tu sesión Microsoft caducó. Conecta de nuevo tu cuenta Premium para ver todas tus capas.', 'info');
+    } else if (Array.isArray(res?.capes)) {
+      showNotification(
+        res.capes.length > 0
+          ? `Se detectaron ${res.capes.length} capa(s) en tu cuenta Premium.`
+          : 'Tu cuenta Premium no posee capas oficiales actualmente.',
+        'info'
+      );
+    }
   });
 
   updateCapeUIForSession(currentSession);
@@ -941,9 +969,15 @@ function renderOwnedCapesGrid(capes = [], tokenExpired = false) {
   if (emptyMsg) {
     if (capes.length === 0) {
       emptyMsg.style.display = 'block';
-      emptyMsg.textContent = tokenExpired
-        ? 'No se detectó una capa activa en tu cuenta. Si tienes capas en tu cuenta Microsoft, vuelve a iniciar sesión con Microsoft para sincronizarlas.'
-        : 'Tu cuenta Premium no posee capas oficiales de Minecraft actualmente.';
+      if (tokenExpired) {
+        emptyMsg.innerHTML = 'Tu sesión Microsoft caducó y no permite listar capas inactivas. <a href="#" id="linkReloginCapes" style="color:var(--gold-light);font-weight:800;text-decoration:underline;">Volver a conectar Microsoft</a>';
+        document.getElementById('linkReloginCapes')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          loginMicrosoft();
+        });
+      } else {
+        emptyMsg.textContent = 'Tu cuenta Premium no posee capas oficiales de Minecraft actualmente.';
+      }
     } else {
       emptyMsg.style.display = 'none';
       emptyMsg.textContent = '';
@@ -967,32 +1001,53 @@ async function refreshCapeState() {
   }
 }
 
-async function updateCapeUIForSession(session) {
+async function updateCapeUIForSession(session, force = false) {
   const isPremium = session?.meta?.type === 'msa';
   const lockedBox = document.getElementById('capeLockedBox');
   const optionsWrap = document.getElementById('capeOptionsWrap');
   const emptyMsg = document.getElementById('capeEmptyMsg');
+  const refreshBtn = document.getElementById('btnRefreshCapes');
 
   if (lockedBox) lockedBox.style.display = isPremium ? 'none' : 'flex';
+  if (refreshBtn) refreshBtn.style.display = isPremium ? 'inline-flex' : 'none';
   if (optionsWrap) {
     optionsWrap.classList.toggle('locked', !isPremium);
   }
 
   if (!isPremium) {
     lastLoadedCapeUuid = null;
+    lastCapeSyncOk = false;
     ownedAccountCapes = [];
     currentCape = { id: 'none', name: 'Sin Capa', dataUrl: null };
     const grid = document.getElementById('capeGrid');
     if (grid) grid.innerHTML = '';
     if (emptyMsg) emptyMsg.style.display = 'none';
     await refreshCapeState();
-    return;
+    return null;
   }
 
-  if (lastLoadedCapeUuid !== session.uuid) {
-    lastLoadedCapeUuid = session.uuid;
+  if (!force && lastLoadedCapeUuid === session.uuid && lastCapeSyncOk) {
+    await refreshCapeState();
+    return { capes: ownedAccountCapes, tokenExpired: false };
+  }
+
+  if (capeSyncInFlight) {
+    return capeSyncInFlight;
+  }
+
+  if (emptyMsg && ownedAccountCapes.length === 0) {
+    emptyMsg.style.display = 'block';
+    emptyMsg.textContent = 'Sincronizando capas de tu cuenta Premium...';
+  }
+
+  capeSyncInFlight = (async () => {
     try {
       const res = await window.doraland.getOwnedCapes();
+      if (res?.updatedSession) {
+        currentSession = res.updatedSession;
+      }
+      lastLoadedCapeUuid = session.uuid;
+      lastCapeSyncOk = !res?.tokenExpired;
       ownedAccountCapes = Array.isArray(res?.capes) ? res.capes : [];
       if (res?.selectedCape) {
         currentCape = res.selectedCape;
@@ -1000,12 +1055,17 @@ async function updateCapeUIForSession(session) {
       renderOwnedCapesGrid(ownedAccountCapes, Boolean(res?.tokenExpired));
       await refreshCapeState();
       renderAllSkinCanvases();
+      return res;
     } catch {
+      lastCapeSyncOk = false;
       renderOwnedCapesGrid([], false);
+      return null;
+    } finally {
+      capeSyncInFlight = null;
     }
-  } else {
-    await refreshCapeState();
-  }
+  })();
+
+  return capeSyncInFlight;
 }
 
 async function pickCustomSkinFile() {
