@@ -1181,6 +1181,37 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+  height: auto;
+  max-height: 205px;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+.ad-banner-mount {
+  width: 100%;
+  height: auto;
+  max-height: 155px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ad-banner-mount ins.adsbygoogle {
+  display: block;
+  width: 100%;
+  max-height: 155px;
+  overflow: hidden;
+}
+
+.ad-banner-mount ins.adsbygoogle:not([data-ad-status="filled"]),
+.ad-banner-mount ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .ad-banner-top {
@@ -1961,56 +1992,6 @@ html, body {
 }
 .btn-gold:hover { filter: brightness(1.08); }
 
-/* Galería Rápida de Presets */
-.skin-presets-row {
-  margin-top: 10px;
-  padding-top: 9px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.preset-lbl {
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.preset-chips {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-}
-
-.preset-head-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(0, 0, 0, 0.38);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 5px 9px;
-  color: var(--text-primary);
-  font-size: 11px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.18s;
-}
-.preset-head-btn:hover {
-  border-color: var(--gold);
-  background: rgba(245, 158, 11, 0.14);
-  color: var(--gold-light);
-}
-.preset-head-btn img {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  image-rendering: pixelated;
-}
-
 /* ── PANTALLA 4: AJUSTES DEL LAUNCHER ────────────────────── */
 .settings-grid {
   display: grid;
@@ -2330,29 +2311,27 @@ html, body {
   display: inline-block;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
 }
+.cape-preview-canvas {
+  width: 22px;
+  height: 34px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  image-rendering: pixelated;
+  background: rgba(0, 0, 0, 0.25);
+}
 .cape-none {
   background: rgba(255, 255, 255, 0.05);
   border-style: dashed;
 }
-.cape-emerald {
-  background: linear-gradient(160deg, #22C55E 0%, #14532D 100%);
-  border-color: #4ADE80;
-}
-.cape-gold {
-  background: linear-gradient(160deg, #FCD34D 0%, #B45309 100%);
-  border-color: #FDE68A;
-}
-.cape-crimson {
-  background: linear-gradient(160deg, #EF4444 0%, #7F1D1D 100%);
-  border-color: #FCA5A5;
-}
-.cape-void {
-  background: linear-gradient(160deg, #38BDF8 0%, #1E1B4B 100%);
-  border-color: #7DD3FC;
-}
-.cape-custom {
-  background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
-  border-color: #F472B6;
+.cape-empty-msg {
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 6px;
+  line-height: 1.4;
 }
 
 /* ── TARJETAS DE ESTADO COMPACTAS EN EL HOME ─────────────── */

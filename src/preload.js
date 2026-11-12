@@ -31,8 +31,8 @@ contextBridge.exposeInMainWorld('doraland', {
   importSkinByNick: (nick) => ipcRenderer.invoke('import-skin-by-nick', nick),
   resetSkin: () => ipcRenderer.invoke('reset-skin'),
   getCape: () => ipcRenderer.invoke('get-cape'),
-  saveCape: (payload) => ipcRenderer.invoke('save-cape', payload),
-  selectCapeFile: () => ipcRenderer.invoke('select-cape-file'),
+  getOwnedCapes: () => ipcRenderer.invoke('get-owned-capes'),
+  equipAccountCape: (payload) => ipcRenderer.invoke('equip-account-cape', payload),
 
   // Gestor de Complementos de Cliente (Mods Cliente, Resource Packs y Shaders)
   getUserAddons: () => ipcRenderer.invoke('get-user-addons'),

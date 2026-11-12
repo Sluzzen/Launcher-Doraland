@@ -180,7 +180,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.5",
+    version: "1.0.6",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -192,6 +192,21 @@ const DEFAULT_CONFIG = {
     }
   },
   changelog: [
+    {
+      version: "1.0.6",
+      date: "2026-11-11",
+      title: "Interfaz Simplificada, Capas Reales Premium y Estudio Estático",
+      summary: "Rediseño limpio sin etiquetas redundantes, capas oficiales sincronizadas desde la cuenta Premium del jugador, poses estáticas por defecto y tarjeta patrocinada con altura dinámica.",
+      launcherChanges: [
+        "Interfaz depurada: eliminados tags redundantes, duplicados visuales y textos técnicos innecesarios.",
+        "Selector de Capas real: muestra exclusivamente las capas oficiales que posee tu cuenta Premium de Microsoft.",
+        "Estudio de Skins con pose estática por defecto y galería simplificada para uso personal.",
+        "Tarjeta publicitaria adaptativa que ajusta su tamaño automáticamente al contenido visible."
+      ],
+      modsAdded: [],
+      modsUpdated: [],
+      modsRemoved: []
+    },
     {
       version: "1.0.5",
       date: "2026-11-11",
@@ -213,8 +228,7 @@ const DEFAULT_CONFIG = {
       launcherChanges: [
         "Selector de Capas (Capes) junto al Estudio de Skins (Beneficio Exclusivo para jugadores con Cuenta Premium Microsoft), con previsualización en vivo sobre la espalda del personaje.",
         "Banner y barra de progreso de auto-actualización fijados en capa superior (z-index máximo) para que el proceso de actualización sea siempre visible sobre cualquier pantalla.",
-        "Reemplazo total de emojis por iconografía vectorial SVG de alta definición tanto en el Launcher como en el Sitio Web oficial.",
-        "Soporte de versionado extendido de 4 segmentos (1.0.3.1) en el motor de auto-actualización."
+        "Reemplazo total de emojis por iconografía vectorial SVG de alta definición tanto en el Launcher como en el Sitio Web oficial."
       ],
       modsAdded: [],
       modsUpdated: [
@@ -225,20 +239,20 @@ const DEFAULT_CONFIG = {
     {
       version: "1.0.3",
       date: "2026-11-11",
-      title: "Centro de Complementos de Cliente, Changelog Dinámico y Optimización Turbo",
-      summary: "Nueva pestaña para instalar Mods de Cliente compatibles (NeoForge 1.21.1), Resource Packs y Shaders sin exponer los mods base del servidor, historial completo de cambios y optimización profunda de memoria y red.",
+      title: "Centro de Paquetes y Shaders, Changelog Dinámico y Optimización Turbo",
+      summary: "Nueva pestaña para instalar Resource Packs y Shaders compatibles, historial completo de cambios y optimización profunda de memoria y red.",
       launcherChanges: [
-        "Nuevo Centro de Complementos: instala Mods de Cliente compatibles con NeoForge 1.21.1, Resource Packs (.zip) y Shaders en 1 clic desde Modrinth o desde tu PC.",
-        "Protección inteligente de Mods de Cliente: el sincronizador automático conserva tus mods personales sin borrarlos al actualizar el modpack del servidor.",
-        "Nuevo apartado de Changelog interactivo: consulta todas las novedades del Launcher y qué mods se agregan, actualizan o retiran en cada versión.",
+        "Nuevo Centro de Complementos: instala Resource Packs (.zip) y Shaders en 1 clic desde la galería o desde tu PC.",
+        "Protección inteligente de complementos personales sin borrarlos al sincronizar los recursos del servidor.",
+        "Nuevo apartado de Changelog interactivo para consultar todas las novedades de Doraland.",
         "Optimización Turbo del Launcher: conexiones Keep-Alive (6 hilos paralelos), pausa automática de renderizado en segundo plano (0% GPU al jugar), caché de validación Java 21 y limpiador de caché integrado."
       ],
       modsAdded: [
-        "Soporte abierto para Mods de Cliente opcionales (Zoom, HUDs, Minimap, Sound Physics, etc.)"
+        "Soporte abierto para paquetes visuales y Shaders opcionales"
       ],
       modsUpdated: [
-        "Sincronización verificada de los 149 mods del ecosistema Doraland (NeoForge 21.1.250)",
-        "Paquete de 1,510+ animaciones de Emotecraft y perfiles de Shaders actualizados"
+        "Sincronización verificada del paquete oficial de Doraland",
+        "Paquete de animaciones de Emotecraft y perfiles de Shaders actualizados"
       ],
       modsRemoved: []
     },
@@ -246,15 +260,14 @@ const DEFAULT_CONFIG = {
       version: "1.0.2",
       date: "2026-11-11",
       title: "Integración Oficial Google AdSense y Simplificación de Interfaz",
-      summary: "Interfaz unificada con un único botón por acción, corrección de perfiles del Staff Team y conexión oficial con Google AdSense.",
+      summary: "Interfaz unificada con un único botón por acción y conexión oficial con Google AdSense.",
       launcherChanges: [
         "Interfaz simplificada y limpia: un único control por función en toda la ventana.",
-        "Vinculación oficial con el dominio sluzzen.github.io y verificación de ads.txt.",
-        "Actualización de avatares y skins del Staff Team (Dacota10, Yanah_, OmniAzkeel, SLuzzen)."
+        "Vinculación oficial con el dominio sluzzen.github.io y verificación de ads.txt."
       ],
       modsAdded: [],
       modsUpdated: [
-        "Configuraciones de FancyMenu y DrippyLoadingScreen optimizadas"
+        "Configuraciones visuales y pantallas de carga optimizadas"
       ],
       modsRemoved: []
     },
@@ -262,14 +275,14 @@ const DEFAULT_CONFIG = {
       version: "1.0.1",
       date: "2026-11-11",
       title: "Estudio de Skins No Premium, Ajustes de Resolución y Auto-Updater Dual",
-      summary: "Lanzamiento del Estudio de Skins 2D/3D para jugadores No Premium, selector de resolución y auto-actualizador directo desde GitHub.",
+      summary: "Lanzamiento del Estudio de Skins 2D/3D para jugadores No Premium, selector de resolución y sistema de actualización automática.",
       launcherChanges: [
         "Estudio de Skins integrado: sube tu archivo .PNG o importa la skin de cualquier jugador con vista previa frontal y trasera.",
         "Pantalla de Ajustes: configura Game Resolution (720p, 1080p, 2K, Pantalla Completa), cuenta Microsoft Premium y memoria RAM.",
-        "Sistema Dual de Auto-Actualización: cualquier versión del launcher se actualiza sola desde GitHub."
+        "Sistema Dual de Auto-Actualización: cualquier versión del launcher se mantiene siempre al día."
       ],
       modsAdded: [
-        "149 Mods base del servidor Doraland (NeoForge 1.21.1)",
+        "Paquete oficial completo del servidor Doraland",
         "1,510+ Emotes preinstalados y Shaders Complementary / BSL / Mellow"
       ],
       modsUpdated: [],
@@ -1086,73 +1099,238 @@ ipcMain.handle('reset-skin', async () => {
   return { success: true };
 });
 
-// Selector de Capas (Capes) - Beneficio exclusivo para jugadores Premium (Microsoft OAuth)
+// Selector de Capas Reales de Cuenta (Capes) - Exclusivo cuentas Premium (Microsoft OAuth)
+function httpsJsonRequest(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const bodyStr = options.body !== undefined ? JSON.stringify(options.body) : null;
+    const headers = {
+      'User-Agent': 'DoralandLauncher/1.0.6',
+      ...(options.headers || {})
+    };
+    if (bodyStr !== null) {
+      headers['Content-Type'] = 'application/json';
+      headers['Content-Length'] = Buffer.byteLength(bodyStr);
+    }
+
+    const req = https.request({
+      hostname: parsed.hostname,
+      port: parsed.port || 443,
+      path: parsed.pathname + parsed.search,
+      method: options.method || 'GET',
+      agent: keepAliveAgent,
+      headers
+    }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return httpsJsonRequest(res.headers.location, options).then(resolve).catch(reject);
+      }
+      let raw = '';
+      res.on('data', chunk => raw += chunk);
+      res.on('end', () => {
+        let data = null;
+        try { data = raw ? JSON.parse(raw) : null; } catch {}
+        resolve({ statusCode: res.statusCode, data, raw });
+      });
+    });
+    req.on('error', reject);
+    if (bodyStr !== null) req.write(bodyStr);
+    req.end();
+  });
+}
+
+function fetchBinaryAsDataUrl(url, mimeType = 'image/png') {
+  return new Promise((resolve) => {
+    https.get(url, { agent: keepAliveAgent, headers: { 'User-Agent': 'DoralandLauncher/1.0.6' } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetchBinaryAsDataUrl(res.headers.location, mimeType).then(resolve);
+      }
+      if (res.statusCode !== 200) return resolve(null);
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => {
+        const buf = Buffer.concat(chunks);
+        resolve(buf.length > 0 ? `data:${mimeType};base64,${buf.toString('base64')}` : null);
+      });
+    }).on('error', () => resolve(null));
+  });
+}
+
+async function fetchOwnedMinecraftCapes(session) {
+  const isPremium = session?.meta?.type === 'msa';
+  if (!isPremium || !session?.uuid) {
+    return { isPremium: false, capes: [], activeCapeId: 'none' };
+  }
+
+  const rawCapes = [];
+  let tokenExpired = false;
+
+  // 1. Perfil autenticado de Minecraft Services (devuelve TODAS las capas propias de la cuenta)
+  if (session.access_token) {
+    try {
+      const res = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile', {
+        headers: { Authorization: `Bearer ${session.access_token}` }
+      });
+      if (res.statusCode === 200 && Array.isArray(res.data?.capes)) {
+        for (const c of res.data.capes) {
+          if (c?.id && c?.url) {
+            rawCapes.push({
+              id: String(c.id),
+              name: String(c.alias || 'Capa Oficial'),
+              state: String(c.state || 'INACTIVE').toUpperCase(),
+              url: String(c.url)
+            });
+          }
+        }
+      } else if (res.statusCode === 401 || res.statusCode === 403) {
+        tokenExpired = true;
+      }
+    } catch {}
+  } else {
+    tokenExpired = true;
+  }
+
+  // 2. Fallback público a Mojang SessionServer si el token expiró (al menos obtiene la capa activa)
+  if (rawCapes.length === 0) {
+    try {
+      const cleanUuid = String(session.uuid).replace(/-/g, '');
+      const prof = await fetchRemoteJson(`https://sessionserver.mojang.com/session/minecraft/profile/${encodeURIComponent(cleanUuid)}`);
+      const texProp = Array.isArray(prof?.properties) ? prof.properties.find(p => p.name === 'textures') : null;
+      if (texProp?.value) {
+        const decoded = JSON.parse(Buffer.from(texProp.value, 'base64').toString('utf8'));
+        const capeUrl = decoded?.textures?.CAPE?.url;
+        if (capeUrl) {
+          const hash = capeUrl.split('/').pop() || 'active';
+          rawCapes.push({
+            id: `mojang_${hash.slice(0, 12)}`,
+            name: 'Capa Activa de Cuenta',
+            state: 'ACTIVE',
+            url: capeUrl
+          });
+        }
+      }
+    } catch {}
+  }
+
+  // Descargar texturas PNG a dataUrl en paralelo para render limpio sin CORS
+  const capes = await Promise.all(rawCapes.map(async (c) => ({
+    id: c.id,
+    name: c.name,
+    state: c.state,
+    url: c.url,
+    dataUrl: await fetchBinaryAsDataUrl(c.url)
+  })));
+
+  const activeAccountCape = capes.find(c => c.state === 'ACTIVE');
+  return {
+    isPremium: true,
+    tokenExpired,
+    capes,
+    activeCapeId: activeAccountCape ? activeAccountCape.id : 'none'
+  };
+}
+
 ipcMain.handle('get-cape', () => {
-  return getStore().get('selectedCape', { id: 'none', name: 'Sin Capa' });
+  return getStore().get('selectedCape', { id: 'none', name: 'Sin Capa', dataUrl: null });
 });
 
-ipcMain.handle('save-cape', async (_, payload) => {
+ipcMain.handle('get-owned-capes', async () => {
+  const session = getStore().get('session', null);
+  const result = await fetchOwnedMinecraftCapes(session);
+  const stored = getStore().get('selectedCape', { id: 'none', name: 'Sin Capa', dataUrl: null });
+
+  if (!result.isPremium) {
+    return { isPremium: false, capes: [], selectedCape: { id: 'none', name: 'Sin Capa', dataUrl: null } };
+  }
+
+  // Validar que la capa guardada siga perteneciendo a la cuenta; si no, sincronizar con la activa de Mojang
+  let selectedCape = stored;
+  const matchStored = result.capes.find(c => c.id === stored?.id);
+  if (stored?.id && stored.id !== 'none') {
+    if (matchStored) {
+      selectedCape = {
+        id: matchStored.id,
+        name: matchStored.name,
+        url: matchStored.url,
+        dataUrl: matchStored.dataUrl || stored.dataUrl || null,
+        updatedAt: stored.updatedAt || Date.now()
+      };
+      getStore().set('selectedCape', selectedCape);
+    } else {
+      const active = result.capes.find(c => c.state === 'ACTIVE');
+      selectedCape = active
+        ? { id: active.id, name: active.name, url: active.url, dataUrl: active.dataUrl, updatedAt: Date.now() }
+        : { id: 'none', name: 'Sin Capa', dataUrl: null, updatedAt: Date.now() };
+      getStore().set('selectedCape', selectedCape);
+    }
+  } else if (!stored?.updatedAt && result.activeCapeId !== 'none') {
+    const active = result.capes.find(c => c.id === result.activeCapeId);
+    if (active) {
+      selectedCape = { id: active.id, name: active.name, url: active.url, dataUrl: active.dataUrl, updatedAt: Date.now() };
+      getStore().set('selectedCape', selectedCape);
+    }
+  }
+
+  return {
+    isPremium: true,
+    tokenExpired: Boolean(result.tokenExpired),
+    capes: result.capes,
+    selectedCape
+  };
+});
+
+ipcMain.handle('equip-account-cape', async (_, payload) => {
   const session = getStore().get('session', null);
   const isPremium = session?.meta?.type === 'msa';
   if (!isPremium) {
     return { error: 'El Selector de Capas es un beneficio exclusivo para cuentas Premium de Minecraft.' };
   }
 
+  const capeId = String(payload?.id || 'none');
+  if (capeId === 'none') {
+    if (session.access_token) {
+      try {
+        await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile/capes/active', {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${session.access_token}` }
+        });
+      } catch {}
+    }
+    const noneObj = { id: 'none', name: 'Sin Capa', dataUrl: null, updatedAt: Date.now() };
+    getStore().set('selectedCape', noneObj);
+    appendLauncherLog(`Capa desactivada por ${session.name}`);
+    return { success: true, cape: noneObj };
+  }
+
+  // Verificar que la capa solicitada realmente pertenezca a la cuenta del jugador
+  const owned = await fetchOwnedMinecraftCapes(session);
+  const match = owned.capes.find(c => c.id === capeId);
+  if (!match) {
+    return { error: 'Solo puedes equipar capas oficiales que posea tu cuenta Premium.' };
+  }
+
+  let syncedMojang = false;
+  if (session.access_token && !capeId.startsWith('mojang_')) {
+    try {
+      const putRes = await httpsJsonRequest('https://api.minecraftservices.com/minecraft/profile/capes/active', {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+        body: { capeId: match.id }
+      });
+      syncedMojang = putRes.statusCode >= 200 && putRes.statusCode < 300;
+    } catch {}
+  }
+
   const capeObj = {
-    id: payload?.id || 'none',
-    name: payload?.name || 'Sin Capa',
-    primaryColor: payload?.primaryColor || '#16A34A',
-    accentColor: payload?.accentColor || '#F59E0B',
-    emblem: payload?.emblem || 'crown',
-    dataUrl: payload?.dataUrl || null,
+    id: match.id,
+    name: match.name,
+    url: match.url,
+    dataUrl: match.dataUrl,
     updatedAt: Date.now()
   };
 
   getStore().set('selectedCape', capeObj);
-  appendLauncherLog(`Capa Premium equipada por ${session.name}: ${capeObj.name}`);
-  return { success: true, cape: capeObj };
-});
-
-ipcMain.handle('select-cape-file', async () => {
-  const session = getStore().get('session', null);
-  const isPremium = session?.meta?.type === 'msa';
-  if (!isPremium) {
-    return { error: 'El Selector de Capas es un beneficio exclusivo para cuentas Premium de Minecraft.' };
-  }
-
-  try {
-    const result = await dialog.showOpenDialog(mainWindow, {
-      title: 'Seleccionar Textura de Capa Premium (.PNG)',
-      filters: [{ name: 'Capa de Minecraft (PNG)', extensions: ['png'] }],
-      properties: ['openFile']
-    });
-
-    if (result.canceled || !result.filePaths || result.filePaths.length === 0) {
-      return { canceled: true };
-    }
-
-    const filePath = result.filePaths[0];
-    const buf = await fs.readFile(filePath);
-    if (!isValidPngBuffer(buf)) {
-      return { error: 'El archivo seleccionado no es una imagen PNG válida.' };
-    }
-
-    const capeObj = {
-      id: 'custom-png',
-      name: path.basename(filePath),
-      primaryColor: '#F59E0B',
-      accentColor: '#22C55E',
-      emblem: 'custom',
-      dataUrl: `data:image/png;base64,${buf.toString('base64')}`,
-      updatedAt: Date.now()
-    };
-
-    getStore().set('selectedCape', capeObj);
-    appendLauncherLog(`Capa personalizada PNG equipada por ${session.name}: ${capeObj.name}`);
-    return { success: true, cape: capeObj };
-  } catch (err) {
-    return { error: err.message || 'Error al cargar la textura de capa.' };
-  }
+  appendLauncherLog(`Capa oficial equipada por ${session.name}: ${capeObj.name}${syncedMojang ? ' (sincronizada con Mojang)' : ''}`);
+  return { success: true, cape: capeObj, syncedMojang };
 });
 
 ipcMain.on('open-external', (_, url) => {
@@ -1172,9 +1350,9 @@ const RECOMMENDED_CLIENT_ADDONS = {
       projectId: 'aXf2OSFU',
       title: 'Ok Zoomer (Zoom de Cámara)',
       author: 'EnnuiL',
-      description: 'Zoom cinematográfico fluido con tecla configurable y animaciones suaves para NeoForge 1.21.1.',
+      description: 'Zoom cinematográfico fluido con tecla configurable y animaciones suaves para tu cliente.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'search'
     },
     {
@@ -1184,7 +1362,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'tr7zw',
       description: 'Renderiza las capas exteriores de las skins de los jugadores en 3D real sin afectar FPS.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'box'
     },
     {
@@ -1194,7 +1372,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'dzwdz',
       description: 'Muestra la cabeza de la skin de cada jugador junto a sus mensajes en el chat del servidor.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'message'
     },
     {
@@ -1202,9 +1380,9 @@ const RECOMMENDED_CLIENT_ADDONS = {
       projectId: '8shC1gFX',
       title: 'BetterF3 (Pantalla F3 Moderna)',
       author: 'cominixo',
-      description: 'Reemplaza la pantalla de depuración F3 de Minecraft con módulos limpios, legibles y a color.',
+      description: 'Reemplaza la pantalla de depuración F3 con módulos limpios, legibles y a color.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'activity'
     },
     {
@@ -1214,7 +1392,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'tr7zw',
       description: 'Añade animaciones fluidas en tercera persona al comer, usar mapas, remar o sostener objetos.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'user'
     },
     {
@@ -1224,7 +1402,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'Jaredlll08',
       description: 'Permite buscar controles por nombre o por tecla asignada para evitar conflictos de atajos.',
       category: 'mod',
-      badge: '100% Cliente • NeoForge 1.21.1',
+      badge: 'Complemento Visual',
       iconType: 'sliders'
     }
   ],
@@ -1234,9 +1412,9 @@ const RECOMMENDED_CLIENT_ADDONS = {
       projectId: 'w0TnApzs',
       title: 'Faithful 32x (HD Clásico)',
       author: 'Faithful Team',
-      description: 'Duplica la resolución de las texturas de Minecraft 1.21.1 manteniendo el estilo original intacto.',
+      description: 'Duplica la resolución de las texturas manteniendo el estilo original intacto.',
       category: 'resourcepack',
-      badge: 'Resource Pack • 1.21.1',
+      badge: 'Resource Pack',
       iconType: 'layers'
     },
     {
@@ -1246,7 +1424,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'FreshLX',
       description: 'Da vida a las criaturas y aldeanos con animaciones faciales y corporales dinámicas.',
       category: 'resourcepack',
-      badge: 'Resource Pack • 1.21.1',
+      badge: 'Resource Pack',
       iconType: 'sparkles'
     },
     {
@@ -1256,7 +1434,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'haimcyfly',
       description: 'Mejora visualmente hojas, césped y bloques variados manteniendo la estética natural.',
       category: 'resourcepack',
-      badge: 'Resource Pack • 1.21.1',
+      badge: 'Resource Pack',
       iconType: 'layers'
     },
     {
@@ -1266,7 +1444,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
       author: 'nebuIr',
       description: 'Convierte todos los inventarios y menús del juego a un modo oscuro elegante y descansado para la vista.',
       category: 'resourcepack',
-      badge: 'Resource Pack • 1.21.1',
+      badge: 'Resource Pack',
       iconType: 'moon'
     }
   ],
@@ -1465,10 +1643,10 @@ ipcMain.handle('search-addons-catalog', async (_, { category = 'mod', query = ''
           id: hit.slug || hit.project_id,
           projectId: hit.project_id,
           title: hit.title,
-          author: hit.author || 'Modrinth Creator',
-          description: hit.description || 'Complemento compatible con Minecraft 1.21.1.',
+          author: hit.author || 'Creador',
+          description: hit.description || 'Complemento visual compatible con Doraland.',
           category: cleanCat,
-          badge: cleanCat === 'mod' ? 'Cliente • NeoForge 1.21.1' : cleanCat === 'resourcepack' ? 'Resource Pack • 1.21.1' : 'Shader • Iris/Oculus',
+          badge: cleanCat === 'mod' ? 'Complemento' : cleanCat === 'resourcepack' ? 'Resource Pack' : 'Shader',
           iconUrl: hit.icon_url || '',
           downloads: hit.downloads || 0,
           iconType: cleanCat === 'mod' ? 'box' : cleanCat === 'resourcepack' ? 'layers' : 'sparkles'
@@ -1520,7 +1698,7 @@ ipcMain.handle('install-remote-addon', async (_, payload) => {
     }
 
     if (!Array.isArray(versions) || versions.length === 0) {
-      return { error: 'No se encontró una versión compatible para Minecraft 1.21.1.' };
+      return { error: 'No se encontró una versión compatible para Doraland.' };
     }
 
     const chosenVersion = versions[0];

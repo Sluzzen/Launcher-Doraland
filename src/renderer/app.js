@@ -45,7 +45,7 @@ let currentCape = { id: 'none', name: 'Sin Capa', dataUrl: null };
 let loadedCapeImage = null;
 let isLaunching = false;
 let consoleOpen = false;
-let currentAddonCategory = 'mod'; // 'mod' | 'resourcepack' | 'shader'
+let currentAddonCategory = 'resourcepack'; // 'resourcepack' | 'shader'
 let userAddonsCache = { mods: [], resourcepacks: [], shaders: [] };
 let currentChangelogFilter = 'all';
 let cachedChangelogData = null;
@@ -178,17 +178,11 @@ function initAmbientFireflies() {
 function applyConfig(cfg) {
   if (!cfg) return;
 
-  const mcVer = cfg.minecraft?.version || '1.21.1';
-  const loaderName = cfg.activeLoader?.name || 'NeoForge';
-  const loaderDisplay = cfg.activeLoader?.display || `${loaderName} ${mcVer}`;
   const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
-  safeText('loaderBadge', `${loaderName} ${mcVer}`);
   safeText('serverIp', ip);
   safeText('tbServerIp', ip);
   safeText('playHint', __SLUZZEN_WM__.label);
-  safeText('wbServerIp', ip);
-  safeText('wbForgeVersion', `${loaderDisplay} • MC ${mcVer}`);
 
   buildSocialLinks(cfg.ui);
   checkServerStatus(ip, cfg.server?.port);
@@ -665,7 +659,7 @@ function updateSliderFill(slider) {
 }
 
 // ── ESTUDIO PRO DE SKINS & CAPAS (ANIMACIÓN + CAPAS 3D POR ZONA + INSPECTOR UV) ──
-let skinStudioPose = 'walk'; // 'walk' | 'idle' | 'wave' | 'hero'
+let skinStudioPose = 'idle'; // 'idle' | 'walk' | 'wave' | 'hero'
 let skinStudioAnimPhase = 0;
 let skinPartsVisibility = {
   hat: true,
@@ -721,7 +715,7 @@ function setupSkinStudio() {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#skinPoseGroup .pose-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      skinStudioPose = btn.dataset.pose || 'walk';
+      skinStudioPose = btn.dataset.pose || 'idle';
       renderAllSkinCanvases();
     });
   });
@@ -780,18 +774,6 @@ function setupSkinStudio() {
 
   document.getElementById('inputSkinNick')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') importNickHandler(e.target.value || '');
-  });
-
-  // Galería rápida de Presets del Staff
-  document.querySelectorAll('.preset-head-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const presetNick = btn.dataset.presetNick;
-      if (presetNick) {
-        const input = document.getElementById('inputSkinNick');
-        if (input) input.value = presetNick;
-        importNickHandler(presetNick);
-      }
-    });
   });
 
   // Exportar / Guardar copia .PNG de la skin actual
@@ -877,28 +859,61 @@ function setupSkinStudio() {
   requestAnimationFrame(animateStudioPoses);
 }
 
-// ── SELECTOR DE CAPAS (EXCLUSIVO CUENTAS PREMIUM) ─────────────
+// ── SELECTOR DE CAPAS OFICIALES DE CUENTA (EXCLUSIVO PREMIUM) ─
+let lastLoadedCapeUuid = null;
+let ownedAccountCapes = [];
+
 function setupCapeSelector() {
   document.getElementById('btnUnlockCapesPremium')?.addEventListener('click', () => {
     loginMicrosoft();
   });
 
-  const buttons = document.querySelectorAll('#capeGrid .cape-item');
-  buttons.forEach(btn => {
-    if (btn.id === 'btnSelectCustomCape') return;
+  updateCapeUIForSession(currentSession);
+}
+
+function renderOwnedCapesGrid(capes = [], tokenExpired = false) {
+  const grid = document.getElementById('capeGrid');
+  const emptyMsg = document.getElementById('capeEmptyMsg');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  const buildButton = ({ id, name, dataUrl }) => {
+    const btn = document.createElement('button');
+    btn.className = 'cape-item';
+    btn.dataset.capeId = id;
+
+    if (id === 'none') {
+      const swatch = document.createElement('span');
+      swatch.className = 'cape-swatch cape-none';
+      btn.appendChild(swatch);
+    } else {
+      const canvas = document.createElement('canvas');
+      canvas.width = 22;
+      canvas.height = 34;
+      canvas.className = 'cape-preview-canvas';
+      btn.appendChild(canvas);
+      if (dataUrl) {
+        loadImageElement(dataUrl).then(img => {
+          const cctx = canvas.getContext('2d');
+          cctx.imageSmoothingEnabled = false;
+          cctx.clearRect(0, 0, canvas.width, canvas.height);
+          cctx.drawImage(img, 1, 1, 10, 16, 0, 0, canvas.width, canvas.height);
+        }).catch(() => {});
+      }
+    }
+
+    const lbl = document.createElement('span');
+    lbl.textContent = name;
+    btn.appendChild(lbl);
+
     btn.addEventListener('click', async () => {
       const isPremium = currentSession?.meta?.type === 'msa';
       if (!isPremium) {
         showNotification('El Selector de Capas es un beneficio exclusivo para Cuentas Premium.', 'error');
         return;
       }
-      const capeId = btn.dataset.capeId || 'none';
-      const capeName = btn.querySelector('span:last-child')?.textContent || capeId;
-      const res = await window.doraland.saveCape({
-        id: capeId,
-        name: capeName,
-        dataUrl: capeId === 'custom' ? currentCape?.dataUrl : null
-      });
+      const res = await window.doraland.equipAccountCape({ id });
       if (res?.error) {
         showNotification(res.error, 'error');
         return;
@@ -907,32 +922,33 @@ function setupCapeSelector() {
         currentCape = res.cape;
         await refreshCapeState();
         renderAllSkinCanvases();
-        showNotification(`Capa equipada: ${currentCape.name}`, 'success');
+        showNotification(
+          currentCape.id === 'none' ? 'Capa ocultada.' : `Capa equipada: ${currentCape.name}`,
+          'success'
+        );
       }
     });
-  });
 
-  document.getElementById('btnSelectCustomCape')?.addEventListener('click', async () => {
-    const isPremium = currentSession?.meta?.type === 'msa';
-    if (!isPremium) {
-      showNotification('El Selector de Capas es un beneficio exclusivo para Cuentas Premium.', 'error');
-      return;
-    }
-    const res = await window.doraland.selectCapeFile();
-    if (res?.canceled) return;
-    if (res?.error) {
-      showNotification(res.error, 'error');
-      return;
-    }
-    if (res?.cape) {
-      currentCape = res.cape;
-      await refreshCapeState();
-      renderAllSkinCanvases();
-      showNotification(`Capa personalizada "${currentCape.name}" equipada.`, 'success');
-    }
-  });
+    return btn;
+  };
 
-  updateCapeUIForSession(currentSession);
+  // Opción para ocultar capa + únicamente las capas reales que posee el usuario Premium en su cuenta
+  grid.appendChild(buildButton({ id: 'none', name: 'Sin Capa', dataUrl: null }));
+  for (const cape of capes) {
+    grid.appendChild(buildButton(cape));
+  }
+
+  if (emptyMsg) {
+    if (capes.length === 0) {
+      emptyMsg.style.display = 'block';
+      emptyMsg.textContent = tokenExpired
+        ? 'No se detectó una capa activa en tu cuenta. Si tienes capas en tu cuenta Microsoft, vuelve a iniciar sesión con Microsoft para sincronizarlas.'
+        : 'Tu cuenta Premium no posee capas oficiales de Minecraft actualmente.';
+    } else {
+      emptyMsg.style.display = 'none';
+      emptyMsg.textContent = '';
+    }
+  }
 }
 
 async function refreshCapeState() {
@@ -940,7 +956,7 @@ async function refreshCapeState() {
   document.querySelectorAll('#capeGrid .cape-item').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.capeId === activeId);
   });
-  if (activeId === 'custom' && currentCape?.dataUrl) {
+  if (activeId !== 'none' && currentCape?.dataUrl) {
     try {
       loadedCapeImage = await loadImageElement(currentCape.dataUrl);
     } catch {
@@ -951,16 +967,45 @@ async function refreshCapeState() {
   }
 }
 
-function updateCapeUIForSession(session) {
+async function updateCapeUIForSession(session) {
   const isPremium = session?.meta?.type === 'msa';
   const lockedBox = document.getElementById('capeLockedBox');
   const optionsWrap = document.getElementById('capeOptionsWrap');
+  const emptyMsg = document.getElementById('capeEmptyMsg');
 
   if (lockedBox) lockedBox.style.display = isPremium ? 'none' : 'flex';
   if (optionsWrap) {
     optionsWrap.classList.toggle('locked', !isPremium);
   }
-  refreshCapeState();
+
+  if (!isPremium) {
+    lastLoadedCapeUuid = null;
+    ownedAccountCapes = [];
+    currentCape = { id: 'none', name: 'Sin Capa', dataUrl: null };
+    const grid = document.getElementById('capeGrid');
+    if (grid) grid.innerHTML = '';
+    if (emptyMsg) emptyMsg.style.display = 'none';
+    await refreshCapeState();
+    return;
+  }
+
+  if (lastLoadedCapeUuid !== session.uuid) {
+    lastLoadedCapeUuid = session.uuid;
+    try {
+      const res = await window.doraland.getOwnedCapes();
+      ownedAccountCapes = Array.isArray(res?.capes) ? res.capes : [];
+      if (res?.selectedCape) {
+        currentCape = res.selectedCape;
+      }
+      renderOwnedCapesGrid(ownedAccountCapes, Boolean(res?.tokenExpired));
+      await refreshCapeState();
+      renderAllSkinCanvases();
+    } catch {
+      renderOwnedCapesGrid([], false);
+    }
+  } else {
+    await refreshCapeState();
+  }
 }
 
 async function pickCustomSkinFile() {
@@ -1112,7 +1157,7 @@ function drawMinecraftHeadAvatar(canvas, skinImg, showOuter = true) {
 function drawCapeOnBack(ctx, ox, oy, scale, pose = 'idle', phase = 0) {
   const isPremium = currentSession?.meta?.type === 'msa';
   const capeId = currentCape?.id || 'none';
-  if (!isPremium || capeId === 'none') return;
+  if (!isPremium || capeId === 'none' || !loadedCapeImage) return;
 
   const waveX = pose === 'walk' ? Math.sin(phase) * 0.45 * scale : pose === 'hero' ? Math.sin(phase * 1.3) * 0.65 * scale : 0;
   const waveLift = pose === 'hero' ? 0.8 * scale : pose === 'walk' ? Math.abs(Math.cos(phase)) * 0.35 * scale : 0;
@@ -1126,37 +1171,7 @@ function drawCapeOnBack(ctx, ox, oy, scale, pose = 'idle', phase = 0) {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.52)';
   ctx.fillRect(cx + 3, cy + 3, cw, ch);
 
-  if (capeId === 'custom' && loadedCapeImage) {
-    ctx.drawImage(loadedCapeImage, 1, 1, 10, 16, cx, cy, cw, ch);
-    return;
-  }
-
-  const palettes = {
-    doraland_emerald: { bg: '#15803D', border: '#4ADE80', emblem: '#FCD34D', shade: '#14532D' },
-    royal_gold:       { bg: '#B45309', border: '#FCD34D', emblem: '#FEF08A', shade: '#78350F' },
-    crimson_fire:     { bg: '#991B1B', border: '#F87171', emblem: '#FBBF24', shade: '#7F1D1D' },
-    ender_void:       { bg: '#1E1B4B', border: '#38BDF8', emblem: '#A855F7', shade: '#0F172A' }
-  };
-  const pal = palettes[capeId] || palettes.doraland_emerald;
-
-  // Fondo de capa con pliegue de sombreado
-  ctx.fillStyle = pal.bg;
-  ctx.fillRect(cx, cy, cw, ch);
-  ctx.fillStyle = pal.shade;
-  ctx.fillRect(cx + cw - 2 * scale, cy, 2 * scale, ch);
-
-  // Borde pixelado de la capa
-  ctx.fillStyle = pal.border;
-  ctx.fillRect(cx, cy, cw, scale);
-  ctx.fillRect(cx, cy + ch - scale, cw, scale);
-  ctx.fillRect(cx, cy, scale, ch);
-  ctx.fillRect(cx + cw - scale, cy, scale, ch);
-
-  // Emblema central estilo Doraland
-  ctx.fillStyle = pal.emblem;
-  ctx.fillRect(cx + 3 * scale, cy + 4 * scale, 4 * scale, 5 * scale);
-  ctx.fillStyle = pal.bg;
-  ctx.fillRect(cx + 4 * scale, cy + 5 * scale, 2 * scale, 3 * scale);
+  ctx.drawImage(loadedCapeImage, 1, 1, 10, 16, cx, cy, cw, ch);
 }
 
 function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = true, slim = false, pose = 'idle', phase = 0) {
@@ -1355,22 +1370,59 @@ function setupGoogleAds(adsCfg) {
 
   if (hasRealAdSense) {
     try {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(clientId)}`;
-      script.crossOrigin = 'anonymous';
-      document.head.appendChild(script);
-
       const mountHome = document.getElementById('adHomeMount');
+      const fallbackEl = document.getElementById('adHomeFallback');
+
       if (mountHome && adsCfg?.slots?.homeHorizontal) {
         const ins = document.createElement('ins');
         ins.className = 'adsbygoogle';
-        ins.style.display = 'block';
+        ins.style.display = 'none';
         ins.dataset.adClient = clientId;
         ins.dataset.adSlot = adsCfg.slots.homeHorizontal;
         ins.dataset.adFormat = 'horizontal';
+        ins.dataset.fullWidthResponsive = 'true';
         mountHome.prepend(ins);
+
+        const syncAdSlotLayout = () => {
+          const status = ins.getAttribute('data-ad-status');
+          const iframe = ins.querySelector('iframe');
+          const iframeH = iframe ? iframe.getBoundingClientRect().height : 0;
+          const isFilled = status === 'filled' || iframeH > 10;
+
+          if (isFilled) {
+            const clampedH = iframeH > 10 ? Math.min(Math.round(iframeH), 155) : 'auto';
+            ins.style.display = 'block';
+            ins.style.height = clampedH === 'auto' ? 'auto' : `${clampedH}px`;
+            if (iframe) iframe.style.maxHeight = '155px';
+            if (fallbackEl) fallbackEl.style.display = 'none';
+          } else {
+            ins.style.display = 'none';
+            ins.style.height = '0px';
+            if (fallbackEl) fallbackEl.style.display = 'flex';
+          }
+        };
+
+        const adObserver = new MutationObserver(syncAdSlotLayout);
+        adObserver.observe(ins, {
+          attributes: true,
+          attributeFilter: ['data-ad-status', 'style'],
+          childList: true,
+          subtree: true
+        });
+        if (typeof ResizeObserver !== 'undefined') {
+          const resizeObs = new ResizeObserver(syncAdSlotLayout);
+          resizeObs.observe(ins);
+        }
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(clientId)}`;
+        script.crossOrigin = 'anonymous';
+        script.onerror = () => syncAdSlotLayout();
+        document.head.appendChild(script);
+
         (window.adsbygoogle = window.adsbygoogle || []).push({});
+        syncAdSlotLayout();
       }
     } catch {}
   }
@@ -1456,11 +1508,10 @@ function setupLaunchEvents() {
   });
 
   window.doraland.onLaunchStatus((data) => {
-    const loaderLabel = data.loader || config?.activeLoader?.display || 'NeoForge 1.21.1';
     if (data.status === 'launched') {
       setPlayButtonState('running');
-      updateProgress(100, `¡Minecraft (${loaderLabel}) en ejecución!`);
-      logToConsole(`¡Minecraft (${loaderLabel}) iniciado correctamente!`, 'info');
+      updateProgress(100, '¡Doraland está en ejecución!');
+      logToConsole('¡Juego iniciado correctamente!', 'info');
     } else if (data.status === 'error') {
       isLaunching = false;
       setPlayButtonState('ready');
@@ -1563,28 +1614,24 @@ function flushConsoleLogs() {
   }
 }
 
-// ── CENTRO DE COMPLEMENTOS (MODS DE CLIENTE, RESOURCE PACKS, SHADERS) ──
+// ── CENTRO DE PACKS DE TEXTURAS Y SHADERS ─────────────────────
 function setupAddonsCenter() {
   document.querySelectorAll('.addon-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.addon-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      currentAddonCategory = tab.dataset.addonCat || 'mod';
+      currentAddonCategory = tab.dataset.addonCat || 'resourcepack';
 
       const localBtn = document.getElementById('btnInstallLocalAddon');
       if (localBtn) {
-        localBtn.innerHTML = currentAddonCategory === 'mod'
-          ? `${getSvgIcon('folder', 13)} Instalar desde mi PC (.JAR)`
-          : `${getSvgIcon('folder', 13)} Instalar desde mi PC (.ZIP)`;
+        localBtn.innerHTML = `${getSvgIcon('folder', 13)} Instalar desde mi PC (.ZIP)`;
       }
 
       const searchInput = document.getElementById('addonSearchInput');
       if (searchInput) {
-        searchInput.placeholder = currentAddonCategory === 'mod'
-          ? 'Buscar Mods de Cliente compatibles (NeoForge 1.21.1)...'
-          : currentAddonCategory === 'resourcepack'
-            ? 'Buscar Resource Packs compatibles (1.21.1)...'
-            : 'Buscar Shaders compatibles (Iris / Oculus)...';
+        searchInput.placeholder = currentAddonCategory === 'resourcepack'
+          ? 'Buscar Resource Packs compatibles...'
+          : 'Buscar Shaders compatibles...';
       }
 
       renderUserInstalledAddons();
@@ -1648,7 +1695,7 @@ function renderUserInstalledAddons() {
 
   const items = getInstalledListByCategory(currentAddonCategory);
   const labelMap = {
-    mod: 'Mods de Cliente Instalados',
+    mod: 'Complementos Instalados',
     resourcepack: 'Resource Packs Instalados',
     shader: 'Shaders Instalados'
   };
@@ -1730,7 +1777,7 @@ async function loadCatalogForCurrentCategory(query = '') {
       </div>
       <div class="ac-desc">${escapeHtml(item.description)}</div>
       <div class="ac-footer">
-        <span class="ac-badge">${escapeHtml(item.badge || 'Compatible 1.21.1')}</span>
+        <span class="ac-badge">${escapeHtml(item.badge || 'Compatible')}</span>
         <button class="ac-install-btn" ${alreadyInstalled ? 'disabled' : ''}>
           ${alreadyInstalled ? `${getSvgIcon('check', 12)} Instalado` : `${getSvgIcon('download', 12)} Instalar`}
         </button>
@@ -1795,14 +1842,14 @@ function renderChangelogEntries() {
           <div class="cl-header">
             <div class="cl-title-wrap">
               <span class="cl-ver-tag">AUTO-SYNC</span>
-              <span class="cl-title">Última Sincronización Automática del Modpack</span>
+              <span class="cl-title">Última Sincronización Automática</span>
             </div>
             <span class="cl-date">${escapeHtml(autoDiff.date || '')}</span>
           </div>
           <div class="cl-groups">
-            ${autoDiff.added?.length ? `<div class="cl-group-box"><div class="cl-group-title added">${getSvgIcon('plus', 13)} Mods Agregados (${autoDiff.added.length})</div><ul class="cl-list">${autoDiff.added.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
-            ${autoDiff.updated?.length ? `<div class="cl-group-box"><div class="cl-group-title updated">${getSvgIcon('refresh', 13)} Mods Actualizados (${autoDiff.updated.length})</div><ul class="cl-list">${autoDiff.updated.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
-            ${autoDiff.removed?.length ? `<div class="cl-group-box"><div class="cl-group-title removed">${getSvgIcon('minus', 13)} Mods Retirados (${autoDiff.removed.length})</div><ul class="cl-list">${autoDiff.removed.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+            ${autoDiff.added?.length ? `<div class="cl-group-box"><div class="cl-group-title added">${getSvgIcon('plus', 13)} Contenido Agregado (${autoDiff.added.length})</div><ul class="cl-list">${autoDiff.added.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+            ${autoDiff.updated?.length ? `<div class="cl-group-box"><div class="cl-group-title updated">${getSvgIcon('refresh', 13)} Contenido Actualizado (${autoDiff.updated.length})</div><ul class="cl-list">${autoDiff.updated.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
+            ${autoDiff.removed?.length ? `<div class="cl-group-box"><div class="cl-group-title removed">${getSvgIcon('minus', 13)} Contenido Retirado (${autoDiff.removed.length})</div><ul class="cl-list">${autoDiff.removed.map(m => `<li>${escapeHtml(m)}</li>`).join('')}</ul></div>` : ''}
           </div>
         </div>
       `;
@@ -1845,19 +1892,19 @@ function renderChangelogEntries() {
         ` : ''}
         ${addedList.length ? `
           <div class="cl-group-box">
-            <div class="cl-group-title added">${getSvgIcon('plus', 13)} Mods Agregados</div>
+            <div class="cl-group-title added">${getSvgIcon('plus', 13)} Contenido Agregado</div>
             <ul class="cl-list">${addedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
           </div>
         ` : ''}
         ${updatedList.length ? `
           <div class="cl-group-box">
-            <div class="cl-group-title updated">${getSvgIcon('refresh', 13)} Mods Actualizados</div>
+            <div class="cl-group-title updated">${getSvgIcon('refresh', 13)} Contenido Actualizado</div>
             <ul class="cl-list">${updatedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
           </div>
         ` : ''}
         ${removedList.length ? `
           <div class="cl-group-box">
-            <div class="cl-group-title removed">${getSvgIcon('minus', 13)} Mods Retirados</div>
+            <div class="cl-group-title removed">${getSvgIcon('minus', 13)} Contenido Retirado</div>
             <ul class="cl-list">${removedList.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
           </div>
         ` : ''}
@@ -1903,7 +1950,7 @@ async function checkServerStatus(ip, port) {
     dot?.setAttribute('class', 'status-dot offline');
     if (tbDot) tbDot.style.background = '#EF4444';
     if (label) label.textContent = 'Fuera de línea / Mantenimiento';
-    if (players) players.textContent = ip;
+    if (players) players.textContent = 'Sin conexión con el servidor';
   }
 }
 
