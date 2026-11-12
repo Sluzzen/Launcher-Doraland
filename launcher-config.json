@@ -95,7 +95,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.6",
+    "version": "1.0.7",
     "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,
@@ -108,6 +108,22 @@
     }
   },
   "changelog": [
+    {
+      "version": "1.0.7",
+      "date": "2026-11-11",
+      "title": "Corrección de Errores, Estabilidad de Red y Blindaje del Launcher",
+      "summary": "Corrección integral tras auditoría profunda: actualización atómica segura, manejo robusto de red y descargas, validación de paquetes, protección de procesos cerrados y limpieza de interfaz.",
+      "launcherChanges": [
+        "Actualizador directo atómico: descarga y valida todos los archivos antes de escribir en disco para evitar instalaciones incompletas.",
+        "Motor de descargas con timeouts de red, límite de redirecciones, limpieza automática de archivos incompletos y verificación de integridad para Resource Packs y Shaders (.ZIP).",
+        "Corregido el error de ventana destruida al cerrar o minimizar el Launcher mientras el juego está cargando o ejecutándose.",
+        "Al restablecer una skin personalizada ahora también se limpia su referencia automática en options.txt.",
+        "Añadida política CSP de seguridad, limpieza de controladores obsoletos en pantalla y ocultamiento completo de textos técnicos internos en barra de progreso y alertas."
+      ],
+      "modsAdded": [],
+      "modsUpdated": [],
+      "modsRemoved": []
+    },
     {
       "version": "1.0.6",
       "date": "2026-11-11",

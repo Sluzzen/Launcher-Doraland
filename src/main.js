@@ -184,7 +184,7 @@ const DEFAULT_CONFIG = {
     }
   },
   launcher: {
-    version: "1.0.6",
+    version: "1.0.7",
     allowPremium: true,
     allowOffline: true,
     gameDataFolder: ".doraland",
@@ -196,6 +196,22 @@ const DEFAULT_CONFIG = {
     }
   },
   changelog: [
+    {
+      version: "1.0.7",
+      date: "2026-11-11",
+      title: "Corrección de Errores, Estabilidad de Red y Blindaje del Launcher",
+      summary: "Corrección integral tras auditoría profunda: actualización atómica segura, manejo robusto de red y descargas, validación de paquetes, protección de procesos cerrados y limpieza de interfaz.",
+      launcherChanges: [
+        "Actualizador directo atómico: descarga y valida todos los archivos antes de escribir en disco para evitar instalaciones incompletas.",
+        "Motor de descargas con timeouts de red, límite de redirecciones, limpieza automática de archivos incompletos y verificación de integridad para Resource Packs y Shaders (.ZIP).",
+        "Corregido el error de ventana destruida al cerrar o minimizar el Launcher mientras el juego está cargando o ejecutándose.",
+        "Al restablecer una skin personalizada ahora también se limpia su referencia automática en options.txt.",
+        "Añadida política CSP de seguridad, limpieza de controladores obsoletos en pantalla y ocultamiento completo de textos técnicos internos en barra de progreso y alertas."
+      ],
+      modsAdded: [],
+      modsUpdated: [],
+      modsRemoved: []
+    },
     {
       version: "1.0.6",
       date: "2026-11-11",
@@ -466,24 +482,49 @@ function getLocalLauncherVersion() {
   return getHighestVersion(cfg?.launcher?.version, app.getVersion());
 }
 
-// Descarga texto/código desde GitHub Raw con validación
-function fetchRemoteText(url) {
+function getLauncherUserAgent() {
+  try {
+    return `DoralandLauncher/${loadConfig()?.launcher?.version || app.getVersion() || '1.0.7'}`;
+  } catch {
+    return 'DoralandLauncher/1.0.7';
+  }
+}
+
+// Descarga texto/código desde GitHub Raw con validación, timeout y límite de redirecciones
+function fetchRemoteText(url, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
-    https.get(url, { agent: keepAliveAgent, headers: { 'User-Agent': 'DoralandLauncher/1.0.3', 'Cache-Control': 'no-cache' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchRemoteText(res.headers.location).then(resolve).catch(reject);
-      }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode}`));
-      }
-      let raw = '';
-      res.on('data', chunk => raw += chunk);
-      res.on('end', () => resolve(raw));
-    }).on('error', reject);
+    try {
+      const parsed = new URL(url);
+      const client = parsed.protocol === 'http:' ? http : https;
+      const opts = {
+        headers: { 'User-Agent': getLauncherUserAgent(), 'Cache-Control': 'no-cache' }
+      };
+      if (parsed.protocol === 'https:') opts.agent = keepAliveAgent;
+
+      const req = client.get(url, opts, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          if (redirectsLeft <= 0) return reject(new Error('Demasiadas redirecciones'));
+          const nextUrl = new URL(res.headers.location, url).toString();
+          return fetchRemoteText(nextUrl, redirectsLeft - 1).then(resolve).catch(reject);
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return reject(new Error(`HTTP ${res.statusCode}`));
+        }
+        let raw = '';
+        res.on('data', chunk => raw += chunk);
+        res.on('end', () => resolve(raw));
+      });
+      req.setTimeout(15000, () => req.destroy(new Error('Tiempo de espera agotado')));
+      req.on('error', reject);
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
-// Auto-actualizador directo desde la rama main de GitHub (actualiza cualquier versión automáticamente)
+// Auto-actualizador directo desde la rama main de GitHub (atómico: descarga y valida todo antes de escribir)
 async function checkAndApplyGitBranchSelfUpdate() {
   if (isUpdatingLauncher) return { updated: false };
 
@@ -524,17 +565,20 @@ async function checkAndApplyGitBranchSelfUpdate() {
     });
 
     const appRootDir = path.join(__dirname, '..');
+    // package.json al FINAL para que un fallo parcial nunca marque la versión nueva antes de tiempo
     const filesToSync = [
-      { rel: 'package.json', isJson: true },
       { rel: 'launcher-config.json', isJson: true },
       { rel: 'mods-manifest.json', isJson: true },
       { rel: 'src/preload.js', isJson: false },
       { rel: 'src/renderer/index.html', isJson: false },
       { rel: 'src/renderer/app.js', isJson: false },
       { rel: 'src/renderer/style.css', isJson: false },
-      { rel: 'src/main.js', isJson: false }
+      { rel: 'src/main.js', isJson: false },
+      { rel: 'package.json', isJson: true }
     ];
 
+    // Fase 1: Descargar y validar todos los archivos en memoria antes de tocar el disco
+    const stagedFiles = [];
     for (let i = 0; i < filesToSync.length; i++) {
       const item = filesToSync[i];
       const fileUrl = `${baseUrl}/${item.rel}${cacheBust}`;
@@ -544,15 +588,30 @@ async function checkAndApplyGitBranchSelfUpdate() {
         throw new Error(`Contenido inválido al descargar ${item.rel}`);
       }
 
+      let parsedJson = null;
       if (item.isJson) {
-        const parsed = JSON.parse(content);
-        if (item.rel === 'package.json') parsed.version = toStrictSemver(remoteVer);
-        if (item.rel === 'launcher-config.json' && parsed.launcher) parsed.launcher.version = remoteVer;
-        const targetPath = path.join(appRootDir, item.rel);
-        await fs.ensureDir(path.dirname(targetPath));
-        await fs.writeJson(targetPath, parsed, { spaces: 2 });
+        parsedJson = JSON.parse(content);
+        if (item.rel === 'package.json') parsedJson.version = toStrictSemver(remoteVer);
+        if (item.rel === 'launcher-config.json' && parsedJson.launcher) parsedJson.launcher.version = remoteVer;
+      }
 
-        // Si existe un launcher-config.json externo junto al ejecutable, sincronizarlo también
+      stagedFiles.push({ ...item, content, parsedJson });
+      const pct = Math.round(((i + 1) / filesToSync.length) * 75);
+      safeSend(mainWindow, 'launcher-update-progress', {
+        percent: pct,
+        speed: 'GitHub Direct'
+      });
+    }
+
+    // Fase 2: Escritura en disco una vez validados todos los archivos
+    for (let i = 0; i < stagedFiles.length; i++) {
+      const item = stagedFiles[i];
+      const targetPath = path.join(appRootDir, item.rel);
+      await fs.ensureDir(path.dirname(targetPath));
+
+      if (item.isJson) {
+        await fs.writeJson(targetPath, item.parsedJson, { spaces: 2 });
+
         if (item.rel === 'launcher-config.json' && app.isPackaged) {
           const extDirs = [
             process.env.PORTABLE_EXECUTABLE_DIR,
@@ -561,17 +620,15 @@ async function checkAndApplyGitBranchSelfUpdate() {
           for (const d of extDirs) {
             const extCfg = path.join(d, 'launcher-config.json');
             if (fs.existsSync(extCfg)) {
-              await fs.writeJson(extCfg, parsed, { spaces: 2 });
+              await fs.writeJson(extCfg, item.parsedJson, { spaces: 2 });
             }
           }
         }
       } else {
-        const targetPath = path.join(appRootDir, item.rel);
-        await fs.ensureDir(path.dirname(targetPath));
-        await fs.writeFile(targetPath, content, 'utf8');
+        await fs.writeFile(targetPath, item.content, 'utf8');
       }
 
-      const pct = Math.round(((i + 1) / filesToSync.length) * 100);
+      const pct = 75 + Math.round(((i + 1) / stagedFiles.length) * 25);
       safeSend(mainWindow, 'launcher-update-progress', {
         percent: pct,
         speed: 'GitHub Direct'
@@ -1148,6 +1205,20 @@ async function applyCustomSkinToGameDir(skinObj, username = 'Player') {
       if (fs.existsSync(rpDir)) {
         await fs.remove(rpDir);
       }
+      const optionsPath = path.join(gameDir, 'options.txt');
+      if (fs.existsSync(optionsPath)) {
+        let optRaw = await fs.readFile(optionsPath, 'utf8');
+        if (optRaw.includes('DoralandCustomSkin')) {
+          optRaw = optRaw.replace(/resourcePacks:\[(.*?)\]/, (match, inner) => {
+            const filtered = inner
+              .split(',')
+              .map(s => s.trim())
+              .filter(s => s && !s.includes('DoralandCustomSkin'));
+            return `resourcePacks:[${filtered.join(',')}]`;
+          });
+          await fs.writeFile(optionsPath, optRaw, 'utf8');
+        }
+      }
       return;
     }
 
@@ -1348,7 +1419,7 @@ function httpsJsonRequest(url, options = {}) {
     const parsed = new URL(url);
     const bodyStr = options.body !== undefined ? JSON.stringify(options.body) : null;
     const headers = {
-      'User-Agent': 'DoralandLauncher/1.0.6',
+      'User-Agent': getLauncherUserAgent(),
       ...(options.headers || {})
     };
     if (bodyStr !== null) {
@@ -2058,7 +2129,7 @@ ipcMain.handle('install-remote-addon', async (_, payload) => {
     if (category === 'mod') {
       if (!isValidJarFile(destPath)) {
         await fs.remove(destPath);
-        return { error: 'El archivo JAR descargado no es válido.' };
+        return { error: 'El archivo descargado no es válido.' };
       }
       const reg = getUserClientModsRegistry(gameDir);
       const filtered = reg.filter(x => x.fileName.toLowerCase() !== safeFileName.toLowerCase());
@@ -2069,6 +2140,9 @@ ipcMain.handle('install-remote-addon', async (_, payload) => {
         installedAt: Date.now()
       });
       await saveUserClientModsRegistry(gameDir, filtered);
+    } else if (!isValidZipFile(destPath)) {
+      await fs.remove(destPath);
+      return { error: 'El paquete .ZIP descargado está incompleto o dañado.' };
     }
 
     appendLauncherLog(`Complemento instalado (${category}): ${safeFileName}`);
@@ -2091,7 +2165,7 @@ ipcMain.handle('install-local-addon', async (_, category = 'mod') => {
 
     const result = await dialog.showOpenDialog(mainWindow, {
       title: isMod
-        ? 'Instalar Mod de Cliente Compatible (.JAR - NeoForge 1.21.1)'
+        ? 'Instalar Complemento Compatible (.JAR)'
         : cleanCat === 'resourcepack'
           ? 'Instalar Resource Pack (.ZIP)'
           : 'Instalar Paquete de Shaders (.ZIP)',
@@ -2438,7 +2512,7 @@ function checkJavaExecutable(javaBin) {
       return {
         valid: false,
         major,
-        reason: `Java ${major} detectado. Minecraft 1.21.1 requiere obligatoriamente Java 21+`,
+        reason: `Java ${major} detectado. Doraland requiere obligatoriamente Java 21 o superior`,
         path: javaBin
       };
     }
@@ -2530,63 +2604,116 @@ async function findAndValidateJava() {
 // ============================================================================
 // 8. DESCARGAS HTTP CON REDIRECCIÓN Y VALIDACIÓN
 // ============================================================================
-function fetchRemoteJson(url) {
+function fetchRemoteJson(url, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
-    https.get(url, { agent: keepAliveAgent, headers: { 'User-Agent': 'DoralandLauncher/1.0.3' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchRemoteJson(res.headers.location).then(resolve).catch(reject);
-      }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode}`));
-      }
-      let raw = '';
-      res.on('data', chunk => raw += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(raw));
-        } catch (e) {
-          reject(e);
+    try {
+      const parsed = new URL(url);
+      const client = parsed.protocol === 'http:' ? http : https;
+      const opts = { headers: { 'User-Agent': getLauncherUserAgent() } };
+      if (parsed.protocol === 'https:') opts.agent = keepAliveAgent;
+
+      const req = client.get(url, opts, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          if (redirectsLeft <= 0) return reject(new Error('Demasiadas redirecciones'));
+          const nextUrl = new URL(res.headers.location, url).toString();
+          return fetchRemoteJson(nextUrl, redirectsLeft - 1).then(resolve).catch(reject);
         }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return reject(new Error(`HTTP ${res.statusCode}`));
+        }
+        let raw = '';
+        res.on('data', chunk => raw += chunk);
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(raw));
+          } catch (e) {
+            reject(e);
+          }
+        });
       });
-    }).on('error', reject);
+      req.setTimeout(15000, () => req.destroy(new Error('Tiempo de espera agotado')));
+      req.on('error', reject);
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
-function downloadFile(url, dest, onProgress) {
+function downloadFile(url, dest, onProgress, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
-    https.get(url, { agent: keepAliveAgent, headers: { 'User-Agent': 'DoralandLauncher/1.0.3' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        file.close();
-        return downloadFile(res.headers.location, dest, onProgress).then(resolve).catch(reject);
-      }
-      if (res.statusCode !== 200) {
-        file.close();
-        return reject(new Error(`HTTP ${res.statusCode}`));
-      }
-      const total = parseInt(res.headers['content-length'] || '0', 10);
-      let downloaded = 0;
-      res.on('data', (chunk) => {
-        downloaded += chunk.length;
-        if (total > 0 && onProgress) {
-          onProgress(Math.round((downloaded / total) * 100));
-        }
-      });
-      res.pipe(file);
-      file.on('finish', () => {
-        file.close(resolve);
-      });
-    }).on('error', (err) => {
+    let settled = false;
+    const cleanupAndReject = (err) => {
+      if (settled) return;
+      settled = true;
       fs.remove(dest).catch(() => {});
       reject(err);
-    });
+    };
+
+    try {
+      const parsed = new URL(url);
+      const client = parsed.protocol === 'http:' ? http : https;
+      const opts = { headers: { 'User-Agent': getLauncherUserAgent() } };
+      if (parsed.protocol === 'https:') opts.agent = keepAliveAgent;
+
+      const req = client.get(url, opts, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          if (redirectsLeft <= 0) return cleanupAndReject(new Error('Demasiadas redirecciones'));
+          const nextUrl = new URL(res.headers.location, url).toString();
+          if (settled) return;
+          settled = true;
+          return downloadFile(nextUrl, dest, onProgress, redirectsLeft - 1).then(resolve).catch(reject);
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return cleanupAndReject(new Error(`HTTP ${res.statusCode}`));
+        }
+
+        const file = fs.createWriteStream(dest);
+        const total = parseInt(res.headers['content-length'] || '0', 10);
+        let downloaded = 0;
+
+        res.on('data', (chunk) => {
+          downloaded += chunk.length;
+          if (total > 0 && onProgress) {
+            onProgress(Math.round((downloaded / total) * 100));
+          }
+        });
+
+        file.on('error', (err) => {
+          res.destroy();
+          file.close(() => cleanupAndReject(err));
+        });
+
+        res.on('error', (err) => {
+          file.close(() => cleanupAndReject(err));
+        });
+
+        res.pipe(file);
+        file.on('finish', () => {
+          file.close(() => {
+            if (!settled) {
+              settled = true;
+              resolve();
+            }
+          });
+        });
+      });
+
+      req.setTimeout(30000, () => req.destroy(new Error('Tiempo de espera agotado en descarga')));
+      req.on('error', cleanupAndReject);
+    } catch (e) {
+      cleanupAndReject(e);
+    }
   });
 }
 
-function isValidJarFile(filePath) {
+function isValidZipFile(filePath, minSize = 22) {
   try {
     const stat = fs.statSync(filePath);
-    if (stat.size < 1000) return false;
+    if (stat.size < minSize) return false;
 
     const fd = fs.openSync(filePath, 'r');
     const buffer = Buffer.alloc(4);
@@ -2597,6 +2724,10 @@ function isValidJarFile(filePath) {
   } catch {
     return false;
   }
+}
+
+function isValidJarFile(filePath) {
+  return isValidZipFile(filePath, 1000);
 }
 
 // ============================================================================
@@ -2788,7 +2919,7 @@ async function syncModsProtected(gameDir, cfg, event) {
   let manifest = null;
   if (cfg.mods?.remoteManifestUrl && cfg.mods?.source !== 'bundled') {
     try {
-      safeSend(event, 'launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de mods en el servidor...' });
+      safeSend(event, 'launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de archivos del servidor...' });
       manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
     } catch (err) {
       safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Servidor remoto ocupado (${err.message}). Usando manifiesto integrado.` });
@@ -2888,11 +3019,11 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 
   if (pendingMods.length === 0) {
-    safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Todos los mods están al día (${remoteMods.length} mods verificados).` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Paquete oficial de Doraland al día (${remoteMods.length} archivos verificados).` });
     return;
   }
 
-  safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} mods pendientes desde el repositorio...` });
+  safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} archivos pendientes del paquete oficial...` });
 
   let updatedCount = 0;
   let completedTasks = 0;
@@ -2936,18 +3067,18 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
         updatedCount++;
         completedTasks++;
         safeSend(event, 'launch-progress', {
-          type: `Mods (${completedTasks}/${pendingMods.length}): ${mod.name}`,
+          type: `Archivos (${completedTasks}/${pendingMods.length})`,
           task: completedTasks,
           total: pendingMods.length
         });
-        safeSend(event, 'launch-log', { type: 'info', msg: `✅ [${completedTasks}/${pendingMods.length}] Mod descargado: ${mod.name}` });
+        safeSend(event, 'launch-log', { type: 'info', msg: `✅ [${completedTasks}/${pendingMods.length}] Archivo descargado: ${mod.name}` });
       } catch (dlErr) {
         completedTasks++;
         if (dlErr.message.includes('HTTP 404') && !warned404) {
           warned404 = true;
           safeSend(event, 'launch-log', {
             type: 'error',
-            msg: '❌ Error HTTP 404 en GitHub: El repositorio Sluzzen/Launcher-Doraland está en modo PRIVADO. Cámbialo a PÚBLICO en GitHub (Settings -> Change visibility -> Public) para permitir la descarga automática de mods.'
+            msg: '❌ Error HTTP 404 en GitHub: El repositorio Sluzzen/Launcher-Doraland no está accesible públicamente para descargar el paquete.'
           });
         } else {
           safeSend(event, 'launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
@@ -3309,13 +3440,13 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       return { error: 'Sesión no válida. Por favor inicia sesión de nuevo.' };
     }
 
-    safeSend(event, 'launch-log', { type: 'info', msg: `🔍 Verificando entorno de Java 21 para ${activeLoader.display}...` });
+    safeSend(event, 'launch-log', { type: 'info', msg: '🔍 Verificando entorno de Java 21 para Doraland...' });
     const javaCheck = await findAndValidateJava();
     if (!javaCheck.valid) {
       isGameRunning = false;
       safeSend(event, 'launch-status', {
         status: 'error',
-        message: `${javaCheck.reason} Por favor instala Java 21 para jugar ${activeLoader.display}.`
+        message: `${javaCheck.reason}. Por favor instala Java 21 para iniciar Doraland.`
       });
       return;
     }

@@ -115,6 +115,13 @@ async function init() {
 
   await refreshSkinRenderer();
 
+  const avatarImg = document.getElementById('userAvatar');
+  if (avatarImg) {
+    avatarImg.addEventListener('error', () => {
+      avatarImg.src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%2322C55E'/></svg>";
+    });
+  }
+
   if (currentSession) {
     showScreen('screenHome');
   } else {
@@ -183,7 +190,6 @@ function applyConfig(cfg) {
   const ip = cfg.server?.ip || 'doralandmc.holyhosting.club';
 
   safeText('serverIp', ip);
-  safeText('tbServerIp', ip);
   safeText('playHint', __SLUZZEN_WM__.label);
 
   buildSocialLinks(cfg.ui);
@@ -269,10 +275,6 @@ function setupAuthTabs() {
 
   document.getElementById('inputNickname')?.addEventListener('input', (e) => {
     validateNickname(e.target.value, false);
-  });
-
-  document.getElementById('btnLoginPickSkin')?.addEventListener('click', async () => {
-    await pickCustomSkinFile();
   });
 
   document.getElementById('btnLogout')?.addEventListener('click', logout);
@@ -449,13 +451,8 @@ function applySettingsToUI(s) {
   const resH = s.resolutionHeight || 720;
   const full = Boolean(s.fullscreen);
 
-  // Sliders de RAM
-  const homeSlider = document.getElementById('ramSlider');
+  // Slider de RAM
   const setSlider = document.getElementById('settingsRamSlider');
-  if (homeSlider) {
-    homeSlider.value = ram;
-    updateSliderFill(homeSlider);
-  }
   if (setSlider) {
     setSlider.value = ram;
     updateSliderFill(setSlider);
@@ -476,9 +473,7 @@ function applySettingsToUI(s) {
   }
 
   // Toggles
-  const closeHome = document.getElementById('closeOnLaunch');
   const closeSet = document.getElementById('settingsCloseOnLaunch');
-  const fullQuick = document.getElementById('quickFullscreen');
   const fullSet = document.getElementById('settingsFullscreen');
   const hideSet = document.getElementById('settingsHideOnLaunch');
   const autoConnSet = document.getElementById('settingsAutoConnect');
@@ -487,9 +482,7 @@ function applySettingsToUI(s) {
   const discordRpcSet = document.getElementById('settingsDiscordRpc');
   const jvmInput = document.getElementById('inputCustomJvm');
 
-  if (closeHome) closeHome.checked = Boolean(s.closeOnLaunch);
   if (closeSet) closeSet.checked = Boolean(s.closeOnLaunch);
-  if (fullQuick) fullQuick.checked = full;
   if (fullSet) fullSet.checked = full;
   if (hideSet) hideSet.checked = Boolean(s.hideOnLaunch);
   if (autoConnSet) autoConnSet.checked = s.autoConnect !== false;
@@ -497,14 +490,6 @@ function applySettingsToUI(s) {
   if (lowSpecSet) lowSpecSet.checked = Boolean(s.lowSpecUi);
   if (discordRpcSet) discordRpcSet.checked = s.discordRpc !== false;
   if (jvmInput) jvmInput.value = s.customJvmArgs || '';
-
-  updateResolutionBadges(resW, resH, full);
-}
-
-function updateResolutionBadges(w, h, full) {
-  const label = full ? 'Pantalla Completa' : `${w}×${h}`;
-  safeText('heroResBadge', label);
-  safeText('playResText', label);
 }
 
 async function persistSettings(partial = {}) {
@@ -579,7 +564,6 @@ function populateResolutionOptions(maxW, maxH) {
 }
 
 async function setupRamAndSettingsControls() {
-  const homeSlider = document.getElementById('ramSlider');
   const setSlider = document.getElementById('settingsRamSlider');
 
   let safeMax = config?.minecraft?.maxRamMb || 16384;
@@ -603,29 +587,17 @@ async function setupRamAndSettingsControls() {
   applySettingsToUI(currentSettings);
 
   const min = config?.minecraft?.minRamMb || 2048;
-  [homeSlider, setSlider].forEach(sl => {
-    if (!sl) return;
-    sl.min = min;
-    sl.max = safeMax;
-    sl.value = Math.min(safeMax, Math.max(min, currentSettings.ram || 6144));
-    updateSliderFill(sl);
-  });
+  if (setSlider) {
+    setSlider.min = min;
+    setSlider.max = safeMax;
+    setSlider.value = Math.min(safeMax, Math.max(min, currentSettings.ram || 6144));
+    updateSliderFill(setSlider);
+  }
   safeText('ramMaxLabel', `${Math.round(safeMax / 1024)} GB`);
   updateRamDisplay(currentSettings.ram || 6144);
 
-  homeSlider?.addEventListener('input', () => {
-    const val = parseInt(homeSlider.value);
-    if (setSlider) { setSlider.value = val; updateSliderFill(setSlider); }
-    updateRamDisplay(val);
-    updateSliderFill(homeSlider);
-  });
-  homeSlider?.addEventListener('change', () => {
-    persistSettings({ ram: parseInt(homeSlider.value) });
-  });
-
   setSlider?.addEventListener('input', () => {
     const val = parseInt(setSlider.value);
-    if (homeSlider) { homeSlider.value = val; updateSliderFill(homeSlider); }
     updateRamDisplay(val);
     updateSliderFill(setSlider);
   });
@@ -654,15 +626,9 @@ async function setupRamAndSettingsControls() {
   inputW?.addEventListener('change', onManualResChange);
   inputH?.addEventListener('change', onManualResChange);
 
-  // Toggles sincronizados
-  document.getElementById('closeOnLaunch')?.addEventListener('change', (e) => {
-    persistSettings({ closeOnLaunch: e.target.checked });
-  });
+  // Toggles de Ajustes
   document.getElementById('settingsCloseOnLaunch')?.addEventListener('change', (e) => {
     persistSettings({ closeOnLaunch: e.target.checked });
-  });
-  document.getElementById('quickFullscreen')?.addEventListener('change', (e) => {
-    persistSettings({ fullscreen: e.target.checked });
   });
   document.getElementById('settingsFullscreen')?.addEventListener('change', (e) => {
     persistSettings({ fullscreen: e.target.checked });
@@ -713,13 +679,9 @@ async function setupRamAndSettingsControls() {
     }
   });
 
-  // Botones de cuenta en Ajustes (Premium Minecraft / Cambiar cuenta)
+  // Botones de cuenta y mantenimiento en Ajustes
   document.getElementById('btnSettingsPremiumLogin')?.addEventListener('click', () => {
     loginMicrosoft();
-  });
-
-  document.getElementById('btnSettingsSwitchAccount')?.addEventListener('click', () => {
-    showScreen('screenLogin');
   });
 
   document.getElementById('btnSettingsOpenFolder')?.addEventListener('click', () => {
@@ -727,26 +689,17 @@ async function setupRamAndSettingsControls() {
   });
 
   document.getElementById('btnSettingsCheckUpdate')?.addEventListener('click', async () => {
-    showNotification('Verificando actualizaciones en GitHub...', 'info');
+    showNotification('Verificando actualizaciones...', 'info');
     const res = await window.doraland.checkLauncherUpdate();
     if (res && !res.updateAvailable) {
       showNotification('Estás en la última versión del Launcher.', 'success');
     }
-  });
-
-  document.getElementById('btnSaveAllSettings')?.addEventListener('click', async () => {
-    const w = Math.min(maxMonitorRes.width, Math.max(640, parseInt(inputW?.value) || 1280));
-    const h = Math.min(maxMonitorRes.height, Math.max(480, parseInt(inputH?.value) || 720));
-    const jvm = document.getElementById('inputCustomJvm')?.value?.trim() || '';
-    await persistSettings({ resolutionWidth: w, resolutionHeight: h, customJvmArgs: jvm });
-    showNotification('¡Ajustes guardados correctamente!', 'success');
   });
 }
 
 function updateRamDisplay(mb) {
   const gb = (mb / 1024).toFixed(mb % 1024 === 0 ? 0 : 1);
   safeText('settingsRamValue', `${gb} GB`);
-  safeText('heroRamBadge', `RAM: ${gb} GB`);
 }
 
 function updateSliderFill(slider) {
@@ -769,7 +722,6 @@ let skinPartsVisibility = {
 
 function setupSkinStudio() {
   document.getElementById('btnStudioSelectFile')?.addEventListener('click', pickCustomSkinFile);
-  document.getElementById('btnHomeUploadSkin')?.addEventListener('click', pickCustomSkinFile);
 
   // Selector de modelo (Clásico 4px / Slim 3px)
   const btnClassic = document.getElementById('btnModelClassic');
@@ -1493,11 +1445,9 @@ function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = tru
 // ── MONETIZACIÓN CON GOOGLE ADS (ADSENSE + FALLBACK) ──────────
 function setupGoogleAds(adsCfg) {
   const homeSlot = document.getElementById('adSlotHome');
-  const sideSlot = document.getElementById('adSlotSidebar');
 
   if (adsCfg && adsCfg.enabled === false) {
     if (homeSlot) homeSlot.style.display = 'none';
-    if (sideSlot) sideSlot.style.display = 'none';
     return;
   }
 
@@ -1511,7 +1461,6 @@ function setupGoogleAds(adsCfg) {
 
   const openPromo = () => window.doraland.openExternal(ctaUrl);
   document.getElementById('adHomeCta')?.addEventListener('click', openPromo);
-  document.getElementById('adSidebarCta')?.addEventListener('click', openPromo);
 
   // Si el administrador configuró un Client ID real de Google AdSense (ca-pub-XXXX)
   const clientId = adsCfg?.clientId || '';
@@ -1575,28 +1524,6 @@ function setupGoogleAds(adsCfg) {
       }
     } catch {}
   }
-
-  // Rotador de anuncios patrocinados
-  const promos = [
-    {
-      title: promo.title || 'Comunidad Oficial Doraland • Eventos y Rangos',
-      sub: promo.subtitle || 'Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.',
-      cta: promo.ctaText || 'Unirse al Discord'
-    },
-    {
-      title: 'Personaliza tu Personaje en Doraland',
-      sub: 'Usa el Estudio de Skin integrado y más de 1,510 Emotes de Emotecraft en el servidor.',
-      cta: 'Explorar Discord'
-    }
-  ];
-  let promoIdx = 0;
-  document.getElementById('btnRefreshAds')?.addEventListener('click', () => {
-    promoIdx = (promoIdx + 1) % promos.length;
-    const p = promos[promoIdx];
-    safeText('adHomeTitle', p.title);
-    safeText('adHomeSubtitle', p.sub);
-    safeText('adHomeCta', p.cta);
-  });
 }
 
 // ── BOTÓN JUGAR Y LANZAMIENTO ──────────────────────────────────
@@ -2162,7 +2089,6 @@ function escapeHtml(str) {
 // ── ESTADO DEL SERVIDOR ────────────────────────────────────────
 async function checkServerStatus(ip, port) {
   const dot = document.getElementById('statusDot');
-  const tbDot = document.getElementById('tbStatusDot');
   const label = document.getElementById('statusLabel');
   const players = document.getElementById('statusPlayers');
 
@@ -2176,7 +2102,6 @@ async function checkServerStatus(ip, port) {
       const data = await resp.json();
       if (data.online) {
         dot?.setAttribute('class', 'status-dot online');
-        if (tbDot) tbDot.style.background = 'var(--green-bright)';
         if (label) label.textContent = 'Servidor En Línea';
         if (players) players.textContent = `${data.players?.online || 0} / ${data.players?.max || 0} jugadores activos`;
         return;
@@ -2185,7 +2110,6 @@ async function checkServerStatus(ip, port) {
     throw new Error('offline');
   } catch {
     dot?.setAttribute('class', 'status-dot offline');
-    if (tbDot) tbDot.style.background = '#EF4444';
     if (label) label.textContent = 'Fuera de línea / Mantenimiento';
     if (players) players.textContent = 'Sin conexión con el servidor';
   }

@@ -1,6 +1,6 @@
 {
   "name": "doraland-launcher",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Launcher oficial del servidor Doraland",
   "main": "src/main.js",
   "scripts": {
@@ -34,7 +34,7 @@
   "build": {
     "appId": "net.doraland.launcher",
     "productName": "Doraland Launcher",
-    "copyright": "Copyright © 2024 Doraland",
+    "copyright": "Copyright © 2026 Doraland • Desarrollado por SLuzzen",
     "asar": false,
     "icon": "assets/logo.png",
     "publish": [
