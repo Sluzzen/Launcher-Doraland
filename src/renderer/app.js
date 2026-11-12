@@ -37,6 +37,7 @@ let currentSettings = {
   autoConnect: true,
   turboOptimize: true,
   lowSpecUi: false,
+  discordRpc: true,
   customJvmArgs: ''
 };
 let currentSkin = null; // { dataUrl, model: 'classic'|'slim', name }
@@ -80,7 +81,8 @@ function getSvgIcon(name, size = 14) {
     sparkles: `<svg ${s}><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>`,
     moon: `<svg ${s}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
     sun: `<svg ${s}><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/></svg>`,
-    shield: `<svg ${s}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
+    shield: `<svg ${s}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    wrench: `<svg ${s}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
   };
   return icons[name] || icons.box;
 }
@@ -482,6 +484,7 @@ function applySettingsToUI(s) {
   const autoConnSet = document.getElementById('settingsAutoConnect');
   const turboSet = document.getElementById('settingsTurboOptimize');
   const lowSpecSet = document.getElementById('settingsLowSpecUi');
+  const discordRpcSet = document.getElementById('settingsDiscordRpc');
   const jvmInput = document.getElementById('inputCustomJvm');
 
   if (closeHome) closeHome.checked = Boolean(s.closeOnLaunch);
@@ -492,6 +495,7 @@ function applySettingsToUI(s) {
   if (autoConnSet) autoConnSet.checked = s.autoConnect !== false;
   if (turboSet) turboSet.checked = s.turboOptimize !== false;
   if (lowSpecSet) lowSpecSet.checked = Boolean(s.lowSpecUi);
+  if (discordRpcSet) discordRpcSet.checked = s.discordRpc !== false;
   if (jvmInput) jvmInput.value = s.customJvmArgs || '';
 
   updateResolutionBadges(resW, resH, full);
@@ -675,8 +679,16 @@ async function setupRamAndSettingsControls() {
   document.getElementById('settingsLowSpecUi')?.addEventListener('change', (e) => {
     persistSettings({ lowSpecUi: e.target.checked });
   });
+  document.getElementById('settingsDiscordRpc')?.addEventListener('change', (e) => {
+    persistSettings({ discordRpc: e.target.checked });
+  });
   document.getElementById('inputCustomJvm')?.addEventListener('change', (e) => {
     persistSettings({ customJvmArgs: e.target.value.trim() });
+  });
+
+  // Reparar instalación en 1 clic (sin borrar controles, mundos, capturas ni packs personales)
+  document.getElementById('btnSettingsRepairInstall')?.addEventListener('click', () => {
+    runRepairInstallation();
   });
 
   // Optimizar y liberar caché del launcher
@@ -1664,6 +1676,94 @@ function setupLaunchEvents() {
     showProgressSection(false);
     logToConsole(`Minecraft cerrado (código: ${code})`, 'info');
   });
+
+  window.doraland.onLaunchCrashReport((report) => {
+    showCrashHelperModal(report);
+  });
+}
+
+async function runRepairInstallation() {
+  const btn = document.getElementById('btnSettingsRepairInstall');
+  const crashRepairBtn = document.getElementById('btnCrashRepair');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Reparando archivos y verificando Java...';
+  }
+  if (crashRepairBtn) {
+    crashRepairBtn.disabled = true;
+    crashRepairBtn.textContent = 'Reparando...';
+  }
+  showNotification('Reparando instalación (tus controles, mundos y capturas están protegidos)...', 'info');
+
+  try {
+    const res = await window.doraland.repairInstallation();
+    if (res?.success) {
+      const msg = res.javaValid
+        ? `¡Instalación reparada! Archivos dañados limpiados: ${res.removedCorrupt}.`
+        : `Archivos reparados (${res.removedCorrupt} limpiados), aviso Java: ${res.javaReason || 'verifica Java 21'}.`;
+      showNotification(msg, res.javaValid ? 'success' : 'error');
+    } else {
+      showNotification(res?.error || 'No se pudo completar la reparación.', 'error');
+    }
+  } catch (err) {
+    showNotification('Error al reparar: ' + (err.message || 'desconocido'), 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `${getSvgIcon('wrench', 14)} Reparar Instalación (Protege Controles y Mundos)`;
+    }
+    if (crashRepairBtn) {
+      crashRepairBtn.disabled = false;
+      crashRepairBtn.textContent = 'Reparar Instalación';
+    }
+  }
+}
+
+function showCrashHelperModal(report) {
+  const modal = document.getElementById('crashHelperModal');
+  if (!modal || !report) return;
+
+  safeText('crashTitle', report.title || 'Cierre inesperado del juego');
+  safeText('crashCause', report.cause || 'El juego finalizó de forma inesperada.');
+  safeText('crashFix', report.fix || 'Ejecuta Reparar Instalación en Ajustes.');
+  const snippetEl = document.getElementById('crashSnippet');
+  if (snippetEl) {
+    snippetEl.textContent = report.snippet || `Código de salida: ${report.code}`;
+    snippetEl.style.display = report.snippet ? 'block' : 'none';
+  }
+
+  modal.style.display = 'flex';
+
+  const closeModal = () => { modal.style.display = 'none'; };
+  document.getElementById('btnCloseCrashModal').onclick = closeModal;
+  modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+  document.getElementById('btnCrashRepair').onclick = async () => {
+    closeModal();
+    showScreen('screenSettings');
+    await runRepairInstallation();
+  };
+
+  document.getElementById('btnCrashCopy').onclick = async () => {
+    const fullText = [
+      `Diagnóstico Doraland (${report.title})`,
+      `Código: ${report.code}`,
+      `Causa: ${report.cause}`,
+      `Recomendación: ${report.fix}`,
+      report.snippet ? `\nDetalle técnico:\n${report.snippet}` : ''
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(fullText);
+      showNotification('Diagnóstico copiado al portapapeles.', 'success');
+    } catch {
+      showNotification('No se pudo copiar al portapapeles.', 'error');
+    }
+  };
+
+  document.getElementById('btnCrashDiscord').onclick = () => {
+    const url = config?.ui?.discordUrl || 'https://discord.gg/nR9c4czkt7';
+    window.doraland.openExternal(url);
+  };
 }
 
 function setPlayButtonState(state) {

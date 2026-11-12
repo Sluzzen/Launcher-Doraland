@@ -675,6 +675,19 @@
                   <span class="toggle-track"><span class="toggle-thumb"></span></span>
                 </label>
 
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Discord Rich Presence (Estado en Vivo)</span>
+                    <span class="trc-sub">Muestra en tu perfil de Discord cuando estás jugando en Doraland.</span>
+                  </div>
+                  <input type="checkbox" id="settingsDiscordRpc" class="toggle-input" checked />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <button class="btn-primary" id="btnSettingsRepairInstall">
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  Reparar Instalación (Protege Controles y Mundos)
+                </button>
                 <button class="btn-gold" id="btnSettingsOptimizeLauncher">
                   <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                   Optimizar y Liberar Caché del Launcher
@@ -785,6 +798,35 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Modal Asistente de Errores (Crash Helper) -->
+  <div class="crash-modal-backdrop" id="crashHelperModal" style="display: none;">
+    <div class="crash-modal-card">
+      <div class="crash-modal-header">
+        <div class="crash-icon-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div class="crash-kicker">ASISTENTE DE DIAGNÓSTICO</div>
+          <h3 class="crash-title" id="crashTitle">El juego se cerró inesperadamente</h3>
+        </div>
+        <button class="btn-icon-mini" id="btnCloseCrashModal" title="Cerrar">✕</button>
+      </div>
+      <div class="crash-body">
+        <p class="crash-cause" id="crashCause"></p>
+        <div class="crash-fix-box">
+          <strong>Solución recomendada:</strong>
+          <span id="crashFix"></span>
+        </div>
+        <pre class="crash-snippet" id="crashSnippet"></pre>
+      </div>
+      <div class="crash-actions">
+        <button class="btn-primary" id="btnCrashRepair" style="width:auto; padding:8px 14px; font-size:12px;">Reparar Instalación</button>
+        <button class="btn-gold" id="btnCrashCopy" style="padding:8px 14px; font-size:12px;">Copiar Diagnóstico</button>
+        <button class="btn-secondary-outline" id="btnCrashDiscord" style="width:auto; padding:8px 12px; font-size:12px;">Soporte Discord</button>
+      </div>
+    </div>
   </div>
 
   <!-- Marca de integridad de autoría -->

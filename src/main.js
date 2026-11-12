@@ -26,6 +26,8 @@ const fs = require('fs-extra');
 const https = require('https');
 const http = require('http');
 const os = require('os');
+const net = require('net');
+const crypto = require('crypto');
 const { spawn, spawnSync, execSync } = require('child_process');
 let autoUpdater = null;
 try {
@@ -160,6 +162,7 @@ const DEFAULT_CONFIG = {
   },
   ui: {
     discordUrl: "https://discord.gg/nR9c4czkt7",
+    discordClientId: "",
     websiteUrl: "https://sluzzen.github.io/",
     youtubeUrl: ""
   },
@@ -749,7 +752,197 @@ app.on('second-instance', () => {
   }
 });
 
-app.whenReady().then(createWindow);
+// ── DISCORD RICH PRESENCE (IPC NATIVO SIN DEPENDENCIAS C++) ──
+const discordRpc = (() => {
+  let socket = null;
+  let handshakeDone = false;
+  let reconnectTimer = null;
+  let currentMode = 'launcher'; // 'launcher' | 'playing'
+  let sessionStartTs = Math.floor(Date.now() / 1000);
+  let recvBuffer = Buffer.alloc(0);
+
+  function getClientId() {
+    const cfg = loadConfig();
+    const raw = String(cfg?.ui?.discordClientId || '').trim();
+    return /^\d{17,22}$/.test(raw) ? raw : '';
+  }
+
+  function isRpcEnabled() {
+    return Boolean(getStore().get('discordRpc', true)) && Boolean(getClientId());
+  }
+
+  function encodeFrame(op, payloadObj) {
+    const data = Buffer.from(JSON.stringify(payloadObj), 'utf8');
+    const header = Buffer.alloc(8);
+    header.writeInt32LE(op, 0);
+    header.writeInt32LE(data.length, 4);
+    return Buffer.concat([header, data]);
+  }
+
+  function getIpcPath(idx) {
+    if (process.platform === 'win32') {
+      return `\\\\?\\pipe\\discord-ipc-${idx}`;
+    }
+    const base = process.env.XDG_RUNTIME_DIR || process.env.TMPDIR || process.env.TMP || '/tmp';
+    return path.join(base, `discord-ipc-${idx}`);
+  }
+
+  function buildActivityPayload() {
+    const cfg = loadConfig();
+    const session = getStore().get('session', null);
+    const buttons = [];
+    if (cfg?.ui?.discordUrl) buttons.push({ label: 'Unirse al Discord', url: cfg.ui.discordUrl });
+    if (cfg?.ui?.websiteUrl) buttons.push({ label: 'Sitio Web Oficial', url: cfg.ui.websiteUrl });
+
+    const playing = currentMode === 'playing';
+    const activity = {
+      details: playing ? 'Jugando en Doraland' : 'En el Launcher de Doraland',
+      state: playing
+        ? (session?.name ? `Conectado como ${session.name}` : 'Explorando el servidor')
+        : (session?.name ? `Cuenta: ${session.name}` : 'Preparando la aventura'),
+      timestamps: { start: sessionStartTs },
+      assets: {
+        large_image: 'doraland_logo',
+        large_text: 'Doraland'
+      },
+      instance: false
+    };
+    if (buttons.length > 0) activity.buttons = buttons.slice(0, 2);
+
+    return {
+      cmd: 'SET_ACTIVITY',
+      args: {
+        pid: process.pid,
+        activity
+      },
+      nonce: crypto.randomUUID ? crypto.randomUUID() : String(Date.now())
+    };
+  }
+
+  function sendActivity() {
+    if (!socket || socket.destroyed || !handshakeDone) return;
+    if (!isRpcEnabled()) {
+      try {
+        socket.write(encodeFrame(1, { cmd: 'SET_ACTIVITY', args: { pid: process.pid }, nonce: String(Date.now()) }));
+      } catch {}
+      return;
+    }
+    try {
+      socket.write(encodeFrame(1, buildActivityPayload()));
+    } catch {}
+  }
+
+  function disconnect() {
+    handshakeDone = false;
+    recvBuffer = Buffer.alloc(0);
+    if (socket && !socket.destroyed) {
+      try {
+        socket.write(encodeFrame(1, { cmd: 'SET_ACTIVITY', args: { pid: process.pid }, nonce: String(Date.now()) }));
+      } catch {}
+      try { socket.end(); } catch {}
+      try { socket.destroy(); } catch {}
+    }
+    socket = null;
+  }
+
+  function scheduleReconnect() {
+    if (reconnectTimer || !isRpcEnabled()) return;
+    reconnectTimer = setTimeout(() => {
+      reconnectTimer = null;
+      connect();
+    }, 30000);
+    if (typeof reconnectTimer.unref === 'function') reconnectTimer.unref();
+  }
+
+  function tryPipe(idx = 0) {
+    if (idx > 9 || !isRpcEnabled()) {
+      scheduleReconnect();
+      return;
+    }
+
+    const client = net.createConnection(getIpcPath(idx));
+    let opened = false;
+
+    client.once('connect', () => {
+      opened = true;
+      socket = client;
+      handshakeDone = false;
+      recvBuffer = Buffer.alloc(0);
+      try {
+        client.write(encodeFrame(0, { v: 1, client_id: getClientId() }));
+      } catch {
+        disconnect();
+      }
+    });
+
+    client.on('data', (chunk) => {
+      recvBuffer = Buffer.concat([recvBuffer, chunk]);
+      while (recvBuffer.length >= 8) {
+        const op = recvBuffer.readInt32LE(0);
+        const len = recvBuffer.readInt32LE(4);
+        if (len < 0 || recvBuffer.length < 8 + len) break;
+        const bodyRaw = recvBuffer.slice(8, 8 + len).toString('utf8');
+        recvBuffer = recvBuffer.slice(8 + len);
+        try {
+          const msg = JSON.parse(bodyRaw);
+          if (op === 1 && msg?.evt === 'READY') {
+            handshakeDone = true;
+            sendActivity();
+          }
+        } catch {}
+      }
+    });
+
+    client.on('error', () => {
+      if (!opened) {
+        try { client.destroy(); } catch {}
+        tryPipe(idx + 1);
+      } else {
+        disconnect();
+        scheduleReconnect();
+      }
+    });
+
+    client.on('close', () => {
+      if (opened && socket === client) {
+        handshakeDone = false;
+        socket = null;
+        scheduleReconnect();
+      }
+    });
+  }
+
+  function connect() {
+    if (!isRpcEnabled()) {
+      disconnect();
+      return;
+    }
+    if (socket && !socket.destroyed) {
+      if (handshakeDone) sendActivity();
+      return;
+    }
+    tryPipe(0);
+  }
+
+  function setState(mode = 'launcher') {
+    if (mode !== currentMode) {
+      currentMode = mode;
+      sessionStartTs = Math.floor(Date.now() / 1000);
+    }
+    connect();
+  }
+
+  return { connect, disconnect, setState, sync: sendActivity };
+})();
+
+app.whenReady().then(() => {
+  createWindow();
+  discordRpc.setState('launcher');
+});
+
+app.on('before-quit', () => {
+  discordRpc.disconnect();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
@@ -793,6 +986,7 @@ ipcMain.handle('get-session', () => {
 ipcMain.handle('save-session', (_, session) => {
   if (session && typeof session === 'object' && session.name) {
     getStore().set('session', session);
+    discordRpc.sync();
     return true;
   }
   return false;
@@ -800,6 +994,7 @@ ipcMain.handle('save-session', (_, session) => {
 
 ipcMain.handle('clear-session', () => {
   getStore().delete('session');
+  discordRpc.sync();
   return true;
 });
 
@@ -859,6 +1054,7 @@ ipcMain.handle('get-settings', () => {
     autoConnect: getStore().get('autoConnect', cfg?.server?.autoConnect !== false),
     turboOptimize: getStore().get('turboOptimize', true),
     lowSpecUi: getStore().get('lowSpecUi', false),
+    discordRpc: getStore().get('discordRpc', true),
     customJvmArgs: getStore().get('customJvmArgs', '')
   };
 });
@@ -897,6 +1093,11 @@ ipcMain.handle('save-settings', (_, settings) => {
     }
     if (settings.lowSpecUi !== undefined) {
       getStore().set('lowSpecUi', Boolean(settings.lowSpecUi));
+    }
+    if (settings.discordRpc !== undefined) {
+      getStore().set('discordRpc', Boolean(settings.discordRpc));
+      if (settings.discordRpc) discordRpc.connect();
+      else discordRpc.disconnect();
     }
     if (settings.customJvmArgs !== undefined) {
       getStore().set('customJvmArgs', String(settings.customJvmArgs || '').trim());
@@ -2041,6 +2242,96 @@ ipcMain.handle('optimize-launcher', async () => {
   }
 });
 
+// Repara la instalación verificando Java, limpiando archivos corruptos y re-sincronizando archivos base sin borrar ajustes personales
+ipcMain.handle('repair-installation', async (event) => {
+  if (isGameRunning) {
+    return { error: 'Cierra Minecraft antes de reparar la instalación.' };
+  }
+
+  try {
+    const cfg = loadConfig();
+    const gameDir = getGameDir();
+    await fs.ensureDir(gameDir);
+
+    // 1. Proteger y respaldar controles/opciones personales del jugador antes de reparar
+    const userOptBackup = await backupAndProtectUserOptions(gameDir);
+
+    // 2. Re-verificar entorno Java 21 limpiando caché en memoria
+    cachedJavaResult = null;
+    const javaCheck = await findAndValidateJava();
+
+    // 3. Limpiar archivos .jar / .json corruptos o de 0 bytes en carpetas técnicas (sin tocar saves, screenshots, resourcepacks ni shaderpacks)
+    let removedCorrupt = 0;
+    const userAddons = getUserClientModsRegistry(gameDir);
+    const userModNames = new Set(userAddons.map(u => String(u.fileName || '').toLowerCase()));
+
+    const scanAndCleanCorrupt = async (dirPath, { skipUserMods = false, exts = ['.jar'] } = {}) => {
+      if (!fs.existsSync(dirPath)) return;
+      const items = await fs.readdir(dirPath, { withFileTypes: true });
+      for (const item of items) {
+        const full = path.join(dirPath, item.name);
+        if (item.isDirectory()) {
+          await scanAndCleanCorrupt(full, { skipUserMods: false, exts });
+        } else if (item.isFile()) {
+          if (skipUserMods && userModNames.has(item.name.toLowerCase())) continue;
+          const lower = item.name.toLowerCase();
+          if (!exts.some(ext => lower.endsWith(ext))) continue;
+
+          try {
+            const st = await fs.stat(full);
+            let invalid = st.size === 0;
+            if (!invalid && lower.endsWith('.jar')) {
+              invalid = !isValidJarFile(full);
+            } else if (!invalid && lower.endsWith('.json')) {
+              const txt = await fs.readFile(full, 'utf8');
+              JSON.parse(txt);
+            }
+            if (invalid) {
+              await fs.remove(full);
+              removedCorrupt++;
+            }
+          } catch {
+            try {
+              await fs.remove(full);
+              removedCorrupt++;
+            } catch {}
+          }
+        }
+      }
+    };
+
+    await scanAndCleanCorrupt(path.join(gameDir, 'mods'), { skipUserMods: true, exts: ['.jar'] });
+    await scanAndCleanCorrupt(path.join(gameDir, 'libraries'), { exts: ['.jar'] });
+    await scanAndCleanCorrupt(path.join(gameDir, 'versions'), { exts: ['.jar', '.json'] });
+
+    // Limpiar caché de instaladores temporales y sesión Electron
+    await fs.remove(path.join(gameDir, 'installers')).catch(() => {});
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      await mainWindow.webContents.session.clearCache().catch(() => {});
+    }
+
+    // 4. Re-sincronizar configuraciones e interfaz base y paquete oficial
+    await syncOverridesProtected(gameDir, cfg, event);
+    if (cfg.mods?.enabled) {
+      await syncModsProtected(gameDir, cfg, event);
+    }
+
+    // 5. Garantizar que sus controles y ajustes personales de options.txt sigan intactos
+    await ensureUserOptionsMerged(gameDir, userOptBackup);
+
+    appendLauncherLog(`Reparación completada: ${removedCorrupt} archivo(s) dañado(s) limpiado(s), Java ${javaCheck.valid ? 'OK' : 'no encontrado'}.`);
+    return {
+      success: true,
+      removedCorrupt,
+      javaValid: Boolean(javaCheck.valid),
+      javaReason: javaCheck.reason || ''
+    };
+  } catch (err) {
+    appendLauncherLog(`Error durante la reparación: ${err.message}`);
+    return { error: err.message };
+  }
+});
+
 // ============================================================================
 // 6. IPC HANDLERS: AUTENTICACIÓN (PREMIUM Y NO PREMIUM)
 // ============================================================================
@@ -2069,6 +2360,7 @@ ipcMain.handle('auth-microsoft', async () => {
 
     session.capes = Array.isArray(token.profile?.capes) ? token.profile.capes : [];
     getStore().set('session', session);
+    discordRpc.sync();
     appendLauncherLog(`Login exitoso (Microsoft): ${session.name} (capas: ${session.capes.length})`);
     return { success: true, session };
   } catch (err) {
@@ -2102,6 +2394,7 @@ ipcMain.handle('auth-offline', async (_, username) => {
     }
 
     getStore().set('session', session);
+    discordRpc.sync();
     appendLauncherLog(`Login exitoso (No Premium): ${session.name}`);
     return { success: true, session };
   } catch (err) {
@@ -2294,9 +2587,98 @@ function isValidJarFile(filePath) {
 }
 
 // ============================================================================
-// 9. SINCRONIZACIÓN DE OVERRIDES (CONFIGS, FANCYMENU, SHADERPACKS)
+// 9. SINCRONIZACIÓN DE OVERRIDES Y PROTECCIÓN DE OPTIONS.TXT
 // ============================================================================
+const PERSONAL_OPTION_PREFIXES = ['key_', 'soundCategory_'];
+const PERSONAL_OPTION_KEYS = new Set([
+  'mouseSensitivity', 'invertYMouse', 'discrete_mouse_scroll', 'rawMouseInput',
+  'touchscreen', 'fov', 'lang', 'gamma', 'renderDistance', 'simulationDistance',
+  'entityDistanceScaling', 'maxFps', 'enableVsync', 'guiScale', 'particles',
+  'graphicsMode', 'bobView', 'darknessEffectScale', 'fovEffectScale',
+  'screenEffectScale', 'autoJump', 'operatorItemsTab', 'narrator',
+  'skipMultiplayerWarning', 'fullscreen', 'overrideWidth', 'overrideHeight'
+]);
+
+function isPersonalOptionKey(key) {
+  return PERSONAL_OPTION_KEYS.has(key) || PERSONAL_OPTION_PREFIXES.some(p => key.startsWith(p));
+}
+
+async function backupAndProtectUserOptions(gameDir) {
+  const optionsPath = path.join(gameDir, 'options.txt');
+  const backupPath = path.join(gameDir, 'options.txt.doraland.bak');
+  const personalMap = new Map();
+
+  try {
+    if (fs.existsSync(optionsPath)) {
+      const raw = await fs.readFile(optionsPath, 'utf8');
+      if (raw.trim().length > 0) {
+        await fs.writeFile(backupPath, raw, 'utf8');
+        for (const line of raw.split(/\r?\n/)) {
+          const idx = line.indexOf(':');
+          if (idx > 0) {
+            const key = line.slice(0, idx).trim();
+            if (isPersonalOptionKey(key)) {
+              personalMap.set(key, line);
+            }
+          }
+        }
+      }
+    } else if (fs.existsSync(backupPath)) {
+      const rawBak = await fs.readFile(backupPath, 'utf8');
+      for (const line of rawBak.split(/\r?\n/)) {
+        const idx = line.indexOf(':');
+        if (idx > 0) {
+          const key = line.slice(0, idx).trim();
+          if (isPersonalOptionKey(key)) {
+            personalMap.set(key, line);
+          }
+        }
+      }
+    }
+  } catch {}
+  return personalMap;
+}
+
+async function ensureUserOptionsMerged(gameDir, personalMap) {
+  if (!personalMap || personalMap.size === 0) return;
+  const optionsPath = path.join(gameDir, 'options.txt');
+  const backupPath = path.join(gameDir, 'options.txt.doraland.bak');
+
+  try {
+    if (!fs.existsSync(optionsPath)) {
+      if (fs.existsSync(backupPath)) {
+        await fs.copy(backupPath, optionsPath, { overwrite: false });
+      }
+      return;
+    }
+
+    const currentRaw = await fs.readFile(optionsPath, 'utf8');
+    const lines = currentRaw.split(/\r?\n/);
+    const existingPersonalKeys = new Set();
+    for (const line of lines) {
+      const idx = line.indexOf(':');
+      if (idx > 0) {
+        const key = line.slice(0, idx).trim();
+        if (isPersonalOptionKey(key)) existingPersonalKeys.add(key);
+      }
+    }
+
+    const toRestore = [];
+    for (const [key, fullLine] of personalMap.entries()) {
+      if (!existingPersonalKeys.has(key)) {
+        toRestore.push(fullLine);
+      }
+    }
+
+    if (toRestore.length > 0) {
+      const sep = currentRaw.endsWith('\n') ? '' : '\n';
+      await fs.writeFile(optionsPath, currentRaw + sep + toRestore.join('\n') + '\n', 'utf8');
+    }
+  } catch {}
+}
+
 async function syncOverridesProtected(gameDir, cfg, event) {
+  const userOptBackup = await backupAndProtectUserOptions(gameDir);
   if (cfg.mods?.syncOverrides === false) return;
 
   const candidates = [];
@@ -2320,6 +2702,7 @@ async function syncOverridesProtected(gameDir, cfg, event) {
   // Archivos de preferencias personales que no deben sobrescribirse si el jugador ya los modificó
   const userProtectedRelPaths = new Set([
     'options.txt',
+    'optionsof.txt',
     'servers.dat',
     path.normalize('config/sodium-options.json'),
     path.normalize('config/iris.properties'),
@@ -2367,6 +2750,7 @@ async function syncOverridesProtected(gameDir, cfg, event) {
 
   try {
     await copyDirSelective(bundledOverridesPath, gameDir);
+    await ensureUserOptionsMerged(gameDir, userOptBackup);
     if (syncedFiles > 0) {
       event?.sender.send('launch-log', { type: 'info', msg: `✔️ Se aplicaron ${syncedFiles} archivos de configuración/interfaz de Doraland.` });
     } else {
@@ -2948,8 +3332,9 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     const safeRam = Math.min(safeMaxMb, Math.max(2048, parseInt(ram) || cfg.minecraft?.recommendedRamMb || 6144));
     const minRam = Math.max(1024, Math.floor(safeRam / 2));
 
-    const resW = Math.min(7680, Math.max(640, parseInt(getStore().get('resolutionWidth', 1280)) || 1280));
-    const resH = Math.min(4320, Math.max(480, parseInt(getStore().get('resolutionHeight', 720)) || 720));
+    const maxRes = getMonitorMaxResolution();
+    const resW = Math.min(maxRes.width, Math.max(640, parseInt(getStore().get('resolutionWidth', 1280)) || 1280));
+    const resH = Math.min(maxRes.height, Math.max(480, parseInt(getStore().get('resolutionHeight', 720)) || 720));
     const isFullscreen = Boolean(getStore().get('fullscreen', false));
     const userJvmStr = String(getStore().get('customJvmArgs', '') || '').trim();
     const userJvmList = userJvmStr ? userJvmStr.split(/\s+/).filter(Boolean) : [];
@@ -3037,25 +3422,110 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       };
     }
 
+    function analyzeMinecraftCrash(exitCode, logLines = []) {
+      const joined = logLines.join('\n');
+      const snippet = logLines
+        .filter(l => /error|exception|fatal|crash|outofmemory|failed|mixin/i.test(l))
+        .slice(-8)
+        .join('\n') || logLines.slice(-8).join('\n');
+
+      if (/OutOfMemoryError|GC overhead limit exceeded|Exceded max heap|Could not reserve enough space/i.test(joined) || exitCode === -805306369 || exitCode === 137) {
+        return {
+          code: exitCode,
+          title: 'Memoria RAM insuficiente',
+          cause: 'El juego se quedó sin memoria RAM disponible o no pudo reservar suficiente memoria al iniciar.',
+          fix: 'Aumenta la memoria RAM asignada en Ajustes (se recomienda entre 6 GB y 8 GB) o cierra programas pesados en segundo plano.',
+          action: 'settings',
+          snippet
+        };
+      }
+
+      if (/EXCEPTION_ACCESS_VIOLATION|atio6axx|nvoglv64|ig7icd|GLFW error|Pixel format not accelerated|OpenGL/i.test(joined)) {
+        return {
+          code: exitCode,
+          title: 'Error del controlador gráfico (GPU / OpenGL)',
+          cause: 'El controlador gráfico provocó un cierre inesperado o encontró una incompatibilidad visual.',
+          fix: 'Actualiza los drivers de tu tarjeta gráfica (NVIDIA, AMD o Intel) y prueba desactivar Shaders si tienes alguno activo.',
+          action: 'addons',
+          snippet
+        };
+      }
+
+      if (/UnsupportedClassVersionError|ZipException|InvalidCEN|Corrupt|NoSuchMethodError|ClassNotFoundException|NoClassDefFoundError/i.test(joined)) {
+        return {
+          code: exitCode,
+          title: 'Archivo de juego dañado o incompleto',
+          cause: 'Se detectó un archivo corrupto o incompleto durante la carga del juego.',
+          fix: 'Haz clic en "Reparar Instalación" para verificar y restaurar automáticamente los archivos esenciales sin perder tus mundos ni controles.',
+          action: 'repair',
+          snippet
+        };
+      }
+
+      if (/Mixin|FML|ModLoadingException|InvocationTargetException/i.test(joined)) {
+        return {
+          code: exitCode,
+          title: 'Conflicto de configuración o complemento',
+          cause: 'Un archivo de arranque o complemento incompatible impidió iniciar el juego correctamente.',
+          fix: 'Ejecuta "Reparar Instalación" en Ajustes para restablecer los archivos oficiales manteniendo tus controles y mundos.',
+          action: 'repair',
+          snippet
+        };
+      }
+
+      return {
+        code: exitCode,
+        title: `Cierre inesperado del juego (Código ${exitCode})`,
+        cause: 'El juego se cerró antes de completar la sesión o durante la carga.',
+        fix: 'Ejecuta "Reparar Instalación" y vuelve a intentar. Si continúa ocurriendo, copia este diagnóstico y envíalo al Discord oficial.',
+        action: 'repair',
+        snippet
+      };
+    }
+
     const { Client } = require('minecraft-launcher-core');
     const launcher = new Client();
+    const recentGameLogs = [];
+    const pushGameLog = (raw) => {
+      const str = String(raw || '').trim();
+      if (!str) return;
+      for (const line of str.split(/\r?\n/)) {
+        const clean = line.trim();
+        if (clean) {
+          recentGameLogs.push(clean);
+          if (recentGameLogs.length > 120) recentGameLogs.shift();
+        }
+      }
+    };
 
-    launcher.on('debug', (msg) => event.sender.send('launch-log', { type: 'debug', msg }));
-    launcher.on('data', (msg) => event.sender.send('launch-log', { type: 'data', msg }));
+    launcher.on('debug', (msg) => {
+      pushGameLog(msg);
+      event.sender.send('launch-log', { type: 'debug', msg });
+    });
+    launcher.on('data', (msg) => {
+      pushGameLog(msg);
+      event.sender.send('launch-log', { type: 'data', msg });
+    });
     launcher.on('progress', (progress) => event.sender.send('launch-progress', progress));
 
     launcher.on('close', (code) => {
       isGameRunning = false;
+      discordRpc.setState('launcher');
       if (mainWindow && !mainWindow.isDestroyed()) {
         if (!mainWindow.isVisible()) mainWindow.show();
         if (mainWindow.isMinimized()) mainWindow.restore();
         mainWindow.focus();
       }
       event?.sender?.send('launch-close', code);
+      if (typeof code === 'number' && code !== 0) {
+        const report = analyzeMinecraftCrash(code, recentGameLogs);
+        mainWindow?.webContents.send('launch-crash-report', report);
+      }
       appendLauncherLog(`Minecraft cerrado con código: ${code}`);
     });
 
     appendLauncherLog(`Lanzando Minecraft ${mcVersion} (${activeLoader.display}) para el usuario: ${session.name}`);
+    discordRpc.setState('playing');
     await launcher.launch(opts);
     event.sender.send('launch-status', { status: 'launched', loader: activeLoader.display });
 
@@ -3066,6 +3536,7 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
     }
   } catch (err) {
     isGameRunning = false;
+    discordRpc.setState('launcher');
     appendLauncherLog(`Error al lanzar Minecraft: ${err.message}`);
     event.sender.send('launch-status', { status: 'error', message: err.message });
   }

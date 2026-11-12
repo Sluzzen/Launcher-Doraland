@@ -42,9 +42,10 @@ contextBridge.exposeInMainWorld('doraland', {
   removeUserAddon: (payload) => ipcRenderer.invoke('remove-user-addon', payload),
   openAddonFolder: (category) => ipcRenderer.invoke('open-addon-folder', category),
 
-  // Changelog y Optimización
+  // Changelog, Reparación y Optimización
   getChangelog: () => ipcRenderer.invoke('get-changelog'),
   optimizeLauncher: () => ipcRenderer.invoke('optimize-launcher'),
+  repairInstallation: () => ipcRenderer.invoke('repair-installation'),
 
   // Autenticación
   authMicrosoft: () => ipcRenderer.invoke('auth-microsoft'),
@@ -58,6 +59,7 @@ contextBridge.exposeInMainWorld('doraland', {
   onLaunchProgress: (cb) => ipcRenderer.on('launch-progress', (_, data) => cb(data)),
   onLaunchStatus: (cb) => ipcRenderer.on('launch-status', (_, data) => cb(data)),
   onLaunchClose: (cb) => ipcRenderer.on('launch-close', (_, code) => cb(code)),
+  onLaunchCrashReport: (cb) => ipcRenderer.on('launch-crash-report', (_, data) => cb(data)),
   onAuthUpdate: (cb) => ipcRenderer.on('auth-update', (_, data) => cb(data)),
 
   // Remover listeners (para evitar memory leaks)
