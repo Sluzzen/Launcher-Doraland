@@ -176,7 +176,7 @@ function initAmbientFireflies() {
       if (p.x > canvas.width + 10) p.x = -10;
 
       ctx.beginPath();
-      const color = p.gold ? `rgba(255, 77, 109, ${p.alpha})` : `rgba(239, 68, 68, ${p.alpha})`;
+      const color = p.gold ? `rgba(220, 38, 38, ${p.alpha})` : `rgba(239, 68, 68, ${p.alpha})`;
       ctx.fillStyle = color;
       ctx.shadowBlur = 10;
       ctx.shadowColor = color;
@@ -429,7 +429,7 @@ function updateUserCard(session) {
     typeEl.innerHTML = isPremium
       ? `${getSvgIcon('star', 11)} Cuenta Premium`
       : `${getSvgIcon('user', 11)} No Premium`;
-    typeEl.style.color = isPremium ? 'var(--gold-light)' : 'var(--green-neon)';
+    typeEl.style.color = isPremium ? '#EF4444' : '#EF4444';
   }
 }
 
@@ -1170,7 +1170,7 @@ function updateRawTextureInspector(img, sourceName) {
     safeText('skinTexTitle', sourceName || 'Textura Activa');
     safeText('skinTexDims', `Mapa UV ${dims}px • ${img.height === 32 ? 'Formato Legacy' : 'Formato Moderno 2 Capas'}`);
   } else {
-    rctx.fillStyle = '#15803D';
+    rctx.fillStyle = '#1A0507';
     rctx.fillRect(6, 6, 32, 32);
     rctx.fillStyle = '#F59E0B';
     rctx.fillRect(12, 12, 20, 20);
@@ -1353,12 +1353,12 @@ function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = tru
     ctx.fillStyle = '#D8A074';
     ctx.fillRect(ox + (4 + headTiltX) * scale, oy + (headBobY + (view === 'front' ? 2 : 5)) * scale, 8 * scale, (view === 'front' ? 6 : 3) * scale);
     if (view === 'front') {
-      ctx.fillStyle = '#22C55E';
+      ctx.fillStyle = '#EF4444';
       ctx.fillRect(ox + (5 + headTiltX) * scale, oy + (4 + headBobY) * scale, 2 * scale, 1 * scale);
       ctx.fillRect(ox + (9 + headTiltX) * scale, oy + (4 + headBobY) * scale, 2 * scale, 1 * scale);
     }
     // Torso
-    ctx.fillStyle = '#15803D';
+    ctx.fillStyle = '#1A0507';
     ctx.fillRect(ox + 4 * scale, oy + 8 * scale, 8 * scale, 12 * scale);
     ctx.fillStyle = '#F59E0B';
     ctx.fillRect(ox + 4 * scale, oy + 17 * scale, 8 * scale, 2 * scale);
