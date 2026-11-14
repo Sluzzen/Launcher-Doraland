@@ -71,7 +71,8 @@
   "updates": {
     "autoUpdateLauncher": true,
     "githubOwner": "Sluzzen",
-    "githubRepo": "Launcher-Doraland"
+    "githubRepo": "Launcher-Doraland",
+    "branch": "websmp"
   },
   "ui": {
     "discordUrl": "https://discord.gg/VNfThdAcBX",

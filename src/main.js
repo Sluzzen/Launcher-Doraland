@@ -161,7 +161,8 @@ const DEFAULT_CONFIG = {
   updates: {
     autoUpdateLauncher: true,
     githubOwner: "Sluzzen",
-    githubRepo: "Web-SMP-Launcher"
+    githubRepo: "Launcher-Doraland",
+    branch: "websmp"
   },
   ui: {
     discordUrl: "https://discord.gg/VNfThdAcBX",
@@ -344,8 +345,8 @@ function appendLauncherLog(message) {
 //    B) Live Self-Updater desde rama main de GitHub (Funciona en CUALQUIER versión sin requerir Release)
 // ============================================================================
 if (autoUpdater) {
-  autoUpdater.autoDownload = true;
-  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = false;
 }
 
 function toStrictSemver(verStr) {
@@ -392,9 +393,9 @@ function getLocalLauncherVersion() {
 
 function getLauncherUserAgent() {
   try {
-    return `DoralandLauncher/${loadConfig()?.launcher?.version || app.getVersion() || '1.0.7'}`;
+    return `WebSMPLauncher/${loadConfig()?.launcher?.version || app.getVersion() || '1.0.7'}`;
   } catch {
-    return 'DoralandLauncher/1.0.7';
+    return 'WebSMPLauncher/1.0.7';
   }
 }
 
@@ -441,7 +442,8 @@ async function checkAndApplyGitBranchSelfUpdate() {
 
   const owner = cfg?.updates?.githubOwner || 'Sluzzen';
   const repo = cfg?.updates?.githubRepo || 'Launcher-Doraland';
-  const baseUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main`;
+  const branch = cfg?.updates?.branch || 'websmp';
+  const baseUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}`;
   const cacheBust = `?t=${Date.now()}`;
 
   try {
@@ -604,12 +606,7 @@ function setupLauncherAutoUpdater() {
 
   // Ejecutar verificación inmediata al abrir cualquier versión del launcher
   setTimeout(async () => {
-    const branchRes = await checkAndApplyGitBranchSelfUpdate();
-    if (!branchRes.updated && autoUpdater && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
-      try {
-        await autoUpdater.checkForUpdates();
-      } catch {}
-    }
+    await checkAndApplyGitBranchSelfUpdate();
   }, 1500);
 }
 
@@ -618,10 +615,6 @@ ipcMain.handle('check-launcher-update', async () => {
     const branchRes = await checkAndApplyGitBranchSelfUpdate();
     if (branchRes.updated) {
       return { success: true, updateAvailable: true, version: branchRes.remoteVersion };
-    }
-    if (autoUpdater && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_FILE) {
-      const res = await autoUpdater.checkForUpdates();
-      return { success: true, updateAvailable: !!res?.updateInfo };
     }
     return { success: true, updateAvailable: false };
   } catch (err) {
@@ -633,8 +626,7 @@ ipcMain.handle('download-launcher-update', async () => {
   try {
     const branchRes = await checkAndApplyGitBranchSelfUpdate();
     if (branchRes.updated) return { success: true };
-    if (autoUpdater) await autoUpdater.downloadUpdate();
-    return { success: true };
+    return { success: false, error: 'No hay actualización pendiente en la rama websmp' };
   } catch (err) {
     return { success: false, error: err.message };
   }
@@ -774,14 +766,14 @@ const discordRpc = (() => {
 
     const playing = currentMode === 'playing';
     const activity = {
-      details: playing ? 'Jugando en Doraland' : 'En el Launcher de Doraland',
+      details: playing ? 'Jugando en Web SMP' : 'En el Launcher de Web SMP',
       state: playing
         ? (session?.name ? `Conectado como ${session.name}` : 'Explorando el servidor')
         : (session?.name ? `Cuenta: ${session.name}` : 'Preparando la aventura'),
       timestamps: { start: sessionStartTs },
       assets: {
-        large_image: 'doraland_logo',
-        large_text: 'Doraland'
+        large_image: 'websmp_logo',
+        large_text: 'Web SMP'
       },
       instance: false
     };
@@ -1269,7 +1261,7 @@ ipcMain.handle('import-skin-by-nick', async (_, nickname) => {
 
   function downloadBuffer(url) {
     return new Promise((resolve, reject) => {
-      https.get(url, { headers: { 'User-Agent': 'DoralandLauncher' } }, (res) => {
+      https.get(url, { headers: { 'User-Agent': 'WebSMPLauncher' } }, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           return downloadBuffer(res.headers.location).then(resolve).catch(reject);
         }
@@ -1367,7 +1359,7 @@ function fetchBinaryAsDataUrl(url, mimeType = 'image/png') {
       const parsed = new URL(normalizedUrl);
       const client = parsed.protocol === 'http:' ? http : https;
       const opts = {
-        headers: { 'User-Agent': 'DoralandLauncher/1.0.6' }
+        headers: { 'User-Agent': 'WebSMPLauncher/1.0.6' }
       };
       if (parsed.protocol === 'https:') opts.agent = keepAliveAgent;
 
@@ -3512,13 +3504,13 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
       return { error: 'Sesión no válida. Por favor inicia sesión de nuevo.' };
     }
 
-    safeSend(event, 'launch-log', { type: 'info', msg: '🔍 Verificando entorno de Java 21 para Doraland...' });
+    safeSend(event, 'launch-log', { type: 'info', msg: '🔍 Verificando entorno de Java 21 para Web SMP...' });
     const javaCheck = await findAndValidateJava();
     if (!javaCheck.valid) {
       isGameRunning = false;
       safeSend(event, 'launch-status', {
         status: 'error',
-        message: `${javaCheck.reason}. Por favor instala Java 21 para iniciar Doraland.`
+        message: `${javaCheck.reason}. Por favor instala Java 21 para iniciar Web SMP.`
       });
       return;
     }

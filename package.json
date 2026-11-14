@@ -38,13 +38,6 @@
     "copyright": "Copyright © 2026 Web SMP • Desarrollado por SLuzzen",
     "asar": false,
     "icon": "assets/icon.ico",
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "Sluzzen",
-        "repo": "Launcher-Doraland"
-      }
-    ],
     "files": [
       "src/**/*",
       "assets/**/*",
