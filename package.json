@@ -37,12 +37,12 @@
     "productName": "Web SMP Launcher",
     "copyright": "Copyright © 2026 Web SMP • Desarrollado por SLuzzen",
     "asar": false,
-    "icon": "assets/logo.png",
+    "icon": "assets/icon.ico",
     "publish": [
       {
         "provider": "github",
         "owner": "Sluzzen",
-        "repo": "Web-SMP-Launcher"
+        "repo": "Launcher-Doraland"
       }
     ],
     "files": [
@@ -75,7 +75,7 @@
           ]
         }
       ],
-      "icon": "assets/logo.png"
+      "icon": "assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,
