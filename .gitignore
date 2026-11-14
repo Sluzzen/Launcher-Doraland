@@ -1,9 +1,9 @@
 node_modules/
-dist/
-out/
+/dist/
+/out/
 *.log
 .env
-*.exe
+/*.exe
 /*.zip
 !assets/logo.png
 !overrides/shaderpacks/*.zip
