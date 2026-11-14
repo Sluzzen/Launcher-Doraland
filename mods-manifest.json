@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-11-14T03:29:28.694Z",
+  "generatedAt": "2026-11-14T04:33:50.506Z",
   "server": {
     "name": "Web SMP",
     "ip": "enx-soc-12.enx.host",
@@ -46,8 +46,8 @@
       "vanilla": ""
     }
   },
-  "modsCount": 67,
-  "overridesCount": 1779,
+  "modsCount": 64,
+  "overridesCount": 1777,
   "mods": [
     {
       "name": "actorsystem-1.3.0.jar",
@@ -221,7 +221,7 @@
       "name": "Flashback-0.39.10-for-MC1.21.11.jar",
       "size": 210513938,
       "sha1": "6435f1924b06d53dfc119c20d16eb5248f082cdd",
-      "url": "https://cdn.modrinth.com/data/4das1Fjq/versions/JTAZ57qO/Flashback-0.39.10-for-MC1.21.11.jar"
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Flashback-0.39.10-for-MC1.21.11.jar"
     },
     {
       "name": "ForgeConfigAPIPort-v21.11.1-mc1.21.11-Fabric.jar",
@@ -408,24 +408,6 @@
       "size": 5609464,
       "sha1": "b969593528872d42178cbdac705ef2b4b672b2c3",
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/voicechat-fabric-1.21.11-2.6.26.jar"
-    },
-    {
-      "name": "watermedia-3.0.0.23.jar",
-      "size": 3625444,
-      "sha1": "a644ab079cc9ed19a62b181e0252be5a9a422166",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia-3.0.0.23.jar"
-    },
-    {
-      "name": "watermedia_binaries-3.0.0.6.jar",
-      "size": 143725808,
-      "sha1": "8f132fc2fec0fe91a9a085c11088f0773da187fc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia_binaries-3.0.0.6.jar"
-    },
-    {
-      "name": "watermedia_platform_extension-3.0.0-beta.7.jar",
-      "size": 248824,
-      "sha1": "0cc9e1d73184df3936023c75bd63dde67920271b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia_platform_extension-3.0.0-beta.7.jar"
     },
     {
       "name": "waystones-fabric-1.21.11-21.11.9.jar",
@@ -977,16 +959,6 @@
       "path": "config/voicechat/voicechat-server.properties",
       "size": 3215,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/voicechat/voicechat-server.properties"
-    },
-    {
-      "path": "config/waterconfig.toml",
-      "size": 677,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/waterconfig.toml"
-    },
-    {
-      "path": "config/watermedia.toml",
-      "size": 8017,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watermedia.toml"
     },
     {
       "path": "config/waystones-common.toml",
