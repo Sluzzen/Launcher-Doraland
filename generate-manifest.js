@@ -104,4 +104,14 @@ const outputPath = path.join(__dirname, 'mods-manifest.json');
 fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2), 'utf8');
 
 console.log(`\n✅ Manifiesto generado con éxito: ${outputPath}`);
+
+// Si existe la carpeta local del repositorio mods-launcher, copiar automáticamente el manifiesto
+const targetRepoDir = path.join(__dirname, '..', githubRepo);
+if (fs.existsSync(targetRepoDir) && fs.existsSync(path.join(targetRepoDir, '.git'))) {
+  try {
+    fs.copyFileSync(outputPath, path.join(targetRepoDir, 'mods-manifest.json'));
+    console.log(`🔄 Copiado automáticamente a: ${path.join(targetRepoDir, 'mods-manifest.json')}`);
+  } catch {}
+}
+
 console.log(`📌 Sube este archivo (mods-manifest.json), mods/ y overrides/ a la rama "${branch}" de https://github.com/${githubOwner}/${githubRepo}`);

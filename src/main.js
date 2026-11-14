@@ -3044,12 +3044,42 @@ async function syncOverridesProtected(gameDir, cfg, event, preloadedManifest = n
   }
 }
 
+function getLocalBundledModsInfo() {
+  const candidates = [];
+  if (app.isPackaged) {
+    if (process.env.PORTABLE_EXECUTABLE_DIR) {
+      candidates.push(path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'mods'));
+    }
+    candidates.push(path.join(path.dirname(app.getPath('exe')), 'mods'));
+    candidates.push(path.join(process.resourcesPath, 'mods'));
+  } else {
+    candidates.push(path.join(__dirname, '..', 'mods'));
+  }
+
+  const bundledModsPath = candidates.find(p => fs.existsSync(p));
+  if (!bundledModsPath) return null;
+
+  try {
+    const rawFiles = fs.readdirSync(bundledModsPath);
+    const jars = rawFiles.filter(f => f.toLowerCase().endsWith('.jar'));
+    return {
+      path: bundledModsPath,
+      jars,
+      jarsSet: new Set(jars.map(j => j.toLowerCase()))
+    };
+  } catch {
+    return null;
+  }
+}
+
 async function syncModsProtected(gameDir, cfg, event, preloadedManifest = null) {
   const targetModsPath = path.join(gameDir, 'mods');
   await fs.ensureDir(targetModsPath);
 
-  // 1. Si existe carpeta mods/ local junto al launcher, copiar primero desde disco (instantáneo)
-  await syncLocalBundledMods(targetModsPath, cfg, event, false);
+  const localInfo = getLocalBundledModsInfo();
+  // En modo desarrollo (!app.isPackaged) o modo bundled, sincronizar y limpiar según la carpeta mods/ local activa
+  const shouldCleanLocal = (!app.isPackaged || cfg.mods?.source === 'bundled') && Boolean(cfg.mods?.cleanOldMods);
+  await syncLocalBundledMods(targetModsPath, cfg, event, shouldCleanLocal, localInfo);
 
   // 2. Obtener manifiesto del servidor (remoto o local integrado)
   const manifest = preloadedManifest || await fetchServerManifest(cfg, event);
@@ -3060,16 +3090,17 @@ async function syncModsProtected(gameDir, cfg, event, preloadedManifest = null) 
       cfg.minecraft.loaders = { ...cfg.minecraft.loaders, ...manifest.minecraft.loaders };
     }
 
-    await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event);
+    await syncRemoteModsList(manifest.mods, targetModsPath, cfg, event, localInfo);
   }
 }
 
-async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
+async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event, localInfo = null) {
   const gameDir = path.dirname(targetModsPath);
   const userClientModsSet = getUserClientModsSet(gameDir);
   const pkgInfo = getModsPackageInfo(cfg);
   const serverTitle = cfg.server?.name || 'Servidor';
   const remoteNames = remoteMods.map(m => m.name.toLowerCase());
+  const isDevMode = !app.isPackaged && Boolean(localInfo?.jarsSet?.size);
 
   // Registrar automáticamente en el Changelog qué mods se agregaron, actualizaron o retiraron respecto a la última sincronización
   try {
@@ -3115,8 +3146,12 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
     const localFiles = await fs.readdir(targetModsPath);
     for (const file of localFiles) {
       const lower = file.toLowerCase();
-      // Proteger los Mods de Cliente instalados por el jugador para que nunca se borren
-      if (lower.endsWith('.jar') && !remoteNames.includes(lower) && !userClientModsSet.has(lower)) {
+      // Proteger:
+      // 1. Mods de Cliente instalados por el jugador
+      // 2. Mods colocados localmente por el desarrollador en la carpeta mods/
+      const isClientMod = userClientModsSet.has(lower);
+      const isLocalMod = Boolean(localInfo?.jarsSet?.has(lower));
+      if (lower.endsWith('.jar') && !remoteNames.includes(lower) && !isClientMod && !isLocalMod) {
         await fs.remove(path.join(targetModsPath, file));
         safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod antiguo retirado del servidor: ${file}` });
       }
@@ -3126,12 +3161,24 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   // Filtrar solo los mods que faltan o cambiaron de tamaño
   const pendingMods = [];
   for (const mod of remoteMods) {
+    const modLower = mod.name.toLowerCase();
+
+    // En modo desarrollador: si el desarrollador eliminó un mod de su mods/ local, no volver a descargarlo del GitHub desactualizado
+    if (isDevMode && !localInfo.jarsSet.has(modLower)) {
+      continue;
+    }
+
     const destPath = path.join(targetModsPath, mod.name);
     let needsDownload = true;
     if (fs.existsSync(destPath) && isValidJarFile(destPath)) {
-      const stat = await fs.stat(destPath);
-      if (mod.size && stat.size === mod.size) {
+      // Si el desarrollador editó el mod localmente en su mods/, syncLocalBundledMods ya lo copió; no sobreescribir con GitHub viejo
+      if (isDevMode && localInfo.jarsSet.has(modLower)) {
         needsDownload = false;
+      } else {
+        const stat = await fs.stat(destPath);
+        if (mod.size && stat.size === mod.size) {
+          needsDownload = false;
+        }
       }
     }
     if (needsDownload) {
@@ -3221,29 +3268,13 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 }
 
-async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = false) {
-  const candidates = [];
-  if (app.isPackaged) {
-    if (process.env.PORTABLE_EXECUTABLE_DIR) {
-      candidates.push(path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'mods'));
-    }
-    candidates.push(path.join(path.dirname(app.getPath('exe')), 'mods'));
-    candidates.push(path.join(process.resourcesPath, 'mods'));
-  } else {
-    candidates.push(path.join(__dirname, '..', 'mods'));
-  }
-
-  const bundledModsPath = candidates.find(p => fs.existsSync(p));
-  if (!bundledModsPath) {
+async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = false, preloadedInfo = null) {
+  const localInfo = preloadedInfo || getLocalBundledModsInfo();
+  if (!localInfo || localInfo.jars.length === 0) {
     return;
   }
 
-  const rawFiles = await fs.readdir(bundledModsPath);
-  const bundledJars = rawFiles.filter(f => f.toLowerCase().endsWith('.jar'));
-
-  if (bundledJars.length === 0) {
-    return;
-  }
+  const { path: bundledModsPath, jars: bundledJars, jarsSet } = localInfo;
 
   safeSend(event, 'launch-log', { type: 'info', msg: `📦 Verificando ${bundledJars.length} mods desde paquete local...` });
 
@@ -3253,9 +3284,9 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
     const currentFiles = await fs.readdir(targetModsPath);
     for (const file of currentFiles) {
       const lower = file.toLowerCase();
-      if (lower.endsWith('.jar') && !bundledJars.includes(file) && !userClientModsSet.has(lower)) {
+      if (lower.endsWith('.jar') && !jarsSet.has(lower) && !userClientModsSet.has(lower)) {
         await fs.remove(path.join(targetModsPath, file));
-        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod no requerido eliminado: ${file}` });
+        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod local retirado: ${file}` });
       }
     }
   }
@@ -3281,7 +3312,7 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
   }
 
   if (updatedCount > 0) {
-    safeSend(event, 'launch-log', { type: 'info', msg: `✅ Se copiaron ${updatedCount} mods desde el paquete local.` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Se sincronizaron ${updatedCount} mods locales hacia el juego.` });
   }
 }
 
