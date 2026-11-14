@@ -3079,7 +3079,7 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event, localI
     let needsDownload = true;
     if (fs.existsSync(destPath) && isValidJarFile(destPath)) {
       // Si el desarrollador editó el mod localmente en su mods/, syncLocalBundledMods ya lo copió; no sobreescribir con GitHub viejo
-      if (isDevMode && localInfo.jarsSet.has(modLower)) {
+      if (localInfo && localInfo.jarsSet && localInfo.jarsSet.has(modLower)) {
         needsDownload = false;
       } else {
         const stat = await fs.stat(destPath);
