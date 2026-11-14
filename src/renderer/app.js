@@ -1363,7 +1363,7 @@ function drawMinecraftCharacter(canvas, skinImg, view = 'front', showOuter = tru
     ctx.fillStyle = '#F59E0B';
     ctx.fillRect(ox + 4 * scale, oy + 17 * scale, 8 * scale, 2 * scale);
     // Brazos
-    ctx.fillStyle = '#166534';
+    ctx.fillStyle = '#7F1D1D';
     ctx.fillRect(ox + (leftArmX + lArmDX) * scale, oy + (8 + lArmDY) * scale, armW * scale, 9 * scale);
     ctx.fillRect(ox + (rightArmX + rArmDX) * scale, oy + (8 + rArmDY) * scale, armW * scale, 9 * scale);
     ctx.fillStyle = '#D8A074';
