@@ -56,9 +56,9 @@ if (!gotTheLock) {
 // 2. CONFIGURACIÓN PREDETERMINADA Y GESTORES DE MODS/PLUGINS
 // ============================================================================
 const DEFAULT_LOADERS = {
-  neoforge: "21.1.250",
+  neoforge: "",
   forge: "",
-  fabric: "",
+  fabric: "0.20.1",
   quilt: "",
   liteloader: "",
   optifine: "",
@@ -128,7 +128,7 @@ const DEFAULT_CONFIG = {
     description: "Servidor oficial de Web SMP"
   },
   minecraft: {
-    version: "1.21.1",
+    version: "1.21.11",
     loaders: { ...DEFAULT_LOADERS },
     recommendedRamMb: 6144,
     minRamMb: 4096,
@@ -249,7 +249,7 @@ function getActiveLoader(cfg) {
     };
   }
 
-  const mcVer = cfg?.minecraft?.version || '1.21.1';
+  const mcVer = cfg?.minecraft?.version || '1.21.11';
   return {
     type: 'vanilla',
     name: 'Vanilla',
@@ -330,7 +330,7 @@ function loadConfig() {
 // Logging persistente
 function appendLauncherLog(message) {
   try {
-    const logDir = path.join(app.getPath('home'), launcherConfig?.launcher?.gameDataFolder || '.doraland', 'logs');
+    const logDir = path.join(app.getPath('home'), launcherConfig?.launcher?.gameDataFolder || '.websmp', 'logs');
     fs.ensureDirSync(logDir);
     const logFile = path.join(logDir, 'launcher-latest.log');
     const timestamp = new Date().toISOString();
@@ -1087,7 +1087,7 @@ ipcMain.handle('save-settings', (_, settings) => {
 
 ipcMain.handle('open-game-folder', async () => {
   const cfg = loadConfig();
-  const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+  const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.websmp');
   await fs.ensureDir(gameDir);
   await shell.openPath(gameDir);
   return { success: true, path: gameDir };
@@ -1104,7 +1104,7 @@ function isValidPngBuffer(buf) {
 async function applyCustomSkinToGameDir(skinObj, username = 'Player') {
   try {
     const cfg = loadConfig();
-    const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+    const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.websmp');
     await fs.ensureDir(gameDir);
 
     const rpDir = path.join(gameDir, 'resourcepacks', 'WebSMPCustomSkin');
@@ -1816,7 +1816,7 @@ const RECOMMENDED_CLIENT_ADDONS = {
 
 function getGameDir() {
   const cfg = loadConfig();
-  return path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+  return path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.websmp');
 }
 
 function getUserClientModsRegistry(gameDir) {
@@ -1935,18 +1935,23 @@ ipcMain.handle('search-addons-catalog', async (_, { category = 'mod', query = ''
   const curated = RECOMMENDED_CLIENT_ADDONS[cleanCat] || [];
 
   try {
+    const cfg = loadConfig();
+    const currentMcVer = cfg?.minecraft?.version || '1.21.11';
+    const activeLoader = getActiveLoader(cfg);
+    const currentLoaderType = activeLoader?.type || 'fabric';
+
     let facets = [];
     if (cleanCat === 'mod') {
       facets = [
         ['project_type:mod'],
-        ['versions:1.21.1'],
-        ['categories:neoforge'],
+        [`versions:${currentMcVer}`],
+        [`categories:${currentLoaderType}`],
         ['client_side:required', 'client_side:optional']
       ];
     } else if (cleanCat === 'resourcepack') {
       facets = [
         ['project_type:resourcepack'],
-        ['versions:1.21.1']
+        [`versions:${currentMcVer}`]
       ];
     } else if (cleanCat === 'shader') {
       facets = [
@@ -1966,7 +1971,7 @@ ipcMain.handle('search-addons-catalog', async (_, { category = 'mod', query = ''
           projectId: hit.project_id,
           title: hit.title,
           author: hit.author || 'Creador',
-          description: hit.description || 'Complemento visual compatible con Doraland.',
+          description: hit.description || 'Complemento visual compatible con Web SMP.',
           category: cleanCat,
           badge: cleanCat === 'mod' ? 'Complemento' : cleanCat === 'resourcepack' ? 'Resource Pack' : 'Shader',
           iconUrl: hit.icon_url || '',
@@ -2005,12 +2010,17 @@ ipcMain.handle('install-remote-addon', async (_, payload) => {
     const destDir = path.join(gameDir, targetFolder);
     await fs.ensureDir(destDir);
 
+    const cfg = loadConfig();
+    const currentMcVer = cfg?.minecraft?.version || '1.21.11';
+    const activeLoader = getActiveLoader(cfg);
+    const currentLoaderType = activeLoader?.type || 'fabric';
+
     // Consultar versiones compatibles en Modrinth
     let versionUrl = `https://api.modrinth.com/v2/project/${encodeURIComponent(payload.projectId)}/version`;
     if (category === 'mod') {
-      versionUrl += `?loaders=${encodeURIComponent(JSON.stringify(['neoforge', 'forge']))}&game_versions=${encodeURIComponent(JSON.stringify(['1.21.1', '1.21']))}`;
+      versionUrl += `?loaders=${encodeURIComponent(JSON.stringify([currentLoaderType]))}&game_versions=${encodeURIComponent(JSON.stringify([currentMcVer]))}`;
     } else if (category === 'resourcepack') {
-      versionUrl += `?game_versions=${encodeURIComponent(JSON.stringify(['1.21.1', '1.21']))}`;
+      versionUrl += `?game_versions=${encodeURIComponent(JSON.stringify([currentMcVer]))}`;
     }
 
     let versions = await fetchRemoteJson(versionUrl).catch(() => []);
@@ -2020,7 +2030,7 @@ ipcMain.handle('install-remote-addon', async (_, payload) => {
     }
 
     if (!Array.isArray(versions) || versions.length === 0) {
-      return { error: 'No se encontró una versión compatible para Doraland.' };
+      return { error: 'No se encontró una versión compatible para Web SMP.' };
     }
 
     const chosenVersion = versions[0];
@@ -3490,8 +3500,8 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
   isGameRunning = true;
   const cfg = loadConfig();
   const activeLoader = getActiveLoader(cfg);
-  const mcVersion = cfg.minecraft?.version || '1.21.1';
-  const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.doraland');
+  const mcVersion = cfg.minecraft?.version || '1.21.11';
+  const gameDir = path.join(app.getPath('home'), cfg.launcher?.gameDataFolder || '.websmp');
 
   try {
     await fs.ensureDir(gameDir);

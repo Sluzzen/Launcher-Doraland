@@ -6,7 +6,7 @@
    - Estudio de Skins + Selector de Capas (Beneficio exclusivo Premium)
    - Iconografía SVG 100% libre de emojis
    - Monetización con Google Ads (AdSense + Servidor de Anuncios + Fallback Patrocinado)
-   - Auto-actualizador Dual en Primer Plano y Lanzador NeoForge 1.21.1
+   - Auto-actualizador Dual en Primer Plano y Lanzador Fabric 0.20.1 • MC 1.21.11
    ============================================================ */
 
 // Marca de agua interna de autoría (Desarrollado por SLuzzen)
