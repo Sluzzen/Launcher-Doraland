@@ -116,9 +116,14 @@ async function init() {
   await refreshSkinRenderer();
 
   const avatarImg = document.getElementById('userAvatar');
+  const avatarCanvas = document.getElementById('sidebarAvatarCanvas');
+  if (avatarCanvas) {
+    avatarCanvas.style.display = 'block';
+    drawMinecraftHeadAvatar(avatarCanvas, null, true);
+  }
   if (avatarImg) {
     avatarImg.addEventListener('error', () => {
-      avatarImg.src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%2322C55E'/></svg>";
+      avatarImg.src = "../../assets/default-avatar.png";
     });
   }
 
@@ -396,6 +401,9 @@ function updateUserCard(session) {
   const typeEl = document.getElementById('userType');
   const logoutBtn = document.getElementById('btnLogout');
 
+  const avatarCanvas = document.getElementById('sidebarAvatarCanvas');
+  const avatarImg = document.getElementById('userAvatar');
+
   if (!session) {
     if (nameEl) nameEl.textContent = 'Sin sesión';
     if (typeEl) {
@@ -403,6 +411,13 @@ function updateUserCard(session) {
       typeEl.style.color = 'var(--text-muted)';
     }
     if (logoutBtn) logoutBtn.style.display = 'none';
+    if (avatarCanvas) {
+      avatarCanvas.style.display = 'block';
+      drawMinecraftHeadAvatar(avatarCanvas, null, true);
+    }
+    if (avatarImg) {
+      avatarImg.style.display = 'none';
+    }
     return;
   }
 
@@ -1242,16 +1257,21 @@ function drawMinecraftHeadAvatar(canvas, skinImg, showOuter = true) {
       ctx.drawImage(skinImg, 40, 8, 8, 8, 0, 0, canvas.width, canvas.height);
     }
   } else {
-    // Avatar pixelado estilo Doraland cuando está offline
-    ctx.fillStyle = '#15803D';
+    // Avatar pixelado estilo Web SMP cuando está offline o sin sesión
+    ctx.fillStyle = '#1A0A0D';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#D29B6E';
     ctx.fillRect(4, 6, 30, 28);
-    ctx.fillStyle = '#4A2E1B';
+    ctx.fillStyle = '#3A1E14';
     ctx.fillRect(4, 4, 30, 9);
-    ctx.fillStyle = '#22C55E';
-    ctx.fillRect(9, 17, 6, 5);
-    ctx.fillRect(23, 17, 6, 5);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(8, 17, 3, 5);
+    ctx.fillRect(23, 17, 3, 5);
+    ctx.fillStyle = '#EF4444';
+    ctx.fillRect(11, 17, 4, 5);
+    ctx.fillRect(26, 17, 4, 5);
+    ctx.fillStyle = '#78351B';
+    ctx.fillRect(14, 26, 10, 4);
   }
 }
 
