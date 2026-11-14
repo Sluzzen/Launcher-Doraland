@@ -60,7 +60,10 @@
   "mods": {
     "enabled": true,
     "source": "auto",
-    "remoteManifestUrl": "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods-manifest.json",
+    "githubOwner": "Sluzzen",
+    "githubRepo": "mods-launcher",
+    "branch": "main",
+    "remoteManifestUrl": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/main/mods-manifest.json",
     "cleanOldMods": true,
     "syncOverrides": true,
     "list": []
@@ -95,7 +98,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.7",
+    "version": "1.0.8",
     "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,

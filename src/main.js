@@ -151,7 +151,10 @@ const DEFAULT_CONFIG = {
   mods: {
     enabled: true,
     source: "auto",
-    remoteManifestUrl: "https://raw.githubusercontent.com/Sluzzen/Launcher-Doraland/main/mods-manifest.json",
+    githubOwner: "Sluzzen",
+    githubRepo: "mods-launcher",
+    branch: "main",
+    remoteManifestUrl: "https://raw.githubusercontent.com/Sluzzen/mods-launcher/main/mods-manifest.json",
     cleanOldMods: true,
     syncOverrides: true
   },
@@ -2398,9 +2401,10 @@ ipcMain.handle('repair-installation', async (event) => {
     }
 
     // 4. Re-sincronizar configuraciones e interfaz base y paquete oficial
-    await syncOverridesProtected(gameDir, cfg, event);
+    const serverManifest = await fetchServerManifest(cfg, event);
+    await syncOverridesProtected(gameDir, cfg, event, serverManifest);
     if (cfg.mods?.enabled) {
-      await syncModsProtected(gameDir, cfg, event);
+      await syncModsProtected(gameDir, cfg, event, serverManifest);
     }
 
     // 5. Garantizar que sus controles y ajustes personales de options.txt sigan intactos
@@ -2821,10 +2825,104 @@ async function ensureUserOptionsMerged(gameDir, personalMap) {
   } catch {}
 }
 
-async function syncOverridesProtected(gameDir, cfg, event) {
+// ============================================================================
+// 10. CONFIGURACIÓN Y SINCRONIZACIÓN MULTISERVIDOR (MODS, CONFIGS Y ARCHIVOS EXTRAS)
+// ============================================================================
+
+function getModsPackageInfo(cfg) {
+  const modsCfg = cfg?.mods || {};
+  const owner = modsCfg.githubOwner || 'Sluzzen';
+  const repo = modsCfg.githubRepo || 'mods-launcher';
+  let branch = (modsCfg.branch || '').trim();
+  if (!branch) {
+    const sName = (cfg?.server?.name || '').trim().toLowerCase();
+    branch = (sName === 'doraland' || !sName) ? 'main' : (cfg?.server?.name || 'main').trim();
+  }
+  const baseUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${encodeURIComponent(branch)}`;
+  const manifestUrl = (modsCfg.remoteManifestUrl && !modsCfg.remoteManifestUrl.includes('Launcher-Doraland'))
+    ? modsCfg.remoteManifestUrl
+    : `${baseUrl}/mods-manifest.json`;
+
+  return { owner, repo, branch, baseUrl, manifestUrl };
+}
+
+let cachedServerManifest = null;
+let lastManifestFetchTime = 0;
+
+function loadFallbackLocalManifest() {
+  const candidates = [
+    path.join(__dirname, '..', 'mods-manifest.json')
+  ];
+  if (app.isPackaged) {
+    candidates.unshift(path.join(process.resourcesPath, 'mods-manifest.json'));
+    candidates.unshift(path.join(path.dirname(app.getPath('exe')), 'mods-manifest.json'));
+  }
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      try {
+        return fs.readJsonSync(p);
+      } catch {}
+    }
+  }
+  return null;
+}
+
+async function fetchServerManifest(cfg, event) {
+  const pkgInfo = getModsPackageInfo(cfg);
+  if (cfg.mods?.source === 'bundled') {
+    return loadFallbackLocalManifest();
+  }
+  const now = Date.now();
+  if (cachedServerManifest && (now - lastManifestFetchTime < 15000)) {
+    return cachedServerManifest;
+  }
+  let manifest = null;
+  if (pkgInfo.manifestUrl) {
+    try {
+      safeSend(event, 'launch-log', {
+        type: 'info',
+        msg: `🌐 Verificando repositorio de mods (${pkgInfo.owner}/${pkgInfo.repo} • Rama: ${pkgInfo.branch})...`
+      });
+      manifest = await fetchRemoteJson(pkgInfo.manifestUrl);
+      if (manifest && Array.isArray(manifest.mods)) {
+        cachedServerManifest = manifest;
+        lastManifestFetchTime = now;
+        try {
+          const localManifestPath = path.join(__dirname, '..', 'mods-manifest.json');
+          await fs.writeJson(localManifestPath, manifest, { spaces: 2 });
+        } catch {}
+        return manifest;
+      }
+    } catch (err) {
+      safeSend(event, 'launch-log', {
+        type: 'warn',
+        msg: `⚠️ Servidor remoto ocupado o rama no encontrada (${err.message}). Usando manifiesto integrado de respaldo.`
+      });
+    }
+  }
+  return loadFallbackLocalManifest();
+}
+
+async function syncOverridesProtected(gameDir, cfg, event, preloadedManifest = null) {
   const userOptBackup = await backupAndProtectUserOptions(gameDir);
   if (cfg.mods?.syncOverrides === false) return;
 
+  const pkgInfo = getModsPackageInfo(cfg);
+  const serverTitle = cfg.server?.name || 'Servidor';
+
+  // Archivos de preferencias personales que NUNCA deben sobrescribirse
+  const userProtectedRelPaths = new Set([
+    'options.txt',
+    'optionsof.txt',
+    'servers.dat',
+    path.normalize('config/sodium-options.json'),
+    path.normalize('config/iris.properties'),
+    path.normalize('config/ImmediatelyFast.json')
+  ]);
+
+  let syncedFiles = 0;
+
+  // 1. Sincronizar overrides locales si existen en la distribución empaquetada
   const candidates = [];
   if (app.isPackaged) {
     if (process.env.PORTABLE_EXECUTABLE_DIR) {
@@ -2837,103 +2935,124 @@ async function syncOverridesProtected(gameDir, cfg, event) {
   candidates.push(path.join(__dirname, '..', 'overrides'));
 
   const bundledOverridesPath = candidates.find(p => fs.existsSync(p));
-  if (!bundledOverridesPath) {
-    return;
-  }
+  if (bundledOverridesPath) {
+    safeSend(event, 'launch-log', { type: 'info', msg: `🎨 Sincronizando configuraciones locales, menús, emotes y shaders...` });
 
-  safeSend(event, 'launch-log', { type: 'info', msg: '🎨 Sincronizando configuraciones, menú Doraland, emotes y shaders...' });
+    async function copyDirSelective(srcDir, destDir, relBase = '') {
+      await fs.ensureDir(destDir);
+      const entries = await fs.readdir(srcDir, { withFileTypes: true });
 
-  // Archivos de preferencias personales que no deben sobrescribirse si el jugador ya los modificó
-  const userProtectedRelPaths = new Set([
-    'options.txt',
-    'optionsof.txt',
-    'servers.dat',
-    path.normalize('config/sodium-options.json'),
-    path.normalize('config/iris.properties'),
-    path.normalize('config/ImmediatelyFast.json')
-  ]);
+      for (const entry of entries) {
+        const srcFull = path.join(srcDir, entry.name);
+        const destFull = path.join(destDir, entry.name);
+        const relPath = path.normalize(relBase ? path.join(relBase, entry.name) : entry.name);
 
-  let syncedFiles = 0;
+        if (entry.isDirectory()) {
+          await copyDirSelective(srcFull, destFull, relPath);
+        } else if (entry.isFile()) {
+          const exists = fs.existsSync(destFull);
+          if (exists && userProtectedRelPaths.has(relPath)) {
+            continue;
+          }
 
-  async function copyDirSelective(srcDir, destDir, relBase = '') {
-    await fs.ensureDir(destDir);
-    const entries = await fs.readdir(srcDir, { withFileTypes: true });
+          let shouldCopy = !exists;
+          if (exists) {
+            try {
+              const sStat = await fs.stat(srcFull);
+              const dStat = await fs.stat(destFull);
+              // Actualizar siempre los recursos visuales del menú si cambiaron de tamaño
+              if (relPath.startsWith(path.normalize('config/fancymenu')) || relPath.startsWith(path.normalize('config/drippyloadingscreen'))) {
+                shouldCopy = sStat.size !== dStat.size;
+              }
+            } catch {}
+          }
 
-    for (const entry of entries) {
-      const srcFull = path.join(srcDir, entry.name);
-      const destFull = path.join(destDir, entry.name);
-      const relPath = path.normalize(relBase ? path.join(relBase, entry.name) : entry.name);
-
-      if (entry.isDirectory()) {
-        await copyDirSelective(srcFull, destFull, relPath);
-      } else if (entry.isFile()) {
-        const exists = fs.existsSync(destFull);
-        if (exists && userProtectedRelPaths.has(relPath)) {
-          continue;
-        }
-
-        let shouldCopy = !exists;
-        if (exists) {
-          try {
-            const sStat = await fs.stat(srcFull);
-            const dStat = await fs.stat(destFull);
-            // Actualizar siempre los recursos de FancyMenu / DrippyLoadingScreen si cambiaron de tamaño
-            if (relPath.startsWith(path.normalize('config/fancymenu')) || relPath.startsWith(path.normalize('config/drippyloadingscreen'))) {
-              shouldCopy = sStat.size !== dStat.size;
-            }
-          } catch {}
-        }
-
-        if (shouldCopy) {
-          await fs.copy(srcFull, destFull, { overwrite: true });
-          syncedFiles++;
+          if (shouldCopy) {
+            await fs.copy(srcFull, destFull, { overwrite: true });
+            syncedFiles++;
+          }
         }
       }
+    }
+
+    try {
+      await copyDirSelective(bundledOverridesPath, gameDir);
+    } catch (err) {
+      safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Aviso sincronizando overrides locales: ${err.message}` });
+    }
+  }
+
+  // 2. Sincronizar configs y archivos extras remotos desde la rama del servidor en GitHub (manifest.overrides)
+  const manifest = preloadedManifest || await fetchServerManifest(cfg, event);
+  if (manifest && Array.isArray(manifest.overrides) && manifest.overrides.length > 0 && cfg.mods?.source !== 'bundled') {
+    const pendingOverrides = [];
+    for (const item of manifest.overrides) {
+      const relNorm = path.normalize(item.path);
+      if (userProtectedRelPaths.has(relNorm)) continue;
+
+      const destPath = path.join(gameDir, relNorm);
+      let needsDownload = true;
+      if (fs.existsSync(destPath)) {
+        try {
+          const stat = await fs.stat(destPath);
+          if (item.size && stat.size === item.size) {
+            needsDownload = false;
+          }
+        } catch {}
+      }
+      if (needsDownload) {
+        pendingOverrides.push({ ...item, destPath });
+      }
+    }
+
+    if (pendingOverrides.length > 0) {
+      safeSend(event, 'launch-log', {
+        type: 'info',
+        msg: `🎨 Descargando ${pendingOverrides.length} archivos de configuración/recursos de la rama ${pkgInfo.branch}...`
+      });
+
+      let ovIdx = 0;
+      const ovConcurrency = 6;
+      async function ovWorker() {
+        while (ovIdx < pendingOverrides.length) {
+          const item = pendingOverrides[ovIdx++];
+          let fileUrl = item.url;
+          if (!fileUrl || !fileUrl.startsWith('http')) {
+            fileUrl = `${pkgInfo.baseUrl}/overrides/${item.path.split('/').map(encodeURIComponent).join('/')}`;
+          }
+          try {
+            await fs.ensureDir(path.dirname(item.destPath));
+            await downloadFile(fileUrl, item.destPath);
+            syncedFiles++;
+          } catch {}
+        }
+      }
+      const workers = Array.from({ length: Math.min(ovConcurrency, pendingOverrides.length) }, () => ovWorker());
+      await Promise.all(workers);
     }
   }
 
   try {
-    await copyDirSelective(bundledOverridesPath, gameDir);
     await ensureUserOptionsMerged(gameDir, userOptBackup);
     if (syncedFiles > 0) {
-      safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Se aplicaron ${syncedFiles} archivos de configuración/interfaz de Doraland.` });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Se sincronizaron ${syncedFiles} archivos de configuración/interfaz (${serverTitle}).` });
     } else {
-      safeSend(event, 'launch-log', { type: 'info', msg: '✔️ Configuraciones e interfaz de Doraland al día.' });
+      safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Configuraciones e interfaz de ${serverTitle} al día.` });
     }
   } catch (err) {
-    safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Aviso sincronizando overrides: ${err.message}` });
+    safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Aviso protegiendo opciones: ${err.message}` });
   }
 }
 
-// ============================================================================
-// 10. SINCRONIZACIÓN DE MODS HÍBRIDA (LOCAL + REMOTA EN GITHUB)
-// ============================================================================
-async function syncModsProtected(gameDir, cfg, event) {
+async function syncModsProtected(gameDir, cfg, event, preloadedManifest = null) {
   const targetModsPath = path.join(gameDir, 'mods');
   await fs.ensureDir(targetModsPath);
 
   // 1. Si existe carpeta mods/ local junto al launcher, copiar primero desde disco (instantáneo)
   await syncLocalBundledMods(targetModsPath, cfg, event, false);
 
-  // 2. Sincronizar contra el manifiesto remoto (o el manifiesto empaquetado de respaldo)
-  let manifest = null;
-  if (cfg.mods?.remoteManifestUrl && cfg.mods?.source !== 'bundled') {
-    try {
-      safeSend(event, 'launch-log', { type: 'info', msg: '🌐 Verificando lista oficial de archivos del servidor...' });
-      manifest = await fetchRemoteJson(cfg.mods.remoteManifestUrl);
-    } catch (err) {
-      safeSend(event, 'launch-log', { type: 'warn', msg: `⚠️ Servidor remoto ocupado (${err.message}). Usando manifiesto integrado.` });
-    }
-  }
-
-  if (!manifest) {
-    const localManifestPath = path.join(__dirname, '..', 'mods-manifest.json');
-    if (fs.existsSync(localManifestPath)) {
-      try {
-        manifest = await fs.readJson(localManifestPath);
-      } catch {}
-    }
-  }
+  // 2. Obtener manifiesto del servidor (remoto o local integrado)
+  const manifest = preloadedManifest || await fetchServerManifest(cfg, event);
 
   if (manifest && Array.isArray(manifest.mods) && manifest.mods.length > 0) {
     if (manifest.server?.ip) cfg.server.ip = manifest.server.ip;
@@ -2948,6 +3067,8 @@ async function syncModsProtected(gameDir, cfg, event) {
 async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   const gameDir = path.dirname(targetModsPath);
   const userClientModsSet = getUserClientModsSet(gameDir);
+  const pkgInfo = getModsPackageInfo(cfg);
+  const serverTitle = cfg.server?.name || 'Servidor';
   const remoteNames = remoteMods.map(m => m.name.toLowerCase());
 
   // Registrar automáticamente en el Changelog qué mods se agregaron, actualizaron o retiraron respecto a la última sincronización
@@ -3019,11 +3140,17 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   }
 
   if (pendingMods.length === 0) {
-    safeSend(event, 'launch-log', { type: 'info', msg: `✔️ Paquete oficial de Doraland al día (${remoteMods.length} archivos verificados).` });
+    safeSend(event, 'launch-log', {
+      type: 'info',
+      msg: `✔️ Paquete oficial de ${serverTitle} al día (${remoteMods.length} archivos verificados en rama "${pkgInfo.branch}").`
+    });
     return;
   }
 
-  safeSend(event, 'launch-log', { type: 'info', msg: `⬇️ Descargando ${pendingMods.length} archivos pendientes del paquete oficial...` });
+  safeSend(event, 'launch-log', {
+    type: 'info',
+    msg: `⬇️ Descargando ${pendingMods.length} archivos pendientes desde ${pkgInfo.owner}/${pkgInfo.repo} (rama: ${pkgInfo.branch})...`
+  });
 
   let updatedCount = 0;
   let completedTasks = 0;
@@ -3057,9 +3184,8 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
       const destPath = path.join(targetModsPath, mod.name);
 
       let modUrl = mod.url;
-      if (!modUrl && cfg.mods.remoteManifestUrl) {
-        const baseUrl = cfg.mods.remoteManifestUrl.substring(0, cfg.mods.remoteManifestUrl.lastIndexOf('/'));
-        modUrl = `${baseUrl}/mods/${encodeURIComponent(mod.name)}`;
+      if (!modUrl || modUrl.includes('Launcher-Doraland/main/mods/') || (!modUrl.startsWith('http://') && !modUrl.startsWith('https://'))) {
+        modUrl = `${pkgInfo.baseUrl}/mods/${encodeURIComponent(mod.name)}`;
       }
 
       try {
@@ -3078,7 +3204,7 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
           warned404 = true;
           safeSend(event, 'launch-log', {
             type: 'error',
-            msg: '❌ Error HTTP 404 en GitHub: El repositorio Sluzzen/Launcher-Doraland no está accesible públicamente para descargar el paquete.'
+            msg: `❌ Error HTTP 404 en GitHub: No se encontró el archivo en https://github.com/${pkgInfo.owner}/${pkgInfo.repo}/tree/${pkgInfo.branch}. Asegúrate de que la rama y archivos existan en el repositorio.`
           });
         } else {
           safeSend(event, 'launch-log', { type: 'error', msg: `❌ Error descargando ${mod.name}: ${dlErr.message}` });
@@ -3091,7 +3217,7 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event) {
   await Promise.all(workers);
 
   if (updatedCount > 0) {
-    safeSend(event, 'launch-log', { type: 'info', msg: `🎉 Se descargaron/actualizaron ${updatedCount} mods automáticamente.` });
+    safeSend(event, 'launch-log', { type: 'info', msg: `🎉 Se descargaron/actualizaron ${updatedCount} mods automáticamente desde la rama "${pkgInfo.branch}".` });
   }
 }
 
@@ -3453,19 +3579,22 @@ ipcMain.handle('launch-game', async (event, { session, ram }) => {
 
     safeSend(event, 'launch-log', { type: 'info', msg: `☕ Java 21 válido detectado: ${javaCheck.path}` });
 
-    // 1. Sincronizar overrides del modpack (config/, defaultconfigs/, shaderpacks/, FancyMenu)
-    await syncOverridesProtected(gameDir, cfg, event);
+    // 1. Obtener manifiesto del servidor (mods-launcher / rama del servidor)
+    const serverManifest = await fetchServerManifest(cfg, event);
 
-    // 1.1 Aplicar skin personalizada si el jugador No Premium (o usuario) subió una skin
+    // 1.1 Sincronizar overrides del modpack (config/, defaultconfigs/, shaderpacks/, FancyMenu)
+    await syncOverridesProtected(gameDir, cfg, event, serverManifest);
+
+    // 1.2 Aplicar skin personalizada si el jugador No Premium (o usuario) subió una skin
     const savedSkin = getStore().get('customSkin', null);
     if (savedSkin && savedSkin.dataUrl) {
       await applyCustomSkinToGameDir(savedSkin, session.name);
       safeSend(event, 'launch-log', { type: 'info', msg: `🎨 Skin personalizada aplicada para ${session.name} (${savedSkin.name || 'PNG'}).` });
     }
 
-    // 2. Sincronizar mods (remoto o local según config)
+    // 2. Sincronizar mods (remoto desde rama oficial o local según config)
     if (cfg.mods?.enabled) {
-      await syncModsProtected(gameDir, cfg, event);
+      await syncModsProtected(gameDir, cfg, event, serverManifest);
     }
 
     // 3. Asegurar instalación del gestor activo (actualmente NeoForge 21.1.250)

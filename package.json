@@ -1,6 +1,6 @@
 {
   "name": "doraland-launcher",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Launcher oficial del servidor Doraland",
   "main": "src/main.js",
   "scripts": {
