@@ -76,7 +76,7 @@
   "ui": {
     "discordUrl": "https://discord.gg/VNfThdAcBX",
     "discordClientId": "",
-    "websiteUrl": "https://sluzzen.github.io/",
+    "websiteUrl": "",
     "youtubeUrl": "",
     "backgroundVideoUrl": ""
   },
@@ -91,7 +91,7 @@
     "adServerUrl": "https://sluzzen.github.io/ads.html",
     "fallbackPromo": {
       "badge": "PATROCINADO",
-      "title": "Comunidad Oficial Web SMP • Eventos y Rangos",
+      "title": "Comunidad Oficial Web SMP • ",
       "subtitle": "Únete a nuestro Discord oficial para novedades y eventos del servidor.",
       "ctaText": "Unirse al Discord",
       "ctaUrl": "https://discord.gg/VNfThdAcBX"

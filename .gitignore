@@ -7,4 +7,8 @@ node_modules/
 /*.zip
 !assets/logo.png
 !overrides/shaderpacks/*.zip
+!overrides/resourcepacks/*.zip
+temp/
+mods/Flashback*
+mods/watermedia_binaries*
 

@@ -1,0 +1,59 @@
+# ActorSystem - configuracion
+# Edita este archivo y usa /actor reload (no hace falta recompilar ni reiniciar).
+# Los cambios afectan a los mensajes que se creen despues del reload.
+
+# ---------------- DURACION ----------------
+# Duracion minima TOTAL de un mensaje (incluye fade in y fade out), en segundos.
+duration.min_seconds=7.0
+# Duracion maxima TOTAL para la duracion dinamica, en segundos.
+# (Una duracion manual indicada en el comando NO esta limitada por este valor.)
+duration.max_seconds=60.0
+# Activa el tiempo adicional segun la longitud del texto.
+duration.dynamic_enabled=true
+# Velocidad de lectura estimada (palabras por minuto, recomendado 180-200).
+duration.words_per_minute=200.0
+# Duracion del fade in y fade out en milisegundos.
+fade.in_ms=300
+fade.out_ms=800
+
+# ---------------- AUDIENCIA ----------------
+# Quien ve el mensaje asociado a un jugador:
+#   ALL    = todos los jugadores conectados (dialogo visible para todos)
+#   TARGET = solo el jugador indicado en el comando
+#   NEARBY = el jugador indicado y los que esten en su misma dimension dentro del radio
+audience=ALL
+# Radio (bloques) para audience=NEARBY.
+audience.nearby_radius=64.0
+
+# ---------------- LIMITES ----------------
+limits.max_title_length=48
+limits.max_text_length=500
+
+# ---------------- COLOR ----------------
+# Color usado cuando en el comando se escribe 'default' o '-' como color. HEX (#RRGGBB) o R,G,B.
+color.default=#E5B94F
+
+# ---------------- HUD ----------------
+# Todas las posiciones son fracciones de la pantalla GUI (0.0 - 1.0), asi se adaptan a cualquier resolucion.
+# Posicion horizontal del borde derecho del bloque (donde esta la barra lateral).
+hud.anchor_x=0.985
+# Posicion vertical del centro del bloque (0.5 = centro de la pantalla).
+hud.anchor_y=0.57
+# Ancho maximo del bloque (fraccion del ancho de pantalla). El texto largo se ajusta a este ancho.
+hud.width=0.37
+# Separacion entre titulo y contenido (pixeles GUI).
+hud.title_gap=5
+# Separacion entre el contenido (zona de texto) y la barra lateral (pixeles GUI).
+hud.bar_gap=6
+# Grosor de la barra lateral (pixeles GUI).
+hud.bar_thickness=1
+# Margen vertical de la barra por encima y por debajo del texto (pixeles GUI).
+hud.bar_padding=6
+# Tamano del titulo respecto al contenido (1.0 = igual).
+hud.title_scale=1.2
+# Linea fina bajo el titulo (aparece en la imagen de referencia). false para ocultarla.
+hud.title_separator=true
+# true = el bloque se estrecha al ancho del texto (la barra queda pegada al texto).
+hud.shrink_to_content=false
+# Separacion vertical entre mensajes simultaneos (pixeles GUI).
+hud.block_spacing=8

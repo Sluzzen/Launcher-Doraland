@@ -1,0 +1,122 @@
+# ActorSystem - configuracion
+# Edita este archivo y usa /actor reload (no hace falta recompilar ni reiniciar).
+# Los cambios afectan a los mensajes que se creen despues del reload.
+# No borres config_version: si una version nueva cambia los valores por defecto, este archivo se respalda (.bak) y se regenera.
+config_version=5
+
+# ---------------- DURACION ----------------
+# Duracion minima TOTAL de un mensaje (incluye fade in y fade out), en segundos.
+duration.min_seconds=7.0
+# Duracion maxima TOTAL para la duracion dinamica, en segundos.
+# (Una duracion manual indicada en el comando NO esta limitada por este valor.)
+duration.max_seconds=60.0
+# Activa el tiempo adicional segun la longitud del texto.
+duration.dynamic_enabled=true
+# Velocidad de lectura estimada (palabras por minuto, recomendado 180-200).
+duration.words_per_minute=200.0
+# Duracion del fade in y fade out en milisegundos.
+fade.in_ms=300
+fade.out_ms=800
+
+# ---------------- AUDIENCIA ----------------
+# Quien ve el mensaje lo decide el selector del comando (/actor @a ..., /actor @a[distance=..20] ..., /actor Sirius ...).
+# audience.extend añade jugadores ademas de los seleccionados:
+#   NONE   = solo los jugadores seleccionados en el comando (recomendado)
+#   ALL    = ademas, todos los jugadores conectados
+#   NEARBY = ademas, los que esten en la misma dimension dentro del radio de cada jugador seleccionado
+audience.extend=NONE
+# Radio (bloques) para audience.extend=NEARBY.
+audience.nearby_radius=64.0
+
+# ---------------- LIMITES ----------------
+limits.max_title_length=48
+limits.max_text_length=500
+
+# ---------------- COLOR ----------------
+# Color usado cuando en el comando se escribe 'default' o '-' como color. HEX (#RRGGBB) o R,G,B.
+color.default=#E5B94F
+
+# ---------------- HUD ----------------
+# Todas las posiciones son fracciones de la pantalla GUI (0.0 - 1.0), asi se adaptan a cualquier resolucion.
+# Posicion horizontal del borde derecho del bloque (donde esta la barra lateral).
+hud.anchor_x=0.985
+# Posicion vertical del centro del bloque (0.5 = centro de la pantalla).
+hud.anchor_y=0.45
+# Ancho maximo del bloque (fraccion del ancho de pantalla). El texto largo se ajusta a este ancho.
+hud.width=0.34
+# Separacion entre titulo y contenido (pixeles GUI).
+hud.title_gap=4
+# Separacion entre el contenido (zona de texto) y la barra lateral (pixeles GUI).
+hud.bar_gap=5
+# Grosor de la barra lateral (pixeles GUI).
+hud.bar_thickness=1
+# Margen vertical de la barra por encima y por debajo del texto (pixeles GUI).
+hud.bar_padding=5
+# Tamano del titulo respecto al contenido (1.0 = igual).
+hud.title_scale=1.15
+# Linea fina bajo el titulo (aparece en la imagen de referencia). false para ocultarla.
+hud.title_separator=true
+# true = el bloque se estrecha al ancho del texto (la barra queda pegada al texto).
+hud.shrink_to_content=false
+# Separacion vertical entre mensajes simultaneos (pixeles GUI).
+hud.block_spacing=8
+# Escala GLOBAL del bloque (1.0 = tamano normal, menor = mas pequeno y compacto).
+hud.scale=0.85
+# Degradado oscuro de fondo: transparente a la IZQUIERDA y cada vez mas oscuro hacia la DERECHA (junto a la barra).
+# Este valor es la opacidad en el borde derecho (1.0 = negro total). 0 = sin degradado.
+hud.background_alpha=0.9
+# Cuanto sobresale el degradado a la izquierda del texto (pixeles GUI).
+hud.background_padding=10
+
+# ---------------- SONIDOS ----------------
+# El perfil se elige en cada /actor (no se guarda por jugador). 'silent' no suena.
+# El texto se escribe letra por letra (estilo Undertale) y cada sonido suena justo cuando aparece su letra.
+# Hay pausas en espacios y puntuacion.
+# ids               = sonidos de Minecraft separados por comas (se elige uno al azar en cada pulso).
+# letter_ms         = tiempo que tarda en aparecer cada letra (menor = se escribe mas rapido).
+# letters_per_sound = cuantas letras seguidas de una palabra comparten un sonido (1 = un sonido por letra;
+#                     usa 3-6 para sonidos largos como aldeano o Enderman).
+# jitter_ms         = variacion aleatoria extra entre sonidos (0..jitter).
+# pitch_min / pitch_max = rango aleatorio de tono (0.5 - 2.0); volume = 0.0 - 1.0.
+# Si el texto es largo para el tiempo del mensaje, la escritura se acelera para terminar a tiempo.
+# Todo sonido se corta al empezar el Fade Out.
+sound.default.ids=minecraft:block.note_block.bit
+sound.default.letter_ms=35
+sound.default.letters_per_sound=1
+sound.default.jitter_ms=4
+sound.default.pitch_min=0.8
+sound.default.pitch_max=1.4
+sound.default.volume=0.35
+
+sound.villager.ids=minecraft:entity.villager.ambient,minecraft:entity.villager.yes,minecraft:entity.villager.trade
+sound.villager.letter_ms=40
+sound.villager.letters_per_sound=4
+sound.villager.jitter_ms=10
+sound.villager.pitch_min=0.9
+sound.villager.pitch_max=1.2
+sound.villager.volume=0.6
+
+sound.enderman.ids=minecraft:entity.enderman.ambient,minecraft:entity.enderman.stare
+sound.enderman.letter_ms=45
+sound.enderman.letters_per_sound=6
+sound.enderman.jitter_ms=12
+sound.enderman.pitch_min=0.8
+sound.enderman.pitch_max=1.1
+sound.enderman.volume=0.5
+
+sound.allay.ids=minecraft:entity.allay.ambient_without_item,minecraft:entity.allay.ambient_with_item
+sound.allay.letter_ms=40
+sound.allay.letters_per_sound=3
+sound.allay.jitter_ms=8
+sound.allay.pitch_min=1.0
+sound.allay.pitch_max=1.5
+sound.allay.volume=0.6
+
+sound.ui_click.ids=minecraft:ui.button.click
+sound.ui_click.letter_ms=38
+sound.ui_click.letters_per_sound=1
+sound.ui_click.jitter_ms=4
+sound.ui_click.pitch_min=0.9
+sound.ui_click.pitch_max=1.3
+sound.ui_click.volume=0.5
+

@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "enablePatchIrisUniforms": true,
+  "irisUniforms": {
+    "water": true,
+    "lava": true,
+    "powderSnow": true,
+    "blindness": true,
+    "darkness": true
+  },
+  "global": {
+    "terrain": "DISABLED",
+    "atmospheric": "DISABLED",
+    "water": "ENABLED",
+    "lava": "ENABLED",
+    "powderSnow": "ENABLED",
+    "blindness": "ENABLED",
+    "darkness": "ENABLED"
+  },
+  "dimensions": {}
+}

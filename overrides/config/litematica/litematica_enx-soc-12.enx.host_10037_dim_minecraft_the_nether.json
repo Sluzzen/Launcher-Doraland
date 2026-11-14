@@ -1,0 +1,88 @@
+{
+  "selections": {
+    "mode": "SIMPLE"
+  },
+  "placements": {
+    "placements": [
+      {
+        "schematic": "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\schematics\\32083.schem",
+        "name": "32083 (Converted Sponge)",
+        "origin": [
+          533,
+          23,
+          -896
+        ],
+        "rotation": "NONE",
+        "mirror": "NONE",
+        "ignore_entities": false,
+        "enabled": true,
+        "enable_render": true,
+        "render_enclosing_box": false,
+        "locked": false,
+        "locked_coords": 0,
+        "bb_color": 16757504,
+        "verifier_type": "all",
+        "hash_code": "cc483e1c-ec7c-484b-a339-c41d01f19b23",
+        "placements": [
+          {
+            "name": "32083 (Converted Sponge)",
+            "placement": {
+              "pos": [
+                0,
+                0,
+                0
+              ],
+              "name": "32083 (Converted Sponge)",
+              "rotation": "NONE",
+              "mirror": "NONE",
+              "locked_coords": 0,
+              "enabled": false,
+              "rendering_enabled": true,
+              "ignore_entities": false
+            }
+          }
+        ]
+      }
+    ],
+    "selected": 0,
+    "origin_selected": true
+  },
+  "schematic_projects_manager": {},
+  "operation_mode": "MOVE",
+  "render_range": {
+    "mode": "all",
+    "axis": "y",
+    "layer_single": 0,
+    "layer_above": 0,
+    "layer_below": 0,
+    "layer_range_min": 0,
+    "layer_range_max": 0,
+    "hotkey_range_min": false,
+    "hotkey_range_max": false
+  },
+  "area_simple": {
+    "name": "Unnamed",
+    "current": "Unnamed",
+    "boxes": [
+      {
+        "pos1": [
+          697,
+          20,
+          -288
+        ],
+        "pos2": [
+          697,
+          20,
+          -289
+        ],
+        "name": "Unnamed"
+      }
+    ]
+  },
+  "tool_mode_data": {
+    "delete": {
+      "use_placement": false
+    }
+  },
+  "block_entities": {}
+}

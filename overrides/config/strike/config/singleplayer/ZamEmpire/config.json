@@ -1,0 +1,12 @@
+{
+  "rodActivation": "UNSTABLE",
+  "deathSound": true,
+  "proximityMessages": false,
+  "proximityRange": 50,
+  "pearlDisappear": false,
+  "totemStasis": true,
+  "orbitalOwnership": false,
+  "performanceMode": false,
+  "deathKick": false,
+  "immortals": {}
+}

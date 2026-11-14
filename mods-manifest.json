@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-11-14T02:35:15.935Z",
+  "generatedAt": "2026-11-14T03:29:28.694Z",
   "server": {
     "name": "Web SMP",
     "ip": "enx-soc-12.enx.host",
@@ -13,11 +13,11 @@
     "rawBaseUrl": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP"
   },
   "minecraft": {
-    "version": "1.21.1",
+    "version": "1.21.11",
     "loaders": {
-      "neoforge": "21.1.250",
+      "neoforge": "",
       "forge": "",
-      "fabric": "",
+      "fabric": "0.20.1",
       "quilt": "",
       "liteloader": "",
       "optifine": "",
@@ -46,1433 +46,441 @@
       "vanilla": ""
     }
   },
-  "modsCount": 149,
-  "overridesCount": 1845,
+  "modsCount": 67,
+  "overridesCount": 1779,
   "mods": [
     {
-      "name": "additional_lights-neoforge-1.21-2.1.10.jar",
-      "size": 514194,
-      "sha1": "8dc485146437e8ac40dd29e10747601fd4e372ca",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/additional_lights-neoforge-1.21-2.1.10.jar"
+      "name": "actorsystem-1.3.0.jar",
+      "size": 62789,
+      "sha1": "c6fcf51851b6caff46855be03a04e2b9913a7993",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/actorsystem-1.3.0.jar"
     },
     {
-      "name": "alexscaves-2.0.10.jar",
-      "size": 74900204,
-      "sha1": "366ddaac40f14cd0102f026b4d999753fc1db2a4",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/alexscaves-2.0.10.jar"
+      "name": "AnvilNeverTooExpensive-fabric-1.21+-1.2.1.jar",
+      "size": 5434,
+      "sha1": "62024f9a26b61cdeb87e3d1f7182ef3616eb0cab",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/AnvilNeverTooExpensive-fabric-1.21%2B-1.2.1.jar"
     },
     {
-      "name": "alexsmobs-1.22.17.jar",
-      "size": 26620546,
-      "sha1": "5070e8070f60650d773bfd9f1d031496f8f50259",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/alexsmobs-1.22.17.jar"
+      "name": "appleskin-fabric-mc1.21.11-3.0.8.jar",
+      "size": 180107,
+      "sha1": "441fdbf4e9c34fb61517ceb8e15618950dc4d314",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/appleskin-fabric-mc1.21.11-3.0.8.jar"
     },
     {
-      "name": "alltheleaks-1.1.12+1.21.1-neoforge.jar",
-      "size": 562895,
-      "sha1": "d69b9e98e957418ca0ab768b79983e68ffbfcd49",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/alltheleaks-1.1.12%2B1.21.1-neoforge.jar"
+      "name": "artifacts-fabric-14.0.3.jar",
+      "size": 1433030,
+      "sha1": "2ae80c87ba0d6d559e3e13b3c7a78fc6813d7c97",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/artifacts-fabric-14.0.3.jar"
     },
     {
-      "name": "AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar",
-      "size": 84811632,
-      "sha1": "c79ab328b2c46068effebdcb3f26e98dc4404cb0",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/AmbientSounds_NEOFORGE_v6.3.8_mc1.21.1.jar"
+      "name": "balm-fabric-1.21.11-21.11.9.1.jar",
+      "size": 873058,
+      "sha1": "5bb8ca8fb46953da5777c1b3c12af5b397b46b48",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/balm-fabric-1.21.11-21.11.9.1.jar"
     },
     {
-      "name": "amendments-1.21-2.1.10-neoforge.jar",
-      "size": 1168211,
-      "sha1": "d0cae2882177b7ad285021b48c128ddcc7022464",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/amendments-1.21-2.1.10-neoforge.jar"
+      "name": "bclib-21.11.9-fabric.jar",
+      "size": 1517669,
+      "sha1": "b0af857bc09f4fff6f43058e883942287c8f6c9a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/bclib-21.11.9-fabric.jar"
     },
     {
-      "name": "Aquaculture-1.21.1-2.7.21.jar",
-      "size": 605949,
-      "sha1": "93c2043c6a5cfbfbfba93321d044bc61d8a6547b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Aquaculture-1.21.1-2.7.21.jar"
+      "name": "better-end-21.11.11-fabric.jar",
+      "size": 98175040,
+      "sha1": "cd65cd449fe1cf8b9f5c28f02b3f9b4692d02452",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/better-end-21.11.11-fabric.jar"
     },
     {
-      "name": "architectury-13.0.11-neoforge.jar",
-      "size": 584734,
-      "sha1": "008656a0702801174b8ec245ed7aad1921d6e9f1",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/architectury-13.0.11-neoforge.jar"
+      "name": "better-nether-21.11.9-fabric.jar",
+      "size": 26919253,
+      "sha1": "9f1636b3ef2c06db9fb5cbd511ac221b51cf7b4a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/better-nether-21.11.9-fabric.jar"
     },
     {
-      "name": "artifacts-neoforge-13.2.5.jar",
-      "size": 1086922,
-      "sha1": "fb6cd3be2d034dde369ffd7558c95c6daa44189e",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/artifacts-neoforge-13.2.5.jar"
+      "name": "c2me-fabric-mc1.21.11-0.3.6.0.0.jar",
+      "size": 4687147,
+      "sha1": "587f9a3d9e4591e8e1a1c3eda61ed2f7bfa5dc46",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/c2me-fabric-mc1.21.11-0.3.6.0.0.jar"
     },
     {
-      "name": "balm-neoforge-1.21.1-21.0.65.jar",
-      "size": 783793,
-      "sha1": "69e0b3b69dd23c132e85b7e82310f45ae96b263d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/balm-neoforge-1.21.1-21.0.65.jar"
+      "name": "Camerapture-1.10.12+mc1.21.11-fabric.jar",
+      "size": 1987068,
+      "sha1": "718e1c8416252a45bba0d40c66b9045d9a2971ad",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Camerapture-1.10.12%2Bmc1.21.11-fabric.jar"
     },
     {
-      "name": "BetterAdvancements-NeoForge-1.21.1-0.4.3.21.jar",
-      "size": 98641,
-      "sha1": "870521cfaa1a4cb6c830e2409e8b9e4cf179aff2",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/BetterAdvancements-NeoForge-1.21.1-0.4.3.21.jar"
+      "name": "cardinal-components-api-7.3.0.jar",
+      "size": 234840,
+      "sha1": "f23e944838fc1254ba497c601015ec8ae1a36dc8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cardinal-components-api-7.3.0.jar"
     },
     {
-      "name": "betterdays-1.21.1-3.3.6.3-NEOFORGE.jar",
-      "size": 585998,
-      "sha1": "0beeb796055f8abdebb9304fe26b655068a52a9c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/betterdays-1.21.1-3.3.6.3-NEOFORGE.jar"
+      "name": "carryon-fabric-1.21.11-2.9.2.jar",
+      "size": 375642,
+      "sha1": "4bfba2e01b70b0f8f5c21964aa8c98681b572b13",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/carryon-fabric-1.21.11-2.9.2.jar"
     },
     {
-      "name": "bettervillage-neoforge-1.21.1-3.3.1.jar",
-      "size": 2429558,
-      "sha1": "fbe35b530079ddbd60a7c2afac3e259768cbd400",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/bettervillage-neoforge-1.21.1-3.3.1.jar"
+      "name": "cloth-config-21.11.153-fabric.jar",
+      "size": 1148427,
+      "sha1": "4c224606a963bce223db5b27edb4959ecf40d4ee",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cloth-config-21.11.153-fabric.jar"
     },
     {
-      "name": "BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar",
-      "size": 22338157,
-      "sha1": "6a12e1a249d074fb18f07d1f141b80ca2885e2be",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/BiomesOPlenty-neoforge-1.21.1-21.1.0.14.jar"
+      "name": "collective-1.21.11-8.32.jar",
+      "size": 1046147,
+      "sha1": "d8fcd71c03ae68b8f5b057e689f5e23fe30b6f21",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/collective-1.21.11-8.32.jar"
     },
     {
-      "name": "bookshelf-neoforge-1.21.1-21.1.81.jar",
-      "size": 328813,
-      "sha1": "efc4cda6da4dd879f24d057ed0a6413764c9ba40",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/bookshelf-neoforge-1.21.1-21.1.81.jar"
+      "name": "CosmeticArmor+1.21.11-1.7.0.jar",
+      "size": 15762,
+      "sha1": "d7e74d520694a941453a4ffd13e356311ddaee7b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/CosmeticArmor%2B1.21.11-1.7.0.jar"
     },
     {
-      "name": "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.122.jar",
-      "size": 3717245,
-      "sha1": "91a9a9b7791fb8a9642752ca6009553a0546c96e",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/c2me-neoforge-mc1.21.1-0.4.0-alpha.0.122.jar"
+      "name": "cosmeticarmorreworked-fabric-1.21.11-v0.1-fabric.jar",
+      "size": 40973,
+      "sha1": "3a2ba0104bdcee6f66d955852d3d95189c8ef11d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cosmeticarmorreworked-fabric-1.21.11-v0.1-fabric.jar"
     },
     {
-      "name": "camera-neoforge-1.21.1-1.0.22.jar",
-      "size": 307439,
-      "sha1": "79c6969bfad4e3b903ba247ebb1f64882ef09aa3",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/camera-neoforge-1.21.1-1.0.22.jar"
+      "name": "cpm-flashback-1.21-1.2.0.jar",
+      "size": 83023,
+      "sha1": "a0b62859820fe7b530160f3e940f096785a7af4a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cpm-flashback-1.21-1.2.0.jar"
     },
     {
-      "name": "Chimes-v2.1.1-1.21.1-NeoForge.jar",
-      "size": 12478373,
-      "sha1": "991e81741231b73b2cd3cbe9ab41e73cbe99d7be",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Chimes-v2.1.1-1.21.1-NeoForge.jar"
+      "name": "CustomPlayerModels-Fabric-1.21.11-0.6.27a.jar",
+      "size": 2867845,
+      "sha1": "cd7e67126061a36d673174b7ad759201f8e9a96a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/CustomPlayerModels-Fabric-1.21.11-0.6.27a.jar"
     },
     {
-      "name": "Chunky-NeoForge-1.4.23.jar",
-      "size": 340572,
-      "sha1": "ab0c74743a653020fe2dfc4986b43e893947f3e9",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Chunky-NeoForge-1.4.23.jar"
+      "name": "disablefog-fabric-1.21.11-2.2.0.jar",
+      "size": 131766,
+      "sha1": "aafeb1421f888031526510a276a887cbdbc7ed39",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/disablefog-fabric-1.21.11-2.2.0.jar"
     },
     {
-      "name": "citadel-1.21.1-2.7.6.jar",
-      "size": 3028943,
-      "sha1": "e0392370117ec16a721f8d65728944398de77607",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/citadel-1.21.1-2.7.6.jar"
+      "name": "elevatorid-fabric-1.21.11-1.15.0.jar",
+      "size": 768617,
+      "sha1": "3feb84699cf5d2ba870daf10af458cdbb824e6b9",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/elevatorid-fabric-1.21.11-1.15.0.jar"
     },
     {
-      "name": "cloth-config-15.0.140-neoforge.jar",
-      "size": 1163890,
-      "sha1": "c3e5733ba4503b102589a026000fd5ce0212f6f2",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cloth-config-15.0.140-neoforge.jar"
+      "name": "elytratrims-fabric-4.6.2+1.21.11.jar",
+      "size": 816105,
+      "sha1": "57503f3b3435fc5c880cb3c786d51c16b677742f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/elytratrims-fabric-4.6.2%2B1.21.11.jar"
     },
     {
-      "name": "collective-1.21.1-8.39.jar",
-      "size": 1061931,
-      "sha1": "b1153f03c97bccaa6bc11d6199f07f16ef4318ff",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/collective-1.21.1-8.39.jar"
+      "name": "emotecraft-fabric-for-MC1.21.11-3.2.0-b.build.163.jar",
+      "size": 898197,
+      "sha1": "9ea952181c93a9c5ee083759c1a15a1a135c032f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/emotecraft-fabric-for-MC1.21.11-3.2.0-b.build.163.jar"
     },
     {
-      "name": "configured-neoforge-1.21.1-2.6.3.jar",
-      "size": 428793,
-      "sha1": "e977d86eec39d49295df4e2c4265d6710ae065e8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/configured-neoforge-1.21.1-2.6.3.jar"
+      "name": "ExplorersCompass-1.21.11-2.5.1-fabric.jar",
+      "size": 176925,
+      "sha1": "5544f44c2ddc1986a80da582e6c9be450d6312a6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ExplorersCompass-1.21.11-2.5.1-fabric.jar"
     },
     {
-      "name": "copycats-3.0.9+mc.1.21.1-neoforge.jar",
-      "size": 1799381,
-      "sha1": "74de17876c43f5f780bac478b9f9eb11e687b8d7",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/copycats-3.0.9%2Bmc.1.21.1-neoforge.jar"
+      "name": "Explorify v1.6.5.mod.jar",
+      "size": 767884,
+      "sha1": "5fb28be29200a41b034e423d87823eb19ad651cd",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Explorify%20v1.6.5.mod.jar"
     },
     {
-      "name": "coroutil-neoforge-1.21.0-1.3.9.jar",
-      "size": 65716,
-      "sha1": "0f5a6309ce8394721b97740e6f3e45665f13b8de",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/coroutil-neoforge-1.21.0-1.3.9.jar"
+      "name": "fabric-api-0.141.6+1.21.11.jar",
+      "size": 2426039,
+      "sha1": "c98467cbbaf4d197377266795ae015f4130d65b6",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/fabric-api-0.141.6%2B1.21.11.jar"
     },
     {
-      "name": "corpse-neoforge-1.21.1-1.1.13.jar",
-      "size": 253695,
-      "sha1": "4f42091ef36e98e99c2f28a273ded960c0ac08bd",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/corpse-neoforge-1.21.1-1.1.13.jar"
+      "name": "fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar",
+      "size": 8142878,
+      "sha1": "f1d4ab6ecd54d9782521333a87eb50724ecb03e0",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/fabric-language-kotlin-1.14.2%2Bkotlin.2.4.21.jar"
     },
     {
-      "name": "cosmeticarmorreworked-1.21.1-v1-neoforge.jar",
-      "size": 92722,
-      "sha1": "5f1e699cd0888b857ec63f01adaeb3571848bfea",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cosmeticarmorreworked-1.21.1-v1-neoforge.jar"
+      "name": "FarmersDelight-1.21.11-3.6.16+refabricated.jar",
+      "size": 3342279,
+      "sha1": "44cb71429f0db84bc09b48a658340d7fb3184fff",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/FarmersDelight-1.21.11-3.6.16%2Brefabricated.jar"
     },
     {
-      "name": "create-1.21.1-6.0.10.jar",
-      "size": 19123767,
-      "sha1": "0e97e49837bed766e6f28a4c95b04885d6acc353",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/create-1.21.1-6.0.10.jar"
+      "name": "ferritecore-8.2.0-fabric.jar",
+      "size": 80138,
+      "sha1": "c2e2f5e008f5bc9f401dfad8ca94909917006b65",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ferritecore-8.2.0-fabric.jar"
     },
     {
-      "name": "createbetterfps-1.21.1-1.1.4.jar",
-      "size": 26547,
-      "sha1": "c594e20659b73a67bd0b0c2de45b29b78a2eb160",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/createbetterfps-1.21.1-1.1.4.jar"
+      "name": "Flashback-0.39.10-for-MC1.21.11.jar",
+      "size": 210513938,
+      "sha1": "6435f1924b06d53dfc119c20d16eb5248f082cdd",
+      "url": "https://cdn.modrinth.com/data/4das1Fjq/versions/JTAZ57qO/Flashback-0.39.10-for-MC1.21.11.jar"
     },
     {
-      "name": "CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar",
-      "size": 1235813,
-      "sha1": "180613074e3f8df9b1e052a3abe19a1c4ac38b48",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/CreativeCore_NEOFORGE_v2.13.46_mc1.21.1.jar"
+      "name": "ForgeConfigAPIPort-v21.11.1-mc1.21.11-Fabric.jar",
+      "size": 598009,
+      "sha1": "61aa1b5fafd75afc44552d0213cac39bc938bc2d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ForgeConfigAPIPort-v21.11.1-mc1.21.11-Fabric.jar"
     },
     {
-      "name": "curios-neoforge-9.5.1+1.21.1.jar",
-      "size": 410690,
-      "sha1": "418fcd42e3a7844c9bdc71c9b6401fdb3894e0c4",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/curios-neoforge-9.5.1%2B1.21.1.jar"
+      "name": "g-tool-trims.jar",
+      "size": 5709613,
+      "sha1": "4242b7e43de3059590db8c88e6b4f9807eb29e94",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/g-tool-trims.jar"
     },
     {
-      "name": "CustomNPCs-Unofficial-NeoForge-1.21.1.20251230.jar",
-      "size": 10789250,
-      "sha1": "e2f3b58ceb5aac4021d7bfd130e320925581471b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/CustomNPCs-Unofficial-NeoForge-1.21.1.20251230.jar"
+      "name": "gravestones-1.4.2+1.21.11+A.jar",
+      "size": 293237,
+      "sha1": "9093d8c81c2a0a42f98eb5a1ef185ed96da7da85",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/gravestones-1.4.2%2B1.21.11%2BA.jar"
     },
     {
-      "name": "CustomPlayerModels-1.21-0.6.27a.jar",
-      "size": 2793136,
-      "sha1": "34d57efcc56c043f89c61f169944d7b95c11f504",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/CustomPlayerModels-1.21-0.6.27a.jar"
+      "name": "hiddennames-1.0.0.jar",
+      "size": 24475,
+      "sha1": "f04f094bd1d45181e601b45f09299c10d81dcf41",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/hiddennames-1.0.0.jar"
     },
     {
-      "name": "darkdoppelganger-3.4.0-1.21.1.jar",
-      "size": 4503628,
-      "sha1": "875d85a9eeaab1daa5a13a7399cea8f4cb53a237",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/darkdoppelganger-3.4.0-1.21.1.jar"
+      "name": "infinitetrading-1.21.11-5.0.jar",
+      "size": 46870,
+      "sha1": "db4380bb1cb7b8084dac8bcd645a6b382b4dc81a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/infinitetrading-1.21.11-5.0.jar"
     },
     {
-      "name": "darkerdepths-2.1.6.jar",
-      "size": 2118195,
-      "sha1": "748a1c3694df35ae8373dc293725e3aff13e9831",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/darkerdepths-2.1.6.jar"
+      "name": "iris-fabric-1.10.8+mc1.21.11.jar",
+      "size": 2807718,
+      "sha1": "acfbe6d065b6c35d85c14da04d35e073363f3acf",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/iris-fabric-1.10.8%2Bmc1.21.11.jar"
     },
     {
-      "name": "decocraft-3.0.11-1.21.1-neoforge.jar",
-      "size": 93170262,
-      "sha1": "6704940aa352d1acf3cf9362e5ef8dd4e65b563c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/decocraft-3.0.11-1.21.1-neoforge.jar"
+      "name": "jei-1.21.11-fabric-27.54.0.116.jar",
+      "size": 4856988,
+      "sha1": "e019cd29296933f6b0266adf9a045311bf97afe3",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/jei-1.21.11-fabric-27.54.0.116.jar"
     },
     {
-      "name": "default_skill_trees-1.1.jar",
-      "size": 11519,
-      "sha1": "564a1320a4d26de1ad476687ce1920ccd12c142c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/default_skill_trees-1.1.jar"
+      "name": "journeymap-fabric-1.21.11-6.0.0.jar",
+      "size": 4193594,
+      "sha1": "901dbdf7e50605a53cb3d1232e625c445b428b08",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/journeymap-fabric-1.21.11-6.0.0.jar"
     },
     {
-      "name": "drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar",
-      "size": 168632,
-      "sha1": "9d27991a7f5a551265692abf8ed40ece10ea1958",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar"
+      "name": "lambdynamiclights-4.9.1+1.21.11.jar",
+      "size": 2144865,
+      "sha1": "f22487846158f62b3485a5a0723ba048326ac00f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lambdynamiclights-4.9.1%2B1.21.11.jar"
     },
     {
-      "name": "dummmmmmy-1.21-2.1.2-neoforge.jar",
-      "size": 215883,
-      "sha1": "87fb529cbb220a33fedf45a4a6f2269b8e00fffe",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/dummmmmmy-1.21-2.1.2-neoforge.jar"
+      "name": "litematica-fabric-1.21.11-0.26.16.jar",
+      "size": 1966804,
+      "sha1": "6faf0156520bc951a3a57681914228ea9354cc64",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/litematica-fabric-1.21.11-0.26.16.jar"
     },
     {
-      "name": "DungeonsArise-1.21.1-2.1.68-release.jar",
-      "size": 11842679,
-      "sha1": "c651339154da7b9e9cf47a80fdef22c4d59cad5c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/DungeonsArise-1.21.1-2.1.68-release.jar"
+      "name": "lithostitched-1.7.2-fabric-21.11.jar",
+      "size": 813076,
+      "sha1": "d35f576f35115e406466fa426ec661a82b12e760",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lithostitched-1.7.2-fabric-21.11.jar"
     },
     {
-      "name": "DungeonsAriseSevenSeas-1.21.x-1.0.4-neoforge.jar",
-      "size": 244981,
-      "sha1": "ac9edb266a1360e9e4c80ed0b2f931f1505307eb",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/DungeonsAriseSevenSeas-1.21.x-1.0.4-neoforge.jar"
+      "name": "lootr-fabric-1.21.11-1.20.34.104.jar",
+      "size": 1018314,
+      "sha1": "4d6d935f87b0f269148cfe6079dbed332b9133b8",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lootr-fabric-1.21.11-1.20.34.104.jar"
     },
     {
-      "name": "elevatorid-neoforge-1.21.1-1.11.4.jar",
-      "size": 191190,
-      "sha1": "87a5504efcd51de55cd4215a103cbfcf717fa022",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/elevatorid-neoforge-1.21.1-1.11.4.jar"
+      "name": "malilib-fabric-1.21.11-0.27.20.jar",
+      "size": 2161348,
+      "sha1": "ba18a2c6664b4136006090e3cd0263a2703edb75",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/malilib-fabric-1.21.11-0.27.20.jar"
     },
     {
-      "name": "emotecraft-for-MC1.21.1-2.4.12-neoforge.jar",
-      "size": 861829,
-      "sha1": "1228c7597c4b6cbaec10a090f9b5b471ca9042d4",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/emotecraft-for-MC1.21.1-2.4.12-neoforge.jar"
+      "name": "modernfix-5.26.3-build.2.jar",
+      "size": 630900,
+      "sha1": "5a51d1a9768bbf9943e6eef83abf43d2b82baa30",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/modernfix-5.26.3-build.2.jar"
     },
     {
-      "name": "enchdesc-neoforge-1.21.1-21.1.11.jar",
-      "size": 82648,
-      "sha1": "4d453df785ac21e0e7389cba949f4fa460c3e267",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/enchdesc-neoforge-1.21.1-21.1.11.jar"
+      "name": "ModernNetworking-fabric-2.0.1+1.21.11.jar",
+      "size": 382424,
+      "sha1": "184a40241d8daf3883a34027e75226149af768bd",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ModernNetworking-fabric-2.0.1%2B1.21.11.jar"
     },
     {
-      "name": "entityculling-neoforge-1.10.5-mc1.21.1.jar",
-      "size": 1585287,
-      "sha1": "420d0006dbc0a20b1c2dd0b3c7c20ddb5cc51fcf",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/entityculling-neoforge-1.10.5-mc1.21.1.jar"
+      "name": "o+-fabric-1.4-mc1.21.11.jar",
+      "size": 275617,
+      "sha1": "9c9daf2de9606137009110b0ea7d0f4323b8a447",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/o%2B-fabric-1.4-mc1.21.11.jar"
     },
     {
-      "name": "epic-knights-1.21.1-neoforge-10.15.jar",
-      "size": 2818976,
-      "sha1": "c708f1f8f1530469638af65640c4514a9a4c6b0c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/epic-knights-1.21.1-neoforge-10.15.jar"
+      "name": "Origins-Legacy-1.12.17+1.21.11.jar",
+      "size": 2786363,
+      "sha1": "b466bdeb95f56b0f206b893ce607b5f4657482ba",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Origins-Legacy-1.12.17%2B1.21.11.jar"
     },
     {
-      "name": "etched-5.1.0.jar",
-      "size": 628299,
-      "sha1": "0cc1f1d0bc5d9af3f9ffbb8ce166f5cc9b59ec89",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/etched-5.1.0.jar"
+      "name": "PlayerAnimationLibFabric-1.1.11+mc.1.21.11.jar",
+      "size": 1151293,
+      "sha1": "c62fd8275498805675ec6c05027b05b359738135",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/PlayerAnimationLibFabric-1.1.11%2Bmc.1.21.11.jar"
     },
     {
-      "name": "evenmoreinstruments-neoforge-1.21-1.21.1-6.1.4.jar",
-      "size": 6663854,
-      "sha1": "2f933ab292514beefd4a3f60c200c8094632165e",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/evenmoreinstruments-neoforge-1.21-1.21.1-6.1.4.jar"
+      "name": "pneumonocore-1.3.1+1.21.11+A.jar",
+      "size": 165031,
+      "sha1": "84468cbf8a3bf5b7d4ad0c4747350693908e35d1",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/pneumonocore-1.3.1%2B1.21.11%2BA.jar"
     },
     {
-      "name": "FallingTree-1.21.1-1.21.1.11.jar",
-      "size": 496356,
-      "sha1": "626e7ec3a979dcc15d8e65c53207572c41c1b255",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/FallingTree-1.21.1-1.21.1.11.jar"
+      "name": "pulse-trims-1.0.2-fabric-1.21.11.jar",
+      "size": 96994,
+      "sha1": "920b7f068a1b9bcd030680027d34c3685a472524",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/pulse-trims-1.0.2-fabric-1.21.11.jar"
     },
     {
-      "name": "fancy-entity-renderer-neoforge-1.21-0.4.9.jar",
-      "size": 410875,
-      "sha1": "427df4a943f0b52430235cd610688e589870de2f",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/fancy-entity-renderer-neoforge-1.21-0.4.9.jar"
+      "name": "redsky-1.0.0.jar",
+      "size": 33947,
+      "sha1": "10687d8163e712ac406dc91f8e74c6b873708ee9",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/redsky-1.0.0.jar"
     },
     {
-      "name": "fancymenu_neoforge_3.9.12_MC_1.21.1.jar",
-      "size": 25912346,
-      "sha1": "388d2380529fc175bfe1337e1a5b46b694284ccb",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/fancymenu_neoforge_3.9.12_MC_1.21.1.jar"
+      "name": "servercore-fabric-1.5.15+1.21.11.jar",
+      "size": 932539,
+      "sha1": "c3c6ec10b0ceddaa8f1ef53ffe57db57b4e8638f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/servercore-fabric-1.5.15%2B1.21.11.jar"
     },
     {
-      "name": "FarmersDelight-1.21.1-1.3.4.jar",
-      "size": 3160490,
-      "sha1": "27675ddfcb8cc37e6ea1ab6c15051c7949d94657",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/FarmersDelight-1.21.1-1.3.4.jar"
+      "name": "skinlayers3d-fabric-1.11.4-mc1.21.11.jar",
+      "size": 1914056,
+      "sha1": "38e389c21847593e447f3af341135ba0ca8829fc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/skinlayers3d-fabric-1.11.4-mc1.21.11.jar"
     },
     {
-      "name": "ferritecore-7.0.3-neoforge.jar",
-      "size": 121559,
-      "sha1": "9563692efb708b6b568df27a01ec52f6311928ef",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ferritecore-7.0.3-neoforge.jar"
+      "name": "skinrestorer-2.11.0+1.21.11-fabric.jar",
+      "size": 288633,
+      "sha1": "9c9b70a11c021ebf2588cdbb30498c9be7dff67a",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/skinrestorer-2.11.0%2B1.21.11-fabric.jar"
     },
     {
-      "name": "ftb-chunks-neoforge-2101.1.22.jar",
-      "size": 655807,
-      "sha1": "a53f1bb7965c6954a348d4f321f03d3971ad503f",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ftb-chunks-neoforge-2101.1.22.jar"
+      "name": "sodium-fabric-0.8.15-beta.1+mc1.21.11.jar",
+      "size": 1914874,
+      "sha1": "5469cef6f5dddd72a1216d9a15393c90d8eb5f33",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sodium-fabric-0.8.15-beta.1%2Bmc1.21.11.jar"
     },
     {
-      "name": "ftb-library-neoforge-2101.1.36.jar",
-      "size": 1439427,
-      "sha1": "07b5bf1c6ac5160a6cfe1b39ed8c1465dc151b00",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ftb-library-neoforge-2101.1.36.jar"
+      "name": "TalkBalloons-fabric-1.6.6+1.21.11.jar",
+      "size": 1305822,
+      "sha1": "97e7e40f1bd8b28cbdc9597ddb59578a9f4c68cd",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/TalkBalloons-fabric-1.6.6%2B1.21.11.jar"
     },
     {
-      "name": "ftb-teams-neoforge-2101.1.11.jar",
-      "size": 308236,
-      "sha1": "62b65f752d0326edd13244e58d5f2aec035da4e9",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ftb-teams-neoforge-2101.1.11.jar"
+      "name": "Terralith_1.21.11_v2.6.1_Fabric.jar",
+      "size": 2976537,
+      "sha1": "982e7e763d91765e86e4bf6cb1407ebd2eac0c00",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Terralith_1.21.11_v2.6.1_Fabric.jar"
     },
     {
-      "name": "gaboulibs-neoforge-1.9.jar",
-      "size": 31997,
-      "sha1": "aa39c5645c0479dbd7a485432e9694c78ad6082a",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/gaboulibs-neoforge-1.9.jar"
+      "name": "travelersbackpack-fabric-1.21.11-10.11.11.jar",
+      "size": 1597574,
+      "sha1": "bced1552f2db5e49cf25f6059b6839b24e9ebfec",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/travelersbackpack-fabric-1.21.11-10.11.11.jar"
     },
     {
-      "name": "geckolib-neoforge-1.21.1-4.9.3.jar",
-      "size": 634531,
-      "sha1": "5cfe835472a5c5457ae9ac192d9d7b317454d5ac",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/geckolib-neoforge-1.21.1-4.9.3.jar"
+      "name": "trinkets-3.11.0-beta.2+1.21.11.jar",
+      "size": 286607,
+      "sha1": "0be0b83e78da61cb4100a71cfabccf9ffb2b3b7d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/trinkets-3.11.0-beta.2%2B1.21.11.jar"
     },
     {
-      "name": "genshinstrument-neoforge-1.21-1.21.1-5.1.jar",
-      "size": 7056535,
-      "sha1": "1eecc4734bc280eb0ef68e387ad9574c41c8482e",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/genshinstrument-neoforge-1.21-1.21.1-5.1.jar"
+      "name": "vcinteraction-fabric-1.21.11-1.0.8.jar",
+      "size": 509043,
+      "sha1": "05f90ed4c6829f899e0220ae610d3e6e7292a300",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/vcinteraction-fabric-1.21.11-1.0.8.jar"
     },
     {
-      "name": "GlitchCore-neoforge-1.21.1-2.1.0.2.jar",
-      "size": 90717,
-      "sha1": "a31c3f36330f19aa538add3d727782a62c9c30ad",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/GlitchCore-neoforge-1.21.1-2.1.0.2.jar"
+      "name": "voicechat-fabric-1.21.11-2.6.26.jar",
+      "size": 5609464,
+      "sha1": "b969593528872d42178cbdac705ef2b4b672b2c3",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/voicechat-fabric-1.21.11-2.6.26.jar"
     },
     {
-      "name": "iceandfire-2.1.2.jar",
-      "size": 20773661,
-      "sha1": "0786f4142b7cabd958688f68beef3e63e9c0ae8b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/iceandfire-2.1.2.jar"
+      "name": "watermedia-3.0.0.23.jar",
+      "size": 3625444,
+      "sha1": "a644ab079cc9ed19a62b181e0252be5a9a422166",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia-3.0.0.23.jar"
     },
     {
-      "name": "IDA v2.1.2-1.21.1.jar",
-      "size": 12131555,
-      "sha1": "cc2c1d100b9f808536b3e8be363097a530038029",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/IDA%20v2.1.2-1.21.1.jar"
+      "name": "watermedia_binaries-3.0.0.6.jar",
+      "size": 143725808,
+      "sha1": "8f132fc2fec0fe91a9a085c11088f0773da187fc",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia_binaries-3.0.0.6.jar"
     },
     {
-      "name": "imfast-NEOFORGE-1.21.1-1.0.3.jar",
-      "size": 4193,
-      "sha1": "f8e92ef61de3751f619238eed5ae9952b5a049d0",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/imfast-NEOFORGE-1.21.1-1.0.3.jar"
+      "name": "watermedia_platform_extension-3.0.0-beta.7.jar",
+      "size": 248824,
+      "sha1": "0cc9e1d73184df3936023c75bd63dde67920271b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/watermedia_platform_extension-3.0.0-beta.7.jar"
     },
     {
-      "name": "ImmediatelyFast-NeoForge-1.6.14+1.21.1.jar",
-      "size": 365195,
-      "sha1": "fee59af2f39c66d09c4c09f441c799e76af70f97",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ImmediatelyFast-NeoForge-1.6.14%2B1.21.1.jar"
+      "name": "waystones-fabric-1.21.11-21.11.9.jar",
+      "size": 933036,
+      "sha1": "5b7c5a3348b0c2a436c9b679fd33d42653ada53f",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/waystones-fabric-1.21.11-21.11.9.jar"
     },
     {
-      "name": "immersive-weathering-tweaks-1.3.1.jar",
-      "size": 57620,
-      "sha1": "020b01df52b26ac38aa8c7ed994767c560193169",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/immersive-weathering-tweaks-1.3.1.jar"
+      "name": "worldedit-mod-7.4.2.jar",
+      "size": 6970159,
+      "sha1": "2f5c35ab2d0dffa1be99ed6016132596949e59b3",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/worldedit-mod-7.4.2.jar"
     },
     {
-      "name": "Immersive-weathering-V1.0.4-neoforge-beta.jar",
-      "size": 2283529,
-      "sha1": "011571c9eca3613ca2f4275da922eb3ec12061e1",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Immersive-weathering-V1.0.4-neoforge-beta.jar"
+      "name": "worldweaver-21.11.10-fabric.jar",
+      "size": 2453597,
+      "sha1": "c3ead98767b95d5c28320ff01e4bf90d7778a8a4",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/worldweaver-21.11.10-fabric.jar"
     },
     {
-      "name": "immersive_aircraft-1.5.0+1.21.1-neoforge.jar",
-      "size": 2465051,
-      "sha1": "af88f1fd32a7a03aabda2aa14f351c55ab47f0f7",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/immersive_aircraft-1.5.0%2B1.21.1-neoforge.jar"
-    },
-    {
-      "name": "immersive_armors-1.7.6+1.21.1-neoforge.jar",
-      "size": 1274167,
-      "sha1": "4c5762af46c0beac0830d1f1e9c88332b120ceaa",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/immersive_armors-1.7.6%2B1.21.1-neoforge.jar"
-    },
-    {
-      "name": "immersive_furniture-neoforge-0.3.3+1.21.1.jar",
-      "size": 1018042,
-      "sha1": "cd595ea729f0b55a09568c2ebcdb1ad2d6c16c53",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/immersive_furniture-neoforge-0.3.3%2B1.21.1.jar"
-    },
-    {
-      "name": "immersive_melodies-neoforge-0.8.0+1.21.1.jar",
-      "size": 5565133,
-      "sha1": "5f3cd9eb07465a88a22abc6230862e798f45ef82",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/immersive_melodies-neoforge-0.8.0%2B1.21.1.jar"
-    },
-    {
-      "name": "incontrol-1.21-10.3.0.jar",
-      "size": 356782,
-      "sha1": "eb89f724834b393e9a76c404df642d930e50eb19",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/incontrol-1.21-10.3.0.jar"
-    },
-    {
-      "name": "integrated_api-neoforge-1.21.1-1.8.2.jar",
-      "size": 478502,
-      "sha1": "e0a0e44235b98f21a05ebbe0171fe8487319a173",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/integrated_api-neoforge-1.21.1-1.8.2.jar"
-    },
-    {
-      "name": "irons_lib-1.21.1-2.1.0.jar",
-      "size": 406284,
-      "sha1": "70fba64d12b6ff9553580e52101d989c89297797",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/irons_lib-1.21.1-2.1.0.jar"
-    },
-    {
-      "name": "irons_spellbooks-1.21.1-3.16.3.jar",
-      "size": 13890046,
-      "sha1": "017fd8140c477f9ae602cf95594f1c23bef1d6e3",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/irons_spellbooks-1.21.1-3.16.3.jar"
-    },
-    {
-      "name": "Jade-1.21.1-NeoForge-15.10.6.jar",
-      "size": 726853,
-      "sha1": "88ee316e68900080b017f60c12162e2731924cf8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Jade-1.21.1-NeoForge-15.10.6.jar"
-    },
-    {
-      "name": "jei-1.21.1-neoforge-19.56.0.441.jar",
-      "size": 2156268,
-      "sha1": "e520422338d3eba053189d042fc08eb40eb22bb8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/jei-1.21.1-neoforge-19.56.0.441.jar"
-    },
-    {
-      "name": "journeymap-neoforge-1.21.1-6.0.8.jar",
-      "size": 4303084,
-      "sha1": "e964f91ee6319bb1d789a7011e30772907962b90",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/journeymap-neoforge-1.21.1-6.0.8.jar"
-    },
-    {
-      "name": "jupiter-2.3.7-1.21.1-neoforge.jar",
-      "size": 278988,
-      "sha1": "569fb484ea5c8e8d690945ad4cd132131a719751",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/jupiter-2.3.7-1.21.1-neoforge.jar"
-    },
-    {
-      "name": "kirriscasino-neoforge-1.21.1-0.1.1.jar",
-      "size": 317118,
-      "sha1": "f747c4e14980192c4cbf3c2032347ad9e7a7e708",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/kirriscasino-neoforge-1.21.1-0.1.1.jar"
-    },
-    {
-      "name": "konkrete_neoforge_1.9.9_MC_1.21.jar",
-      "size": 618842,
-      "sha1": "97771eb287d5ac7fe667d1df9493d5e54c8ca1fa",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/konkrete_neoforge_1.9.9_MC_1.21.jar"
-    },
-    {
-      "name": "lexiconfig-neoforge-1.4.21-novel.jar",
-      "size": 65316,
-      "sha1": "f862c78f4d27938208913d1c3ee4d9be1a13d166",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lexiconfig-neoforge-1.4.21-novel.jar"
-    },
-    {
-      "name": "libraryferret-neoforge-1.21.1-4.0.0.jar",
-      "size": 139416,
-      "sha1": "95887e3ae531dc7e8a39e2c285c8a27cf06d698c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/libraryferret-neoforge-1.21.1-4.0.0.jar"
-    },
-    {
-      "name": "lionfishapi-3.1.jar",
-      "size": 91596,
-      "sha1": "353ca00ed118eb67cf11085abbbd699884722326",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lionfishapi-3.1.jar"
-    },
-    {
-      "name": "lithostitched-1.8.0+beta6-neoforge-21.1.jar",
-      "size": 978169,
-      "sha1": "b8526bb7fcfb844ce91513ab349c408dd1a8279e",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lithostitched-1.8.0%2Bbeta6-neoforge-21.1.jar"
-    },
-    {
-      "name": "lootr-neoforge-1.21.1-1.11.38.125.jar",
-      "size": 1000464,
-      "sha1": "ad56869af94247d39f4364cba6403b115b3100b8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/lootr-neoforge-1.21.1-1.11.38.125.jar"
-    },
-    {
-      "name": "L_Ender's Cataclysm 1.21.1-3.33.jar",
-      "size": 73375661,
-      "sha1": "5ff39c0eddfa08ea0e921bdcb17da7f32f0b00ce",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/L_Ender's%20Cataclysm%201.21.1-3.33.jar"
-    },
-    {
-      "name": "mcw-bridges-3.1.2-mc1.21.1neoforge.jar",
-      "size": 661387,
-      "sha1": "71ece28129789a2123cf07e79938f488d8675bb2",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-bridges-3.1.2-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-doors-1.1.5-mc1.21.1neoforge.jar",
-      "size": 1190404,
-      "sha1": "c127904f23db1a641dd9e065ec51c5c177cb4cd7",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-doors-1.1.5-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-furniture-3.4.1-mc1.21.1neoforge.jar",
-      "size": 2080436,
-      "sha1": "3dccc819f14bcc60b3683edd82ca8c5e64964229",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-furniture-3.4.1-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-lights-1.1.5-mc1.21.1neoforge.jar",
-      "size": 525744,
-      "sha1": "13c1107caf26b2c60d8626b3658b26cc7f634b38",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-lights-1.1.5-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-mcwfences-1.2.1-mc1.21.1neoforge.jar",
-      "size": 673871,
-      "sha1": "b5580c3fc521ed8bf4db3e407bd590efc317f74d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-mcwfences-1.2.1-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-mcwpaths-1.1.1-mc1.21.1neoforge.jar",
-      "size": 777742,
-      "sha1": "4bb7e1d28eef19f87438881b0f582a15297b95ae",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-mcwpaths-1.1.1-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-mcwstairs-1.0.2-mc1.21.1neoforge.jar",
-      "size": 529082,
-      "sha1": "1ee43d693c821efc955a74e551f94372af90a140",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-mcwstairs-1.0.2-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-mcwwindows-2.4.2-mc1.21.1neoforge.jar",
-      "size": 1261268,
-      "sha1": "eb1d3c118acb450cc2fe14c2ce7ce247a1bca60c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-mcwwindows-2.4.2-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-paintings-1.1.0-mc1.21.1neoforge.jar",
-      "size": 179058,
-      "sha1": "7e637b44624da6a3b7cd6cfd26324c3f116d4da6",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-paintings-1.1.0-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-roofs-2.3.2-mc1.21.1neoforge.jar",
-      "size": 1784829,
-      "sha1": "05806ff152fab56f7c1b4b215d772ea73611283d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-roofs-2.3.2-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "mcw-trapdoors-1.1.5-mc1.21.1neoforge.jar",
-      "size": 572870,
-      "sha1": "1f8b59e31f889f53b6296b42ee09d447e7e56620",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mcw-trapdoors-1.1.5-mc1.21.1neoforge.jar"
-    },
-    {
-      "name": "Mekanism-1.21.1-10.7.19.85.jar",
-      "size": 11976009,
-      "sha1": "b78945c40cfe7640408f3fd1e44da385a8c8b805",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Mekanism-1.21.1-10.7.19.85.jar"
-    },
-    {
-      "name": "MekanismAdditions-1.21.1-10.7.19.85.jar",
-      "size": 1162551,
-      "sha1": "0934a9f9961a9a1a47ff344762f8eeb0c149d80d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/MekanismAdditions-1.21.1-10.7.19.85.jar"
-    },
-    {
-      "name": "MekanismGenerators-1.21.1-10.7.19.85.jar",
-      "size": 1114598,
-      "sha1": "44c4d8006597580ff7e4101b5a22f7b426cdcaf6",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/MekanismGenerators-1.21.1-10.7.19.85.jar"
-    },
-    {
-      "name": "MekanismTools-1.21.1-10.7.19.85.jar",
-      "size": 526620,
-      "sha1": "4433b3eec0a5a0bf415d873e710a1cecea5850bc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/MekanismTools-1.21.1-10.7.19.85.jar"
-    },
-    {
-      "name": "melody_neoforge_1.0.10_MC_1.21.jar",
-      "size": 36096,
-      "sha1": "e83052a92c4ca0016bcfe7f0207273983dc84698",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/melody_neoforge_1.0.10_MC_1.21.jar"
-    },
-    {
-      "name": "modernfix-neoforge-5.27.24+mc1.21.1.jar",
-      "size": 604333,
-      "sha1": "1fe7f8b4176e86507cc8ed5460b6acdd3dac5529",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/modernfix-neoforge-5.27.24%2Bmc1.21.1.jar"
-    },
-    {
-      "name": "moonlight-1.21.1-3.6.5-neoforge.jar",
-      "size": 2280483,
-      "sha1": "91cbf847aaf1165a7331b43030af829873e0fef6",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/moonlight-1.21.1-3.6.5-neoforge.jar"
-    },
-    {
-      "name": "moreculling-neoforge-1.21.1-1.0.10.jar",
-      "size": 335699,
-      "sha1": "7e2d906031fdba883649eef6ef48a4dbdbb0f6cf",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/moreculling-neoforge-1.21.1-1.0.10.jar"
-    },
-    {
-      "name": "mowziesmobs-1.21.1-1.8.2.jar",
-      "size": 36042925,
-      "sha1": "d64475cd77444b056ece6472c79d40293dc63c6c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mowziesmobs-1.21.1-1.8.2.jar"
-    },
-    {
-      "name": "mowzies_cataclysm-1.2.2.jar",
-      "size": 28114,
-      "sha1": "0dff3e849155ca343d1a500f5b9ca2b54ffa692d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/mowzies_cataclysm-1.2.2.jar"
-    },
-    {
-      "name": "MutantMonsters-v21.1.1-1.21.1-NeoForge.jar",
-      "size": 1346730,
-      "sha1": "c9981cf323d5e0fd49387ad20dafec1f58b2c88d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/MutantMonsters-v21.1.1-1.21.1-NeoForge.jar"
-    },
-    {
-      "name": "NeoForge-1.21.1-ColorfulSeasons-1.1.0.jar",
-      "size": 55213,
-      "sha1": "731cab4467c1055489970d7605ac70cf9c80e1cc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/NeoForge-1.21.1-ColorfulSeasons-1.1.0.jar"
-    },
-    {
-      "name": "NeoForge-Version-Serene Seasons Plus-1.21.1-5.1.2.jar",
-      "size": 415754,
-      "sha1": "13d356654676b83694c8ad78f45e2cd5dd8a93e0",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/NeoForge-Version-Serene%20Seasons%20Plus-1.21.1-5.1.2.jar"
-    },
-    {
-      "name": "nickname-1.0.0.jar",
-      "size": 1319508,
-      "sha1": "6bc3aec6cd16c6d2bc5e2b60f6c135a384b081fc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/nickname-1.0.0.jar"
-    },
-    {
-      "name": "oddities-1.0.0-neoforge-1.21.1.jar",
-      "size": 2312080,
-      "sha1": "638e8a0cbfd60b5a4a40273d5dc0081d3a86bd94",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/oddities-1.0.0-neoforge-1.21.1.jar"
-    },
-    {
-      "name": "Paraglider-neoforge-21.1.5.jar",
-      "size": 658184,
-      "sha1": "39043f24e897fade07a138bb8d60bfe08d8103b1",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Paraglider-neoforge-21.1.5.jar"
-    },
-    {
-      "name": "Pehkui-3.8.3+1.21-neoforge.jar",
-      "size": 507568,
-      "sha1": "4ae35b04b0fca7b170417a12d6da6a693281574b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Pehkui-3.8.3%2B1.21-neoforge.jar"
-    },
-    {
-      "name": "player-animation-lib-forge-2.0.4+1.21.1.jar",
-      "size": 203149,
-      "sha1": "05be8ddcc78532b9a5520c718edc6c971cd0057c",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/player-animation-lib-forge-2.0.4%2B1.21.1.jar"
-    },
-    {
-      "name": "PlayerRevive_NEOFORGE_v2.1.2_mc1.21.1.jar",
-      "size": 5307768,
-      "sha1": "b1ee96cfefa36e1c05aaab8e92bfb3f9ae927d15",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/PlayerRevive_NEOFORGE_v2.1.2_mc1.21.1.jar"
-    },
-    {
-      "name": "prickle-neoforge-1.21.1-21.1.11.jar",
-      "size": 84812,
-      "sha1": "5174059ecf97340a0de5ef211b938de26c4eaa36",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/prickle-neoforge-1.21.1-21.1.11.jar"
-    },
-    {
-      "name": "Psychadelic-Chemistry_1.21.1-2.2.5_neoforge.jar",
-      "size": 72843968,
-      "sha1": "cdccb9f60908eca8d004f3f783b1c3756e415eb5",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Psychadelic-Chemistry_1.21.1-2.2.5_neoforge.jar"
-    },
-    {
-      "name": "PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar",
-      "size": 1442182,
-      "sha1": "319fc1ea1498920b39a318ea324f6112a7318d67",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/PuzzlesLib-v21.1.60-mc1.21.1-NeoForge.jar"
-    },
-    {
-      "name": "quantified api-omni-2.2.3.jar",
-      "size": 9577892,
-      "sha1": "0a4f72b0a7685c99724ffcf2cec69ce0e739c185",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/quantified%20api-omni-2.2.3.jar"
-    },
-    {
-      "name": "Quark-4.1-485.jar",
-      "size": 15590176,
-      "sha1": "445fbf066be38aa1da59368a5386e906405c1907",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Quark-4.1-485.jar"
-    },
-    {
-      "name": "reducedores-1.21.x-1.1.jar",
-      "size": 1976706,
-      "sha1": "bd0e4f0b6ad0256b4cac74b52c03b50efe460357",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/reducedores-1.21.x-1.1.jar"
-    },
-    {
-      "name": "seasonsfix-neoforge-1.21.1-2.1.2.jar",
-      "size": 28382,
-      "sha1": "b64cd5c8c572d3280c322ed7928f47fc4b7209ab",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/seasonsfix-neoforge-1.21.1-2.1.2.jar"
-    },
-    {
-      "name": "SereneSeasons-neoforge-1.21.1-10.1.0.3.jar",
-      "size": 159205,
-      "sha1": "8b9034d4c43f880b1f1ebdd3943219de0b0bc4c5",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/SereneSeasons-neoforge-1.21.1-10.1.0.3.jar"
-    },
-    {
-      "name": "simpleradio-neoforge-1.21.1-4.5.7.9.jar",
-      "size": 1016130,
-      "sha1": "91d73ced322f4707ace24f4b51eb77598b14b1f8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/simpleradio-neoforge-1.21.1-4.5.7.9.jar"
-    },
-    {
-      "name": "skinlayers3d-neoforge-1.11.3-mc1.21.1.jar",
-      "size": 1903528,
-      "sha1": "c3ca1000cf0e82608bc4a96067e15a20ecdbec1b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/skinlayers3d-neoforge-1.11.3-mc1.21.1.jar"
-    },
-    {
-      "name": "sodium-neoforge-0.8.13+mc1.21.1.jar",
-      "size": 1292934,
-      "sha1": "1757289be21ed18db5b0d90703fa3db1b2de5693",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sodium-neoforge-0.8.13%2Bmc1.21.1.jar"
-    },
-    {
-      "name": "sons_of_sins-2.2.1d-neoforge-1.21.1.jar",
-      "size": 5197454,
-      "sha1": "ba1fe4eb8a3df55e611d39eaa1a837b23517dce9",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sons_of_sins-2.2.1d-neoforge-1.21.1.jar"
-    },
-    {
-      "name": "sophisticatedbackpacks-1.21.1-3.26.3.2158.jar",
-      "size": 1251706,
-      "sha1": "c9cef1451d73c5afef78a637c593634f55e757fc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sophisticatedbackpacks-1.21.1-3.26.3.2158.jar"
-    },
-    {
-      "name": "sophisticatedcore-1.21.1-1.5.1.2341.jar",
-      "size": 1785221,
-      "sha1": "a256b4d3c1218754a3172253e6bda644551be6a5",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sophisticatedcore-1.21.1-1.5.1.2341.jar"
-    },
-    {
-      "name": "spark-1.10.124-neoforge.jar",
-      "size": 3642581,
-      "sha1": "9430cc2ab64ff89d698be593769fb9f9ee4efae6",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/spark-1.10.124-neoforge.jar"
-    },
-    {
-      "name": "starterkit-1.21.1-8.1.jar",
-      "size": 273623,
-      "sha1": "9dff28020422ddaf4d7f677888212df5c2f6fb9d",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/starterkit-1.21.1-8.1.jar"
-    },
-    {
-      "name": "StrawStatues-v21.1.0-1.21.1-NeoForge.jar",
-      "size": 313043,
-      "sha1": "133f187ee682ee71c3db7307b93c572b7951af4b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/StrawStatues-v21.1.0-1.21.1-NeoForge.jar"
-    },
-    {
-      "name": "Structory_26.2_v1.3.7.jar",
-      "size": 1261346,
-      "sha1": "8a9a1a1b3f74398310420b6fbe2c26ef142bed42",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Structory_26.2_v1.3.7.jar"
-    },
-    {
-      "name": "supplementaries-1.21.1-3.9.9-neoforge.jar",
-      "size": 13548968,
-      "sha1": "06ed05381a5653d90398dc6ebf3ad1154add6374",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/supplementaries-1.21.1-3.9.9-neoforge.jar"
-    },
-    {
-      "name": "TerraBlender-neoforge-1.21.1-4.1.0.8.jar",
-      "size": 120364,
-      "sha1": "2016eed89eac0eb0510d2190c3b0b80bf4346191",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/TerraBlender-neoforge-1.21.1-4.1.0.8.jar"
-    },
-    {
-      "name": "Terralith_1.21.x_v2.6.2.jar",
-      "size": 2814865,
-      "sha1": "d4a9fe71b841f70edfb4b280f9bf5c58e4a28224",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Terralith_1.21.x_v2.6.2.jar"
-    },
-    {
-      "name": "the_knocker-1.5.2-neoforge-1.21.1.jar",
-      "size": 993804,
-      "sha1": "96ebf978760c7e6f7f7bf2152f6079925621c3fc",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/the_knocker-1.5.2-neoforge-1.21.1.jar"
-    },
-    {
-      "name": "trashslot-neoforge-1.21.1-21.1.11.jar",
-      "size": 77535,
-      "sha1": "7343e4b563feb79122c8373a0d5416182ca436a8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/trashslot-neoforge-1.21.1-21.1.11.jar"
-    },
-    {
-      "name": "twilightforest-1.21.1-4.8.3345-universal.jar",
-      "size": 27154121,
-      "sha1": "9cfd4154928433e2f1f6cfc3deb48c284debb580",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/twilightforest-1.21.1-4.8.3345-universal.jar"
-    },
-    {
-      "name": "underwater_village-1.0.2-neoforge-1.21.1.jar",
-      "size": 386146,
-      "sha1": "0adcea413b73bad85a5dbb7f18e80576378817e2",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/underwater_village-1.0.2-neoforge-1.21.1.jar"
-    },
-    {
-      "name": "uranus-3.0-beta.1.jar",
-      "size": 221525,
-      "sha1": "c87886ec34ba1282366801f84f6953dc42cb42b2",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/uranus-3.0-beta.1.jar"
-    },
-    {
-      "name": "Vampirism-1.21-1.10.13.jar",
-      "size": 12478474,
-      "sha1": "349b6e4ea893c98a580775b1725399903e222228",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Vampirism-1.21-1.10.13.jar"
-    },
-    {
-      "name": "voicechat-neoforge-1.21.1-2.6.22.jar",
-      "size": 4918442,
-      "sha1": "3b2001d8df61fe6dc03dcd5f5cd4a8f49821feb0",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/voicechat-neoforge-1.21.1-2.6.22.jar"
-    },
-    {
-      "name": "waystones-neoforge-1.21.1-21.1.45.jar",
-      "size": 1219809,
-      "sha1": "6ec1a176a102212db4f6391886db52ed103c830f",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/waystones-neoforge-1.21.1-21.1.45.jar"
-    },
-    {
-      "name": "Werewolves-1.21-2.0.3.3.jar",
-      "size": 2297879,
-      "sha1": "12a400d50c6e2afdcd96caf73cb80d37877147c8",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Werewolves-1.21-2.0.3.3.jar"
-    },
-    {
-      "name": "WhisperingSpirits-neoforge-1.21.1-v1.4.0.jar",
-      "size": 1928017,
-      "sha1": "224279a35996ab8eeefbdf2f5f9c34c4ac718c20",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/WhisperingSpirits-neoforge-1.21.1-v1.4.0.jar"
-    },
-    {
-      "name": "Zeta-1.1-40.jar",
-      "size": 763725,
-      "sha1": "72f6efe421cfc0547c774ae8241d727b7d996754",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/Zeta-1.1-40.jar"
-    },
-    {
-      "name": "[1.21.1] SecurityCraft v1.10.2.1.jar",
-      "size": 5193371,
-      "sha1": "8760079e80039f982f1a92d3ee9d60a2bcab3251",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/%5B1.21.1%5D%20SecurityCraft%20v1.10.2.1.jar"
+      "name": "wunderlib-21.11.3-fabric.jar",
+      "size": 387674,
+      "sha1": "50129ed9dd31a1e98ec1e9ba0b1794844150858d",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/wunderlib-21.11.3-fabric.jar"
     }
   ],
   "overrides": [
     {
-      "path": "config/alexscaves-client.toml",
-      "size": 1929,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves-client.toml"
+      "path": "config/actorsystem.properties",
+      "size": 6831,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/actorsystem.properties"
     },
     {
-      "path": "config/alexscaves-general.toml",
-      "size": 6528,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves-general.toml"
+      "path": "config/actorsystem.properties.v1.bak",
+      "size": 2597,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/actorsystem.properties.v1.bak"
     },
     {
-      "path": "config/alexscaves_biome_generation/.version",
-      "size": 1,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/.version"
+      "path": "config/actorsystem.properties.v3.bak",
+      "size": 4844,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/actorsystem.properties.v3.bak"
     },
     {
-      "path": "config/alexscaves_biome_generation/abyssal_chasm.json",
-      "size": 273,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/abyssal_chasm.json"
+      "path": "config/actorsystem.properties.v5.bak",
+      "size": 5546,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/actorsystem.properties.v5.bak"
     },
     {
-      "path": "config/alexscaves_biome_generation/candy_cavity.json",
-      "size": 227,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/candy_cavity.json"
-    },
-    {
-      "path": "config/alexscaves_biome_generation/forlorn_hollows.json",
-      "size": 228,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/forlorn_hollows.json"
-    },
-    {
-      "path": "config/alexscaves_biome_generation/magnetic_caves.json",
-      "size": 228,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/magnetic_caves.json"
-    },
-    {
-      "path": "config/alexscaves_biome_generation/primordial_caves.json",
-      "size": 227,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/primordial_caves.json"
-    },
-    {
-      "path": "config/alexscaves_biome_generation/toxic_caves.json",
-      "size": 227,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexscaves_biome_generation/toxic_caves.json"
-    },
-    {
-      "path": "config/alexsmobs/alligator_snapping_turtle_spawns.json",
-      "size": 750,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/alligator_snapping_turtle_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/anaconda_spawns.json",
-      "size": 1032,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/anaconda_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/anteater_spawns.json",
-      "size": 1166,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/anteater_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/bald_eagle_spawns.json",
-      "size": 2719,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/bald_eagle_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/banana_slug_spawns.json",
-      "size": 1689,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/banana_slug_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/bison_spawns.json",
-      "size": 1753,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/bison_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/blobfish_spawns.json",
-      "size": 146,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/blobfish_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/blue_jay_spawns.json",
-      "size": 4020,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/blue_jay_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/bone_serpent_spawns.json",
-      "size": 253,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/bone_serpent_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/bunfungus_spawns.json",
-      "size": 478,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/bunfungus_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cachalot_whale_beached_spawns.json",
-      "size": 642,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cachalot_whale_beached_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cachalot_whale_spawns.json",
-      "size": 889,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cachalot_whale_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/caiman_spawns.json",
-      "size": 291,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/caiman_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/capuchin_monkey_spawns.json",
-      "size": 1184,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/capuchin_monkey_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/catfish_spawns.json",
-      "size": 1089,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/catfish_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cave_centipede_spawns.json",
-      "size": 2192,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cave_centipede_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cockroach_spawns.json",
-      "size": 2081,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cockroach_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/comb_jelly_spawns.json",
-      "size": 414,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/comb_jelly_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cosmaw_spawns.json",
-      "size": 371,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cosmaw_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/cosmic_cod_spawns.json",
-      "size": 139,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/cosmic_cod_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/crimson_mosquito_spawns.json",
-      "size": 781,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/crimson_mosquito_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/crocodile_spawns.json",
-      "size": 999,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/crocodile_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/crow_spawns.json",
-      "size": 5142,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/crow_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/devils_hole_pupfish_spawns.json",
-      "size": 145,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/devils_hole_pupfish_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/dropbear_spawns.json",
-      "size": 399,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/dropbear_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/elephant_spawns.json",
-      "size": 1163,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/elephant_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/emu_spawns.json",
-      "size": 1661,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/emu_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/endergrade_spawns.json",
-      "size": 250,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/endergrade_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/enderiophage_spawns.json",
-      "size": 603,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/enderiophage_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/farseer.json",
-      "size": 262,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/farseer.json"
-    },
-    {
-      "path": "config/alexsmobs/flutter_spawns.json",
-      "size": 147,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/flutter_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/flying_fish_spawns.json",
-      "size": 708,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/flying_fish_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/fly_spawns.json",
-      "size": 145,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/fly_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/frilled_shark_spawns.json",
-      "size": 146,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/frilled_shark_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/froststalker_spawns.json",
-      "size": 934,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/froststalker_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/gazelle_spawns.json",
-      "size": 1050,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/gazelle_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/gelada_monkey_spawns.json",
-      "size": 993,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/gelada_monkey_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/giant_squid_spawns.json",
-      "size": 146,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/giant_squid_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/gorilla_spawns.json",
-      "size": 1053,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/gorilla_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/grizzly_bear_spawns.json",
-      "size": 4020,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/grizzly_bear_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/guster_spawns.json",
-      "size": 1116,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/guster_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/hammerhead_shark_spawns.json",
-      "size": 250,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/hammerhead_shark_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/hummingbird_spawns.json",
-      "size": 3029,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/hummingbird_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/jerboa_spawns.json",
-      "size": 1240,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/jerboa_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/kangaroo_spawns.json",
-      "size": 1661,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/kangaroo_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/komodo_dragon_spawns.json",
-      "size": 771,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/komodo_dragon_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/laviathan_spawns.json",
-      "size": 142,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/laviathan_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/leafcutter_anthill_spawns.json",
-      "size": 1166,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/leafcutter_anthill_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/lobster_spawns.json",
-      "size": 398,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/lobster_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/maned_wolf_spawns.json",
-      "size": 1037,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/maned_wolf_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/mantis_shrimp_spawns.json",
-      "size": 381,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/mantis_shrimp_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/mimicube_spawns.json",
-      "size": 361,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/mimicube_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/mimic_octopus_spawns.json",
-      "size": 369,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/mimic_octopus_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/moose_spawns.json",
-      "size": 2279,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/moose_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/mudskipper_spawns.json",
-      "size": 291,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/mudskipper_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/mungus_spawns.json",
-      "size": 478,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/mungus_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/murmur.json",
-      "size": 2192,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/murmur.json"
-    },
-    {
-      "path": "config/alexsmobs/orca_spawns.json",
-      "size": 251,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/orca_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/platypus_spawns.json",
-      "size": 621,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/platypus_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/potoo_spawns.json",
-      "size": 148,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/potoo_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/raccoon_spawns.json",
-      "size": 3708,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/raccoon_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/rain_frog_spawns.json",
-      "size": 1240,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/rain_frog_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/rattlesnake_spawns.json",
-      "size": 1634,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/rattlesnake_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/rhinoceros_spawns.json",
-      "size": 1050,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/rhinoceros_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/roadrunner_spawns.json",
-      "size": 1634,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/roadrunner_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/rocky_roller_spawns.json",
-      "size": 669,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/rocky_roller_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/seagull_spawns.json",
-      "size": 1296,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/seagull_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/seal_spawns.json",
-      "size": 873,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/seal_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/shoebill_spawns.json",
-      "size": 619,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/shoebill_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/skelewag_spawns.json",
-      "size": 370,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/skelewag_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/skreecher.json",
-      "size": 272,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/skreecher.json"
-    },
-    {
-      "path": "config/alexsmobs/skunk_spawns.json",
-      "size": 2033,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/skunk_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/snow_leopard_spawns.json",
-      "size": 1804,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/snow_leopard_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/soul_vulture_spawns.json",
-      "size": 519,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/soul_vulture_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/spectre_spawns.json",
-      "size": 250,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/spectre_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/straddler_spawns.json",
-      "size": 660,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/straddler_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/stradpole_spawns.json",
-      "size": 660,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/stradpole_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/sugar_glider_spawns.json",
-      "size": 418,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/sugar_glider_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/sunbird_spawns.json",
-      "size": 3925,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/sunbird_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/tarantula_hawk_spawns.json",
-      "size": 1240,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/tarantula_hawk_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/tasmanian_devil_spawns.json",
-      "size": 1904,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/tasmanian_devil_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/terrapin_spawns.json",
-      "size": 621,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/terrapin_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/tiger_spawns.json",
-      "size": 1209,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/tiger_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/toucan_spawns.json",
-      "size": 1166,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/toucan_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/triops_spawns.json",
-      "size": 1240,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/triops_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/tusklin_spawns.json",
-      "size": 874,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/tusklin_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/underminer.json",
-      "size": 2081,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/underminer.json"
-    },
-    {
-      "path": "config/alexsmobs/void_worm_spawns.json",
-      "size": 18,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/void_worm_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/warped_mosco_spawns.json",
-      "size": 18,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/warped_mosco_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs/warped_toad_spawns.json",
-      "size": 661,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs/warped_toad_spawns.json"
-    },
-    {
-      "path": "config/alexsmobs-common.toml",
-      "size": 39593,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alexsmobs-common.toml"
-    },
-    {
-      "path": "config/alltheleaks.json",
-      "size": 398,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/alltheleaks.json"
-    },
-    {
-      "path": "config/ambientsounds-client.json",
-      "size": 4198,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ambientsounds-client.json"
-    },
-    {
-      "path": "config/amendments-client.toml",
-      "size": 5401,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/amendments-client.toml"
-    },
-    {
-      "path": "config/amendments-common.toml",
-      "size": 4960,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/amendments-common.toml"
-    },
-    {
-      "path": "config/aquaculture-common.toml",
-      "size": 774,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/aquaculture-common.toml"
+      "path": "config/appleskin.json5",
+      "size": 1218,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/appleskin.json5"
     },
     {
       "path": "config/artifacts/client.toml",
-      "size": 1013,
+      "size": 819,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/artifacts/client.toml"
     },
     {
@@ -1482,78 +490,98 @@
     },
     {
       "path": "config/artifacts/items.toml",
-      "size": 20343,
+      "size": 19809,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/artifacts/items.toml"
     },
     {
-      "path": "config/betteradvancements-client.toml",
-      "size": 939,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betteradvancements-client.toml"
+      "path": "config/bclib/client.json",
+      "size": 217,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/bclib/client.json"
     },
     {
-      "path": "config/betterdays-client.toml",
-      "size": 1044,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterdays-client.toml"
+      "path": "config/bclib/main.json",
+      "size": 110,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/bclib/main.json"
     },
     {
-      "path": "config/betterdays-common.toml",
-      "size": 11708,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterdays-common.toml"
+      "path": "config/betterend/biomes_toggle.json",
+      "size": 855,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterend/biomes_toggle.json"
     },
     {
-      "path": "config/bettervillage_1.properties",
-      "size": 270,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/bettervillage_1.properties"
+      "path": "config/betterend/client.json",
+      "size": 174,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterend/client.json"
     },
     {
-      "path": "config/biomesoplenty/biome_toggles.json",
-      "size": 2192,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/biomesoplenty/biome_toggles.json"
+      "path": "config/betterend/generator.json",
+      "size": 1326,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterend/generator.json"
     },
     {
-      "path": "config/biomesoplenty/gameplay.toml",
-      "size": 109,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/biomesoplenty/gameplay.toml"
+      "path": "config/betterend/portals.json",
+      "size": 190,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterend/portals.json"
     },
     {
-      "path": "config/biomesoplenty/generation.toml",
-      "size": 521,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/biomesoplenty/generation.toml"
+      "path": "config/betterend/structures_toggle.json",
+      "size": 463,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betterend/structures_toggle.json"
+    },
+    {
+      "path": "config/betternether/biomes_toggle.json",
+      "size": 780,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betternether/biomes_toggle.json"
+    },
+    {
+      "path": "config/betternether/client.json",
+      "size": 228,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betternether/client.json"
+    },
+    {
+      "path": "config/betternether/default_game_rules.json",
+      "size": 218,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betternether/default_game_rules.json"
+    },
+    {
+      "path": "config/betternether/structures_toggle.json",
+      "size": 327,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betternether/structures_toggle.json"
+    },
+    {
+      "path": "config/betternether/world.json",
+      "size": 117,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/betternether/world.json"
     },
     {
       "path": "config/c2me.toml",
-      "size": 12801,
+      "size": 9569,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/c2me.toml"
     },
     {
-      "path": "config/camera-client.toml",
-      "size": 332,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/camera-client.toml"
+      "path": "config/camerapture.client.json",
+      "size": 136,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/camerapture.client.json"
     },
     {
-      "path": "config/carryon-client.toml",
-      "size": 588,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/carryon-client.toml"
+      "path": "config/camerapture.server.json",
+      "size": 236,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/camerapture.server.json"
     },
     {
-      "path": "config/carryon-common.toml",
-      "size": 9110,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/carryon-common.toml"
+      "path": "config/cardinal-components-api.properties",
+      "size": 452,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cardinal-components-api.properties"
     },
     {
-      "path": "config/cataclysm-client.toml",
-      "size": 539,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cataclysm-client.toml"
+      "path": "config/carryon-client.json",
+      "size": 796,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/carryon-client.json"
     },
     {
-      "path": "config/cataclysm-common.toml",
-      "size": 30664,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cataclysm-common.toml"
-    },
-    {
-      "path": "config/citadel-common.toml",
-      "size": 662,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/citadel-common.toml"
+      "path": "config/carryon-common.json",
+      "size": 11207,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/carryon-common.json"
     },
     {
       "path": "config/collective.json5",
@@ -1561,504 +589,74 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/collective.json5"
     },
     {
-      "path": "config/configured-client.properties",
-      "size": 945,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/configured-client.properties"
-    },
-    {
-      "path": "config/copycats-client.toml",
-      "size": 340,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/copycats-client.toml"
-    },
-    {
-      "path": "config/copycats-common.toml",
-      "size": 2165,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/copycats-common.toml"
-    },
-    {
-      "path": "config/CoroUtil/General.toml",
-      "size": 129,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/CoroUtil/General.toml"
-    },
-    {
-      "path": "config/cosmeticarmorreworked-client.toml",
-      "size": 1328,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cosmeticarmorreworked-client.toml"
-    },
-    {
-      "path": "config/cosmeticarmorreworked-common.toml",
-      "size": 375,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cosmeticarmorreworked-common.toml"
+      "path": "config/cosmeticarmorreworked.json",
+      "size": 58,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cosmeticarmorreworked.json"
     },
     {
       "path": "config/cpm.json",
-      "size": 751,
+      "size": 1522,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/cpm.json"
     },
     {
-      "path": "config/create-client.toml",
-      "size": 4795,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/create-client.toml"
+      "path": "config/disablefog-early.properties",
+      "size": 112,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/disablefog-early.properties"
     },
     {
-      "path": "config/create-common.toml",
-      "size": 153,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/create-common.toml"
-    },
-    {
-      "path": "config/creativecore-client.json",
-      "size": 23,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/creativecore-client.json"
-    },
-    {
-      "path": "config/curios-client.toml",
-      "size": 766,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/curios-client.toml"
-    },
-    {
-      "path": "config/curios-common.toml",
-      "size": 159,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/curios-common.toml"
-    },
-    {
-      "path": "config/CustomNpcs.cfg",
-      "size": 1683,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/CustomNpcs.cfg"
-    },
-    {
-      "path": "config/darkdoppelganger-common.toml",
-      "size": 4706,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/darkdoppelganger-common.toml"
-    },
-    {
-      "path": "config/darkerdepths-common.toml",
-      "size": 5911,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/darkerdepths-common.toml"
-    },
-    {
-      "path": "config/decocraft-common.toml",
-      "size": 330,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/decocraft-common.toml"
-    },
-    {
-      "path": "config/drippyloadingscreen/early_window_reference.properties",
-      "size": 132,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/drippyloadingscreen/early_window_reference.properties"
-    },
-    {
-      "path": "config/drippyloadingscreen/options.txt",
-      "size": 2466,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/drippyloadingscreen/options.txt"
-    },
-    {
-      "path": "config/dummmmmmy-client.toml",
-      "size": 1548,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/dummmmmmy-client.toml"
-    },
-    {
-      "path": "config/dummmmmmy-common.toml",
-      "size": 1496,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/dummmmmmy-common.toml"
+      "path": "config/disablefog.json",
+      "size": 413,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/disablefog.json"
     },
     {
       "path": "config/emotecraft.json",
-      "size": 668,
+      "size": 1668,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/emotecraft.json"
     },
     {
-      "path": "config/emotecraft_emote_map.json",
-      "size": 117,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/emotecraft_emote_map.json"
+      "path": "config/explorerscompass.json",
+      "size": 2829,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/explorerscompass.json"
     },
     {
-      "path": "config/enchdesc.json",
-      "size": 2059,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/enchdesc.json"
+      "path": "config/fabric/indigo-renderer.properties",
+      "size": 260,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fabric/indigo-renderer.properties"
     },
     {
-      "path": "config/entityculling.json",
-      "size": 2228,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/entityculling.json"
+      "path": "config/farmersdelight-client.json",
+      "size": 281,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/farmersdelight-client.json"
     },
     {
-      "path": "config/epicknights/armor.json5",
-      "size": 12687,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/epicknights/armor.json5"
+      "path": "config/farmersdelight-common.json",
+      "size": 1279,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/farmersdelight-common.json"
     },
     {
-      "path": "config/epicknights/general.json5",
-      "size": 1915,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/epicknights/general.json5"
+      "path": "config/ferritecore.mixin.properties",
+      "size": 1615,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ferritecore.mixin.properties"
     },
     {
-      "path": "config/epicknights/mobs_equipment.json5",
-      "size": 1991,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/epicknights/mobs_equipment.json5"
+      "path": "config/flashback/imgui.ini",
+      "size": 635,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/flashback/imgui.ini"
     },
     {
-      "path": "config/epicknights/shields.json5",
-      "size": 1781,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/epicknights/shields.json5"
+      "path": "config/forgeconfigapiport.toml",
+      "size": 523,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/forgeconfigapiport.toml"
     },
     {
-      "path": "config/epicknights/weapons.json5",
-      "size": 9918,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/epicknights/weapons.json5"
+      "path": "config/gravestones.json",
+      "size": 694,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/gravestones.json"
     },
     {
-      "path": "config/essential-mod-partner/config.json",
-      "size": 28,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/essential-mod-partner/config.json"
-    },
-    {
-      "path": "config/essential-mod-partner/data.cache.json",
-      "size": 17775,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/essential-mod-partner/data.cache.json"
-    },
-    {
-      "path": "config/etched-client.toml",
-      "size": 172,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/etched-client.toml"
-    },
-    {
-      "path": "config/evenmoreinstruments-client.toml",
-      "size": 136,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/evenmoreinstruments-client.toml"
-    },
-    {
-      "path": "config/fallingtree.json",
-      "size": 1313,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fallingtree.json"
-    },
-    {
-      "path": "config/fancymenu/assets/boton2.jpg",
-      "size": 2138019,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/boton2.jpg"
-    },
-    {
-      "path": "config/fancymenu/assets/button.png",
-      "size": 232082,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/button.png"
-    },
-    {
-      "path": "config/fancymenu/assets/button_doraland_artwork_bar.png",
-      "size": 15522,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/button_doraland_artwork_bar.png"
-    },
-    {
-      "path": "config/fancymenu/assets/button_doraland_artwork_bar_hover.png",
-      "size": 12773,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/button_doraland_artwork_bar_hover.png"
-    },
-    {
-      "path": "config/fancymenu/assets/button_doraland_bar_200x25.png",
-      "size": 15518,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/button_doraland_bar_200x25.png"
-    },
-    {
-      "path": "config/fancymenu/assets/concours-discord-cartes-voeux-fortnite-france-6.png",
-      "size": 24403,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/concours-discord-cartes-voeux-fortnite-france-6.png"
-    },
-    {
-      "path": "config/fancymenu/assets/doradora.png",
-      "size": 2416755,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/doradora.png"
-    },
-    {
-      "path": "config/fancymenu/assets/images.jpg",
-      "size": 16423,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/images.jpg"
-    },
-    {
-      "path": "config/fancymenu/assets/mariconsete.png",
-      "size": 1089733,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/mariconsete.png"
-    },
-    {
-      "path": "config/fancymenu/assets/minecraft-text.png",
-      "size": 59446,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/assets/minecraft-text.png"
-    },
-    {
-      "path": "config/fancymenu/customizablemenus.txt",
-      "size": 570,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customizablemenus.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/connect_screen_layout.txt",
-      "size": 16230,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/connect_screen_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/drippy_loading_overlay_layout.txt",
-      "size": 16058,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/drippy_loading_overlay_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/join_multiplayer_screen_layout.txt",
-      "size": 31266,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/join_multiplayer_screen_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/pause_screen_layout.txt",
-      "size": 61665,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/pause_screen_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/receiving_level_screen_layout.txt",
-      "size": 13285,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/receiving_level_screen_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/customization/title_screen_layout.txt",
-      "size": 70208,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/customization/title_screen_layout.txt"
-    },
-    {
-      "path": "config/fancymenu/custom_gui_screens.txt",
-      "size": 51,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/custom_gui_screens.txt"
-    },
-    {
-      "path": "config/fancymenu/layout_editor/widgets/element_layer_control.lewidget",
-      "size": 198,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/layout_editor/widgets/element_layer_control.lewidget"
-    },
-    {
-      "path": "config/fancymenu/legacy_checklist.txt",
-      "size": 42,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/legacy_checklist.txt"
-    },
-    {
-      "path": "config/fancymenu/options.txt",
-      "size": 4400,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/options.txt"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/images/image_1.png",
-      "size": 4844290,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/images/image_1.png"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/images/image_2.png",
-      "size": 5238341,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/images/image_2.png"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/images/image_3.png",
-      "size": 2811733,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/images/image_3.png"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/images/image_4.png",
-      "size": 3287650,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/images/image_4.png"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/images/image_5.png",
-      "size": 1980410,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/images/image_5.png"
-    },
-    {
-      "path": "config/fancymenu/slideshows/myslideshow/properties.txt",
-      "size": 173,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/slideshows/myslideshow/properties.txt"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/cherry_blossom.json",
-      "size": 9349,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/cherry_blossom.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/cozy_campfire.json",
-      "size": 9347,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/cozy_campfire.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/dark.json",
-      "size": 9329,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/dark.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/dark_high_contrast.json",
-      "size": 9359,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/dark_high_contrast.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/light.json",
-      "size": 9331,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/light.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/light_high_contrast.json",
-      "size": 9361,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/light_high_contrast.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/pumpkin_soup.json",
-      "size": 9345,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/pumpkin_soup.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/purple_void.json",
-      "size": 9343,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/purple_void.json"
-    },
-    {
-      "path": "config/fancymenu/ui_themes/spooky_season.json",
-      "size": 9347,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/ui_themes/spooky_season.json"
-    },
-    {
-      "path": "config/fancymenu/user_variables.db",
-      "size": 23,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fancymenu/user_variables.db"
-    },
-    {
-      "path": "config/farmersdelight-client.toml",
-      "size": 476,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/farmersdelight-client.toml"
-    },
-    {
-      "path": "config/farmersdelight-common.toml",
-      "size": 3817,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/farmersdelight-common.toml"
-    },
-    {
-      "path": "config/ferritecore-mixin.toml",
-      "size": 1603,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ferritecore-mixin.toml"
-    },
-    {
-      "path": "config/flywheel-client.toml",
-      "size": 636,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/flywheel-client.toml"
-    },
-    {
-      "path": "config/fml.toml",
-      "size": 1557,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/fml.toml"
-    },
-    {
-      "path": "config/ftbchunks-client.snbt",
-      "size": 16999,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ftbchunks-client.snbt"
-    },
-    {
-      "path": "config/ftblibrary-client.snbt",
-      "size": 1728,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ftblibrary-client.snbt"
-    },
-    {
-      "path": "config/genshinstrument-client.toml",
-      "size": 1761,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/genshinstrument-client.toml"
-    },
-    {
-      "path": "config/iceandfire/iaf-client.json",
-      "size": 108,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/iceandfire/iaf-client.json"
-    },
-    {
-      "path": "config/iceandfire/iaf-common.json",
-      "size": 4703,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/iceandfire/iaf-common.json"
-    },
-    {
-      "path": "config/immediatelyfast.json",
-      "size": 1114,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immediatelyfast.json"
-    },
-    {
-      "path": "config/immersive_aircraft.json",
-      "size": 1644,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_aircraft.json"
-    },
-    {
-      "path": "config/immersive_armors.json",
-      "size": 435,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_armors.json"
-    },
-    {
-      "path": "config/immersive_furniture.json",
-      "size": 381,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_furniture.json"
-    },
-    {
-      "path": "config/immersive_melodies.json",
-      "size": 1173,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_melodies.json"
-    },
-    {
-      "path": "config/immersive_weathering-client.toml",
-      "size": 303,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_weathering-client.toml"
-    },
-    {
-      "path": "config/immersive_weathering-common.toml",
-      "size": 2710,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/immersive_weathering-common.toml"
-    },
-    {
-      "path": "config/incontrol/areas.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/areas.json"
-    },
-    {
-      "path": "config/incontrol/breakevents.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/breakevents.json"
-    },
-    {
-      "path": "config/incontrol/effects.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/effects.json"
-    },
-    {
-      "path": "config/incontrol/events.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/events.json"
-    },
-    {
-      "path": "config/incontrol/experience.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/experience.json"
-    },
-    {
-      "path": "config/incontrol/leftclicks.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/leftclicks.json"
-    },
-    {
-      "path": "config/incontrol/loot.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/loot.json"
-    },
-    {
-      "path": "config/incontrol/phases.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/phases.json"
-    },
-    {
-      "path": "config/incontrol/placeevents.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/placeevents.json"
-    },
-    {
-      "path": "config/incontrol/rightclicks.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/rightclicks.json"
-    },
-    {
-      "path": "config/incontrol/spawn.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/spawn.json"
-    },
-    {
-      "path": "config/incontrol/spawner.json",
-      "size": 2,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/incontrol/spawner.json"
+      "path": "config/infinitetrading.json5",
+      "size": 360,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/infinitetrading.json5"
     },
     {
       "path": "config/iris-excluded.json",
@@ -2067,48 +665,8 @@
     },
     {
       "path": "config/iris.properties",
-      "size": 315,
+      "size": 297,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/iris.properties"
-    },
-    {
-      "path": "config/irons_spellbooks-client.toml",
-      "size": 3571,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/irons_spellbooks-client.toml"
-    },
-    {
-      "path": "config/irons_spellbooks_spell_config/global_config.json",
-      "size": 257,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/irons_spellbooks_spell_config/global_config.json"
-    },
-    {
-      "path": "config/irons_spellbooks_spell_config/irons_spellbooks/example.txt",
-      "size": 683,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/irons_spellbooks_spell_config/irons_spellbooks/example.txt"
-    },
-    {
-      "path": "config/jade/hide-blocks.json",
-      "size": 149,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jade/hide-blocks.json"
-    },
-    {
-      "path": "config/jade/hide-entities.json",
-      "size": 243,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jade/hide-entities.json"
-    },
-    {
-      "path": "config/jade/jade.json",
-      "size": 1089,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jade/jade.json"
-    },
-    {
-      "path": "config/jade/plugins.json",
-      "size": 2767,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jade/plugins.json"
-    },
-    {
-      "path": "config/jade/sort-order.json",
-      "size": 2835,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jade/sort-order.json"
     },
     {
       "path": "config/jei/blacklist.json",
@@ -2117,7 +675,7 @@
     },
     {
       "path": "config/jei/client/default/jei-client.ini",
-      "size": 15176,
+      "size": 16974,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/client/default/jei-client.ini"
     },
     {
@@ -2137,258 +695,178 @@
     },
     {
       "path": "config/jei/client/ingredient-list-mod-sort-order.ini",
-      "size": 1475,
+      "size": 241,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/client/ingredient-list-mod-sort-order.ini"
     },
     {
       "path": "config/jei/client/ingredient-list-type-sort-order.ini",
-      "size": 230,
+      "size": 111,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/client/ingredient-list-type-sort-order.ini"
     },
     {
       "path": "config/jei/client/recipe-category-sort-order.ini",
-      "size": 3053,
+      "size": 613,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/client/recipe-category-sort-order.ini"
     },
     {
-      "path": "config/jei/world/server/Doraland (doralandmc_holyhosting_club)/lookupHistory.json",
-      "size": 6316,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/world/server/Doraland%20(doralandmc_holyhosting_club)/lookupHistory.json"
+      "path": "config/journeymap-server.json",
+      "size": 67,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/journeymap-server.json"
     },
     {
-      "path": "config/jei/world/server/doralandmc_holyhosting_club (doralandmc_holyhosting_club)/lookupHistory.json",
-      "size": 123,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jei/world/server/doralandmc_holyhosting_club%20(doralandmc_holyhosting_club)/lookupHistory.json"
+      "path": "config/lambdynlights.toml",
+      "size": 6120,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lambdynlights.toml"
     },
     {
-      "path": "config/jupiter.json",
-      "size": 171,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/jupiter.json"
+      "path": "config/litematica/litematica_End Island - Only 50% Done.json",
+      "size": 91,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_End%20Island%20-%20Only%2050%25%20Done.json"
     },
     {
-      "path": "config/kirriscasino.json",
-      "size": 747,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/kirriscasino.json"
+      "path": "config/litematica/litematica_End Island - Only 50% Done_dim_minecraft_overworld.json",
+      "size": 754,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_End%20Island%20-%20Only%2050%25%20Done_dim_minecraft_overworld.json"
     },
     {
-      "path": "config/knocker.toml",
-      "size": 587,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/knocker.toml"
+      "path": "config/litematica/litematica_enx-soc-12.enx.host_10037.json",
+      "size": 95,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_enx-soc-12.enx.host_10037.json"
     },
     {
-      "path": "config/konkrete/locals/de_de.local",
-      "size": 369,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/konkrete/locals/de_de.local"
+      "path": "config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_overworld.json",
+      "size": 754,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_overworld.json"
     },
     {
-      "path": "config/konkrete/locals/en_us.local",
-      "size": 426,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/konkrete/locals/en_us.local"
+      "path": "config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_the_end.json",
+      "size": 754,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_the_end.json"
     },
     {
-      "path": "config/konkrete/locals/pl_pl.local",
-      "size": 313,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/konkrete/locals/pl_pl.local"
+      "path": "config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_the_nether.json",
+      "size": 1955,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_enx-soc-12.enx.host_10037_dim_minecraft_the_nether.json"
     },
     {
-      "path": "config/konkrete/locals/pt_br.local",
-      "size": 322,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/konkrete/locals/pt_br.local"
+      "path": "config/litematica/litematica_New World.json",
+      "size": 91,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_New%20World.json"
     },
     {
-      "path": "config/lexiconfig.toml",
-      "size": 129,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lexiconfig.toml"
+      "path": "config/litematica/litematica_New World_dim_minecraft_overworld.json",
+      "size": 749,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_New%20World_dim_minecraft_overworld.json"
     },
     {
-      "path": "config/libraryferret_1.properties",
-      "size": 193,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/libraryferret_1.properties"
+      "path": "config/litematica/litematica_ZamEmpire.json",
+      "size": 91,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_ZamEmpire.json"
+    },
+    {
+      "path": "config/litematica/litematica_ZamEmpire_dim_minecraft_overworld.json",
+      "size": 754,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica/litematica_ZamEmpire_dim_minecraft_overworld.json"
+    },
+    {
+      "path": "config/litematica.json",
+      "size": 13019,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/litematica.json"
     },
     {
       "path": "config/lithostitched.json",
-      "size": 242,
+      "size": 284,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lithostitched.json"
     },
     {
-      "path": "config/lootr-client.toml",
-      "size": 482,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lootr-client.toml"
+      "path": "config/lootr.json",
+      "size": 1729,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lootr.json"
     },
     {
-      "path": "config/lootr-common.toml",
-      "size": 8415,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/lootr-common.toml"
+      "path": "config/malilib.json",
+      "size": 1145,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/malilib.json"
     },
     {
-      "path": "config/Mekanism/additions-client.toml",
-      "size": 162,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/additions-client.toml"
-    },
-    {
-      "path": "config/Mekanism/client.toml",
-      "size": 8753,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/client.toml"
-    },
-    {
-      "path": "config/Mekanism/common.toml",
-      "size": 1075,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/common.toml"
-    },
-    {
-      "path": "config/Mekanism/startup.toml",
-      "size": 1792,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/startup.toml"
-    },
-    {
-      "path": "config/Mekanism/tools-client.toml",
-      "size": 101,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/tools-client.toml"
-    },
-    {
-      "path": "config/Mekanism/tools-materials-startup.toml",
-      "size": 23929,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/Mekanism/tools-materials-startup.toml"
-    },
-    {
-      "path": "config/modernfix-common.toml",
-      "size": 105,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/modernfix-common.toml"
+      "path": "config/mezz_config/client/default/settings.ini",
+      "size": 1452,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/mezz_config/client/default/settings.ini"
     },
     {
       "path": "config/modernfix-mixins.properties",
-      "size": 5567,
+      "size": 3881,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/modernfix-mixins.properties"
     },
     {
-      "path": "config/moonlight-client.toml",
-      "size": 2136,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/moonlight-client.toml"
+      "path": "config/origins_server.json",
+      "size": 2795,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/origins_server.json"
     },
     {
-      "path": "config/moonlight-common.toml",
-      "size": 960,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/moonlight-common.toml"
+      "path": "config/pal.properties",
+      "size": 216,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pal.properties"
     },
     {
-      "path": "config/moreculling.toml",
-      "size": 540,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/moreculling.toml"
+      "path": "config/power_config.json5",
+      "size": 224,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/power_config.json5"
     },
     {
-      "path": "config/mowziesmobs-client.toml",
-      "size": 980,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/mowziesmobs-client.toml"
+      "path": "config/pulse-trims/pack/assets/minecraft/shaders/core/entity.fsh",
+      "size": 2766,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pulse-trims/pack/assets/minecraft/shaders/core/entity.fsh"
     },
     {
-      "path": "config/mowziesmobs-common.toml",
-      "size": 37854,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/mowziesmobs-common.toml"
+      "path": "config/pulse-trims/pack/assets/minecraft/shaders/core/entity.vsh",
+      "size": 1462,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pulse-trims/pack/assets/minecraft/shaders/core/entity.vsh"
     },
     {
-      "path": "config/mutantmonsters-common.toml",
-      "size": 1122,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/mutantmonsters-common.toml"
+      "path": "config/pulse-trims/pack/pack.mcmeta",
+      "size": 152,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pulse-trims/pack/pack.mcmeta"
     },
     {
-      "path": "config/neoforge-client.toml",
-      "size": 578,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/neoforge-client.toml"
+      "path": "config/pulse-trims/pack/pack.png",
+      "size": 20875,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pulse-trims/pack/pack.png"
     },
     {
-      "path": "config/neoforge-common.toml",
-      "size": 772,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/neoforge-common.toml"
+      "path": "config/pulse-trims.json",
+      "size": 856,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pulse-trims.json"
     },
     {
-      "path": "config/paraglider-common.toml",
-      "size": 1508,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/paraglider-common.toml"
+      "path": "config/redsky.properties",
+      "size": 496,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/redsky.properties"
     },
     {
-      "path": "config/paraglider-player-states.toml",
-      "size": 2350,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/paraglider-player-states.toml"
+      "path": "config/servercore/config.yml",
+      "size": 12161,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/servercore/config.yml"
     },
     {
-      "path": "config/pehkui-client.toml",
-      "size": 169,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pehkui-client.toml"
-    },
-    {
-      "path": "config/pehkui-common.toml",
-      "size": 403,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/pehkui-common.toml"
-    },
-    {
-      "path": "config/playerrevive-client.json",
-      "size": 131,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/playerrevive-client.json"
-    },
-    {
-      "path": "config/ponder-client.toml",
-      "size": 635,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/ponder-client.toml"
-    },
-    {
-      "path": "config/QuantifiedAPI/quantified_config.json",
-      "size": 5919,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/QuantifiedAPI/quantified_config.json"
-    },
-    {
-      "path": "config/quark-common.toml",
-      "size": 84955,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/quark-common.toml"
-    },
-    {
-      "path": "config/reducedores-common.toml",
-      "size": 528,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/reducedores-common.toml"
-    },
-    {
-      "path": "config/sdrp-common.json5",
-      "size": 3976,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sdrp-common.json5"
-    },
-    {
-      "path": "config/seasonsfix-common.toml",
-      "size": 206,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/seasonsfix-common.toml"
-    },
-    {
-      "path": "config/securitycraft-client.toml",
-      "size": 2020,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/securitycraft-client.toml"
-    },
-    {
-      "path": "config/sereneseasons/fertility.toml",
-      "size": 481,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sereneseasons/fertility.toml"
-    },
-    {
-      "path": "config/sereneseasons/seasons.toml",
-      "size": 13899,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sereneseasons/seasons.toml"
-    },
-    {
-      "path": "config/sereneseasonsplus-common.toml",
-      "size": 2141,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sereneseasonsplus-common.toml"
-    },
-    {
-      "path": "config/simpleradio-client.toml",
-      "size": 1506,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/simpleradio-client.toml"
-    },
-    {
-      "path": "config/simpleradio-server.toml",
-      "size": 12313,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/simpleradio-server.toml"
+      "path": "config/servercore/optimizations.yml",
+      "size": 1340,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/servercore/optimizations.yml"
     },
     {
       "path": "config/skinlayers.json",
       "size": 497,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/skinlayers.json"
+    },
+    {
+      "path": "config/skinrestorer/config.json",
+      "size": 1206,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/skinrestorer/config.json"
+    },
+    {
+      "path": "config/skinrestorer/mojang_profile_cache.json",
+      "size": 109,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/skinrestorer/mojang_profile_cache.json"
     },
     {
       "path": "config/sodium-fingerprint.json",
@@ -2402,103 +880,43 @@
     },
     {
       "path": "config/sodium-options.json",
-      "size": 761,
+      "size": 775,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sodium-options.json"
     },
     {
-      "path": "config/sophisticatedbackpacks-common.toml",
-      "size": 118,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sophisticatedbackpacks-common.toml"
+      "path": "config/strike/config/singleplayer/End Island - Only 50% Done/config.json",
+      "size": 257,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/End%20Island%20-%20Only%2050%25%20Done/config.json"
     },
     {
-      "path": "config/sophisticatedcore-client.toml",
-      "size": 478,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sophisticatedcore-client.toml"
+      "path": "config/strike/config/singleplayer/End Island - Only 50% Done/ps.dat",
+      "size": 80,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/End%20Island%20-%20Only%2050%25%20Done/ps.dat"
     },
     {
-      "path": "config/sophisticatedcore-common.toml",
-      "size": 108,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/sophisticatedcore-common.toml"
+      "path": "config/strike/config/singleplayer/New World/config.json",
+      "size": 257,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/New%20World/config.json"
     },
     {
-      "path": "config/spark/tmp/about.txt",
-      "size": 585,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/spark/tmp/about.txt"
+      "path": "config/strike/config/singleplayer/New World/ps.dat",
+      "size": 80,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/New%20World/ps.dat"
     },
     {
-      "path": "config/starterkit/descriptions/Archer.txt",
-      "size": 57,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/descriptions/Archer.txt"
+      "path": "config/strike/config/singleplayer/ZamEmpire/config.json",
+      "size": 257,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/ZamEmpire/config.json"
     },
     {
-      "path": "config/starterkit/descriptions/Default.txt",
-      "size": 125,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/descriptions/Default.txt"
-    },
-    {
-      "path": "config/starterkit/descriptions/Lumberjack.txt",
-      "size": 52,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/descriptions/Lumberjack.txt"
-    },
-    {
-      "path": "config/starterkit/descriptions/Witch.txt",
-      "size": 52,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/descriptions/Witch.txt"
-    },
-    {
-      "path": "config/starterkit/kits/Default.txt",
-      "size": 577,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/kits/Default.txt"
-    },
-    {
-      "path": "config/starterkit/kits/inactive/Archer.txt",
-      "size": 683,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/kits/inactive/Archer.txt"
-    },
-    {
-      "path": "config/starterkit/kits/inactive/Lumberjack.txt",
-      "size": 655,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/kits/inactive/Lumberjack.txt"
-    },
-    {
-      "path": "config/starterkit/kits/inactive/Witch.txt",
-      "size": 1115,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit/kits/inactive/Witch.txt"
-    },
-    {
-      "path": "config/starterkit.json5",
-      "size": 1511,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/starterkit.json5"
-    },
-    {
-      "path": "config/supplementaries-client.toml",
-      "size": 9113,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/supplementaries-client.toml"
-    },
-    {
-      "path": "config/supplementaries-common.toml",
-      "size": 31783,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/supplementaries-common.toml"
-    },
-    {
-      "path": "config/terrablender.toml",
-      "size": 988,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/terrablender.toml"
+      "path": "config/strike/config/singleplayer/ZamEmpire/ps.dat",
+      "size": 80,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/strike/config/singleplayer/ZamEmpire/ps.dat"
     },
     {
       "path": "config/terralith.json",
-      "size": 212,
+      "size": 236,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/terralith.json"
-    },
-    {
-      "path": "config/tombstone-client.toml",
-      "size": 4193,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/tombstone-client.toml"
-    },
-    {
-      "path": "config/tombstone-common.toml",
-      "size": 9450,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/tombstone-common.toml"
     },
     {
       "path": "config/transition.json",
@@ -2506,9 +924,19 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/transition.json"
     },
     {
-      "path": "config/trashslot-common.toml",
-      "size": 752,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/trashslot-common.toml"
+      "path": "config/travelersbackpack-client.toml",
+      "size": 1612,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/travelersbackpack-client.toml"
+    },
+    {
+      "path": "config/travelersbackpack-common.toml",
+      "size": 197,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/travelersbackpack-common.toml"
+    },
+    {
+      "path": "config/travelersbackpack-server.toml",
+      "size": 11672,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/travelersbackpack-server.toml"
     },
     {
       "path": "config/trender.json",
@@ -2516,24 +944,9 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/trender.json"
     },
     {
-      "path": "config/twilightforest-client.toml",
-      "size": 2997,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/twilightforest-client.toml"
-    },
-    {
-      "path": "config/twilightforest-common.toml",
-      "size": 9324,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/twilightforest-common.toml"
-    },
-    {
-      "path": "config/vampirism-client.toml",
-      "size": 3822,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/vampirism-client.toml"
-    },
-    {
-      "path": "config/vampirism-common.toml",
-      "size": 1931,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/vampirism-common.toml"
+      "path": "config/vcinteraction/vcinteraction.properties",
+      "size": 388,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/vcinteraction/vcinteraction.properties"
     },
     {
       "path": "config/voicechat/category-volumes.properties",
@@ -2557,63 +970,808 @@
     },
     {
       "path": "config/voicechat/voicechat-client.properties",
-      "size": 5164,
+      "size": 5170,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/voicechat/voicechat-client.properties"
     },
     {
       "path": "config/voicechat/voicechat-server.properties",
-      "size": 3072,
+      "size": 3215,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/voicechat/voicechat-server.properties"
     },
     {
-      "path": "config/watut-client.toml",
-      "size": 3444,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watut-client.toml"
+      "path": "config/waterconfig.toml",
+      "size": 677,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/waterconfig.toml"
     },
     {
-      "path": "config/watut-common.toml",
-      "size": 169,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watut-common.toml"
-    },
-    {
-      "path": "config/watut-item-arm-adjustments.json",
-      "size": 3367,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watut-item-arm-adjustments.json"
-    },
-    {
-      "path": "config/watut-server.toml",
-      "size": 2945,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watut-server.toml"
+      "path": "config/watermedia.toml",
+      "size": 8017,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/watermedia.toml"
     },
     {
       "path": "config/waystones-common.toml",
-      "size": 6604,
+      "size": 5784,
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/waystones-common.toml"
     },
     {
-      "path": "config/werewolves-client.toml",
-      "size": 276,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/werewolves-client.toml"
+      "path": "config/worldedit/.archive-unpack/6044d7a8/.unpack_finished",
+      "size": 0,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/.unpack_finished"
     },
     {
-      "path": "config/werewolves-common.toml",
-      "size": 367,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/werewolves-common.toml"
+      "path": "config/worldedit/.archive-unpack/6044d7a8/af/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/af/strings.json"
     },
     {
-      "path": "config/whitenoise-client.toml",
-      "size": 346,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/whitenoise-client.toml"
+      "path": "config/worldedit/.archive-unpack/6044d7a8/an/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/an/strings.json"
     },
     {
-      "path": "config/zeta-common.toml",
-      "size": 1908,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/zeta-common.toml"
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ar/strings.json",
+      "size": 4566,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ar/strings.json"
     },
     {
-      "path": "defaultconfigs/biolith/general.json",
-      "size": 172,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/defaultconfigs/biolith/general.json"
+      "path": "config/worldedit/.archive-unpack/6044d7a8/arn/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/arn/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ast/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ast/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/av/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/av/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/az/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/az/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ba/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ba/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/be/strings.json",
+      "size": 4057,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/be/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/bg/strings.json",
+      "size": 4177,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/bg/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/bn/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/bn/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/br-FR/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/br-FR/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/brb/strings.json",
+      "size": 37074,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/brb/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/bs/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/bs/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ca/strings.json",
+      "size": 554,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ca/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ce/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ce/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ckb/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ckb/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/cs/strings.json",
+      "size": 37055,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/cs/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/csb/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/csb/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/cv/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/cv/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/cy/strings.json",
+      "size": 103,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/cy/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/da/strings.json",
+      "size": 33295,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/da/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/de/strings.json",
+      "size": 38304,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/de/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/de-AT/strings.json",
+      "size": 38304,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/de-AT/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/de-CH/strings.json",
+      "size": 37941,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/de-CH/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/dsb-DE/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/dsb-DE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/el/strings.json",
+      "size": 399,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/el/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-AU/strings.json",
+      "size": 1120,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-AU/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-CA/strings.json",
+      "size": 712,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-CA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-GB/strings.json",
+      "size": 1878,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-GB/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-NZ/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-NZ/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-PT/strings.json",
+      "size": 1992,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-PT/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/en-UD/strings.json",
+      "size": 17619,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/en-UD/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/enp/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/enp/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/enws/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/enws/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/eo/strings.json",
+      "size": 1007,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/eo/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-AR/strings.json",
+      "size": 37076,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-AR/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-CL/strings.json",
+      "size": 37203,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-CL/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-CO/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-CO/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-CR/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-CR/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-EC/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-EC/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-ES/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-ES/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-MX/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-MX/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-PE/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-PE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-UY/strings.json",
+      "size": 37300,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-UY/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/es-VE/strings.json",
+      "size": 36931,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/es-VE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/et/strings.json",
+      "size": 5563,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/et/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/eu/strings.json",
+      "size": 8577,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/eu/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fa/strings.json",
+      "size": 297,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fa/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fi/strings.json",
+      "size": 1550,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fi/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fil/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fil/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fo/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fo/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fr/strings.json",
+      "size": 39581,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fr/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fr-CA/strings.json",
+      "size": 39630,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fr-CA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fra-DE/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fra-DE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fur-IT/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fur-IT/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/fy-NL/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/fy-NL/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ga-IE/strings.json",
+      "size": 58,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ga-IE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/gd/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/gd/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/gl/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/gl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/gn/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/gn/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/got/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/got/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/gv/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/gv/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/haw/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/haw/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/he/strings.json",
+      "size": 1460,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/he/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/hi/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/hi/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/hr/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/hr/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/hsb-DE/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/hsb-DE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/hu/strings.json",
+      "size": 11082,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/hu/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/hy-AM/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/hy-AM/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/id/strings.json",
+      "size": 32745,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/id/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ido/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ido/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ig/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ig/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/is/strings.json",
+      "size": 279,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/is/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/it/strings.json",
+      "size": 34605,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/it/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ja/strings.json",
+      "size": 43264,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ja/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/jbo/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/jbo/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ka/strings.json",
+      "size": 1241,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ka/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/kab/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/kab/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/kk/strings.json",
+      "size": 3419,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/kk/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/kn/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/kn/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ko/strings.json",
+      "size": 32824,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ko/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ksh/strings.json",
+      "size": 38304,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ksh/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/kw/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/kw/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ky/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ky/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/la-LA/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/la-LA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/lb/strings.json",
+      "size": 5220,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/lb/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/li/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/li/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/lo/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/lo/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/lol/strings.json",
+      "size": 22183,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/lol/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/lt/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/lt/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/lv/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/lv/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/me/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/me/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/mi/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/mi/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/mk/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/mk/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/mn/strings.json",
+      "size": 2954,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/mn/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/moh/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/moh/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ms/strings.json",
+      "size": 3636,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ms/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/mt/strings.json",
+      "size": 1759,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/mt/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/nds/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/nds/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ne-NP/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ne-NP/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/nl/strings.json",
+      "size": 37074,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/nl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/nl-BE/strings.json",
+      "size": 37064,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/nl-BE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/nn-NO/strings.json",
+      "size": 31244,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/nn-NO/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/no/strings.json",
+      "size": 31244,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/no/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/nuk/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/nuk/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/oc/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/oc/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/oj/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/oj/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/pa-IN/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/pa-IN/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/pl/strings.json",
+      "size": 35627,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/pl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/pt-BR/strings.json",
+      "size": 36051,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/pt-BR/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/pt-PT/strings.json",
+      "size": 5382,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/pt-PT/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/qya-AA/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/qya-AA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ro/strings.json",
+      "size": 1892,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ro/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ru/strings.json",
+      "size": 49548,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ru/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ry-UA/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ry-UA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sah/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sah/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/se/strings.json",
+      "size": 826,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/se/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sk/strings.json",
+      "size": 10085,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sk/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sl/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/so/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/so/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sq/strings.json",
+      "size": 12892,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sq/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sr/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sr/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sr-CS/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sr-CS/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sr-Cyrl-ME/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sr-Cyrl-ME/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/strings.json",
+      "size": 34892,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/sv-SE/strings.json",
+      "size": 28384,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/sv-SE/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/swg/strings.json",
+      "size": 38304,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/swg/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/szl/strings.json",
+      "size": 35627,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/szl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ta/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ta/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/th/strings.json",
+      "size": 8262,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/th/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/tl/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/tl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/tlh-AA/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/tlh-AA/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/tr/strings.json",
+      "size": 37485,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/tr/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/tt-RU/strings.json",
+      "size": 1467,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/tt-RU/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/tzl/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/tzl/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/uk/strings.json",
+      "size": 48926,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/uk/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/ur-PK/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/ur-PK/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/uz/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/uz/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/val-ES/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/val-ES/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/vec/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/vec/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/vi/strings.json",
+      "size": 5975,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/vi/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/yi/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/yi/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/yo/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/yo/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/zh-CN/strings.json",
+      "size": 35307,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/zh-CN/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/zh-HK/strings.json",
+      "size": 3,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/zh-HK/strings.json"
+    },
+    {
+      "path": "config/worldedit/.archive-unpack/6044d7a8/zh-TW/strings.json",
+      "size": 35509,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/.archive-unpack/6044d7a8/zh-TW/strings.json"
+    },
+    {
+      "path": "config/worldedit/schematics/pueblito.schematic.schem",
+      "size": 984214,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/schematics/pueblito.schematic.schem"
+    },
+    {
+      "path": "config/worldedit/schematics/pueblo3.schem",
+      "size": 259231,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/schematics/pueblo3.schem"
+    },
+    {
+      "path": "config/worldedit/sessions/8aa60fd8-07dd-4291-8c01-4c7fc03711b5.json",
+      "size": 139,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/sessions/8aa60fd8-07dd-4291-8c01-4c7fc03711b5.json"
+    },
+    {
+      "path": "config/worldedit/worldedit.properties",
+      "size": 2545,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/worldedit/worldedit.properties"
+    },
+    {
+      "path": "config/wover/cached.json",
+      "size": 138,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/wover/cached.json"
+    },
+    {
+      "path": "config/wover/client.json",
+      "size": 310,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/wover/client.json"
+    },
+    {
+      "path": "config/wover/main.json",
+      "size": 158,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/wover/main.json"
+    },
+    {
+      "path": "config/yacl.json5",
+      "size": 250,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/config/yacl.json5"
     },
     {
       "path": "emotes/.README.txt",
@@ -10166,9 +9324,29 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/emotes/%D0%A3%D0%BF%D0%B0%D1%81%D1%82%D1%8C%20%D0%BE%D1%82%20%D0%B1%D0%BE%D0%BB%D0%B8%20%D0%B2%20%D1%8F%D0%B8%D1%87%D0%BA%D0%B0%D1%85.emotecraft"
     },
     {
-      "path": "shaderpacks/ComplementaryReimagined_r5.9.3.zip.txt",
-      "size": 123,
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/shaderpacks/ComplementaryReimagined_r5.9.3.zip.txt"
+      "path": "resourcepacks/Armor Trim Preview.zip",
+      "size": 3003160,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/resourcepacks/Armor%20Trim%20Preview.zip"
+    },
+    {
+      "path": "servers.dat",
+      "size": 3533,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/servers.dat"
+    },
+    {
+      "path": "shaderpacks/BSL_v10.1.8.zip",
+      "size": 1134153,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/shaderpacks/BSL_v10.1.8.zip"
+    },
+    {
+      "path": "shaderpacks/BSL_v10.1.8.zip.txt",
+      "size": 160,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/shaderpacks/BSL_v10.1.8.zip.txt"
+    },
+    {
+      "path": "shaderpacks/Solas Shader V3.9.zip",
+      "size": 1243081,
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/overrides/shaderpacks/Solas%20Shader%20V3.9.zip"
     }
   ]
 }

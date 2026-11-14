@@ -1,35 +1,43 @@
 {
   "editorLastVersion": "0.6.27a",
-  "keybindPerModel": {},
-  "playerSettings": {},
-  "globalSettings": {
-    "safetyProfile": "off"
-  },
-  "blockedList": {},
-  "modelProperties": {
-    "": {
-      "values": {},
-      "profiles": {}
-    }
-  },
-  "serverSettings": {
-    "ut21.holy.gg.": {
-      "ignoreSafetyRec": true
-    }
-  },
-  "editorUVAreaAlpha": 0.8,
-  "editorSelectMouseButton": 0.0,
+  "editorRecentProjects": [
+    "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\onicongirar.cpmproject",
+    "D:\\Staarthingskin.cpmproject",
+    "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\ConLoDeGirar.cpmproject",
+    "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\test.cpmproject",
+    "D:\\Crow.cpmproject",
+    "D:\\Leirianth.cpmproject",
+    "D:\\HadrielKingOutfit (1).cpmproject",
+    "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\te.cpmproject",
+    "C:\\Users\\vxmja\\Downloads\\hadrielmaricon.cpmproject",
+    "C:\\Users\\vxmja\\AppData\\Roaming\\ModrinthApp\\profiles\\Web SMP Modpack\\SinLoDeAtras.cpmproject",
+    "D:\\Spider_no_discord_.cpmproject"
+  ],
   "titleScreenButton": true,
-  "friendSettings": {},
+  "serverSettings": {},
   "keybinds": {},
-  "editorDragMouseButton": -1.0,
-  "renderNames": true,
+  "playerSettings": {},
+  "globalSettings": {},
+  "friendSettings": {},
+  "friendList": {},
+  "safetyProfiles": {},
+  "blockedList": {},
+  "editorSelectMouseButton": 0.0,
   "editorMenuMouseButton": 1.0,
   "editorRotateMouseButton": 2.0,
-  "editorRecentProjects": [
-    "C:\\Users\\sathy\\Desktop\\LightFury.cpmproject"
-  ],
-  "safetyProfiles": {},
-  "friendList": {},
-  "experimentalExport0614": true
+  "editorDragMouseButton": -1.0,
+  "editorUVAreaAlpha": 0.8,
+  "keybindPerModel": {},
+  "modelProperties": {
+    "SmallOskar_WingCombat_Test": {
+      "values": {}
+    },
+    "": {
+      "values": {}
+    }
+  },
+  "selectedModelOld": "technoblade (1).cpmmodel",
+  "selectedModel": "technoblade (1).cpmmodel",
+  "renderNames": true,
+  "reopenProject": "D:\\Spider_no_discord_.cpmproject"
 }

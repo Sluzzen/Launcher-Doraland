@@ -72,21 +72,15 @@
 	underwaterFallDamage = false
 
 [chorus_totem]
-	#Whether the Chorus Totem is consumed after activating
+	#Whether the Chorus Totem prevents the wearer's death
 	#Allowed Values: true, false
-	consumeOnUse = true
-	#The duration in seconds the Chorus Totem goes on cooldown for after activating
-	#Range: 0 ~ 72000
-	cooldown = 0
+	enabled = true
 	#Whether this item can be found in structures or drop from entities
 	#Allowed Values: true, false
 	generateAsLoot = true
 	#The amount of health points that are restored after the Chorus Totem activates
 	#Range: > 0
 	healthRestored = 9
-	#The probability that the Chorus Totem activates when a player dies
-	#Range: 0.0 ~ 1.0
-	teleportationChance = 1.0
 
 [cloud_in_a_bottle]
 	#Whether the Cloud in a Bottle allows the wearer to double jump
@@ -153,9 +147,6 @@
 	#Whether the Eternal Steak can be eaten
 	#Allowed Values: true, false
 	enabled = true
-	#Whether this item can be found in structures or drop from entities
-	#Allowed Values: true, false
-	generateAsLoot = true
 
 [everlasting_beef]
 	#The duration in seconds the Everlasting Beef goes on cooldown for after being eaten
@@ -381,9 +372,6 @@
 	#Whether the Scarf of Invisibility is hidden when the wearer is invisible
 	#Allowed Values: true, false
 	hideWhenInvisible = false
-	#Whether the Scarf of Invisibility should prevent all status effects from spawning particles
-	#Allowed Values: true, false
-	hidesEffectParticles = false
 
 [shock_pendant]
 	#Whether the Shock Pendant cancels damage from lightning
@@ -458,10 +446,10 @@
 	#Whether this item can be found in structures or drop from entities
 	#Allowed Values: true, false
 	generateAsLoot = true
-	#The maximum amount of damage that is dealt when the Thorn Pendant activates
+	#The minimum amount of damage that is dealt when the Thorn Pendant activates
 	#Range: > 0
 	maxDamage = 6
-	#The minimum amount of damage that is dealt when the Thorn Pendant activates
+	#The maximum amount of damage that is dealt when the Thorn Pendant activates
 	#Range: > 0
 	minDamage = 2
 	#The probability that the Thorn Pendant damages an attacking entity
@@ -528,7 +516,7 @@
 
 [whoopee_cushion]
 	#The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion
-	#Range: -Infinity ~ Infinity
+	#Range: 0.0 ~ 1.0
 	fartChance = 0.12
 	#Whether this item can be found in structures or drop from entities
 	#Allowed Values: true, false
