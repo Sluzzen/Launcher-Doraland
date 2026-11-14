@@ -676,10 +676,10 @@ function createWindow() {
     minHeight: 640,
     frame: false,
     transparent: false,
-    backgroundColor: '#070D09',
+    backgroundColor: '#080808',
     resizable: true,
     show: false,
-    icon: path.join(__dirname, '..', 'assets', 'logo.png'),
+    icon: path.join(__dirname, '..', 'assets', process.platform === 'win32' ? 'icon.ico' : 'logo.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

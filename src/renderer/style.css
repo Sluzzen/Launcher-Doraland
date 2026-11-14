@@ -269,9 +269,9 @@ html, body {
 
 .logo-ring {
   position: absolute;
-  inset: 4px;
+  inset: 5px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(239, 68, 68, 0.45);
+  border: 1.5px dashed rgba(239, 68, 68, 0.6);
   animation: spinSlow 24s linear infinite;
 }
 
@@ -280,11 +280,11 @@ html, body {
 }
 
 .sidebar-logo {
-  width: 104px;
-  height: 84px;
+  width: 114px;
+  height: 88px;
   object-fit: contain;
   animation: floatLogo 4s ease-in-out infinite;
-  filter: drop-shadow(0 4px 16px rgba(239, 68, 68, 0.5));
+  filter: drop-shadow(0 4px 18px rgba(239, 68, 68, 0.65));
   position: relative;
   z-index: 2;
 }

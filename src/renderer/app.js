@@ -424,6 +424,18 @@ function updateUserCard(session) {
   if (nameEl) nameEl.textContent = session.name || 'Jugador';
   if (logoutBtn) logoutBtn.style.display = 'flex';
 
+  if (avatarCanvas) {
+    avatarCanvas.style.display = 'block';
+    if (typeof loadedSkinImage !== 'undefined' && loadedSkinImage) {
+      drawMinecraftHeadAvatar(avatarCanvas, loadedSkinImage, true);
+    } else {
+      drawMinecraftHeadAvatar(avatarCanvas, null, true);
+    }
+  }
+  if (avatarImg) {
+    avatarImg.style.display = 'none';
+  }
+
   const isPremium = session.meta?.type === 'msa';
   if (typeEl) {
     typeEl.innerHTML = isPremium
