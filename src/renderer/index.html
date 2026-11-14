@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es" data-author="Desarrollado por SLuzzen">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.mcstatus.io https://api.modrinth.com https://api.minecraftservices.com https://sessionserver.mojang.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com; object-src 'none';" />
+  <meta name="author" content="Desarrollado por SLuzzen" />
+  <meta name="copyright" content="Desarrollado por SLuzzen" />
+  <title>Web SMP Launcher</title>
+  <!-- Desarrollado por SLuzzen -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Fondo ambiental animado de ascuas carmesí Web SMP -->
+  <canvas id="ambientCanvas" class="ambient-canvas"></canvas>
+  <div class="ambient-backdrop"></div>
+
+  <!-- ═══════════════════════════════════════════
+       BARRA DE TÍTULO PERSONALIZADA (SIN DUPLICADOS)
+  ════════════════════════════════════════════ -->
+  <header class="titlebar" id="titlebar">
+    <div class="titlebar-left">
+      <div class="tb-brand">
+        <img src="../../assets/logo.png" class="titlebar-logo" alt="Web SMP" />
+        <span class="titlebar-name">WEB SMP</span>
+        <span class="titlebar-sub">LAUNCHER</span>
+      </div>
+    </div>
+
+    <div class="titlebar-controls">
+      <button class="tb-btn" id="btnMinimize" title="Minimizar">&#8722;</button>
+      <button class="tb-btn" id="btnMaximize" title="Maximizar">&#9633;</button>
+      <button class="tb-btn tb-close" id="btnClose" title="Cerrar">&#10005;</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       CONTENEDOR PRINCIPAL
+  ════════════════════════════════════════════ -->
+  <div class="app-container">
+
+    <!-- ── SIDEBAR LATERAL (MENÚ ÚNICO DE NAVEGACIÓN) ── -->
+    <aside class="sidebar">
+      <!-- Emblema flotante de Doraland -->
+      <div class="sidebar-logo-wrap">
+        <div class="logo-ring"></div>
+        <div class="logo-glow"></div>
+        <img src="../../assets/logo.png" class="sidebar-logo" id="mainLogo" alt="Web SMP" />
+      </div>
+
+      <!-- Menú de Navegación Principal (1 botón por sección) -->
+      <nav class="sidebar-nav" id="sidebarNav">
+        <button class="nav-item active" id="navHome" data-screen="screenHome">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Inicio / Jugar</span>
+        </button>
+        <button class="nav-item" id="navAddons" data-screen="screenAddons">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span>Packs & Shaders</span>
+        </button>
+        <button class="nav-item" id="navSkin" data-screen="screenSkin">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Mi Skin</span>
+        </button>
+        <button class="nav-item" id="navChangelog" data-screen="screenChangelog">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Changelog</span>
+        </button>
+        <button class="nav-item" id="navSettings" data-screen="screenSettings">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Ajustes</span>
+        </button>
+      </nav>
+
+      <!-- Estado del Servidor en Vivo (Único lugar para copiar IP) -->
+      <div class="server-status-card" id="serverStatusCard">
+        <div class="ssc-top">
+          <div class="status-dot" id="statusDot"></div>
+          <div class="status-info">
+            <span class="status-label" id="statusLabel">Verificando...</span>
+            <span class="status-players" id="statusPlayers">Consultando servidor...</span>
+          </div>
+          <button class="btn-icon-mini" id="btnRefreshServer" title="Actualizar estado del servidor">↻</button>
+        </div>
+        <div class="ssc-ip-row" id="btnCopyIpSidebar" title="Haz clic para copiar la IP">
+          <span class="server-ip" id="serverIp">enx-soc-12.enx.host:10037</span>
+          <span class="copy-tag">COPIAR</span>
+        </div>
+      </div>
+
+      <!-- Enlaces Oficiales (Discord y Web) -->
+      <div class="social-links" id="socialLinks"></div>
+
+      <!-- Tarjeta de Usuario Conectado (Único botón de Cerrar Sesión) -->
+      <div class="user-card" id="userCard">
+        <div class="user-avatar-wrap">
+          <canvas id="sidebarAvatarCanvas" width="38" height="38" style="display:none"></canvas>
+          <img class="user-avatar" id="userAvatar" src="" alt="Avatar" />
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="userName">Sin sesión</span>
+          <span class="user-type" id="userType">Inicia sesión</span>
+        </div>
+        <button class="btn-logout" id="btnLogout" title="Cerrar sesión">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+
+      </aside>
+
+    <!-- ── PANEL PRINCIPAL ── -->
+    <main class="main-panel">
+
+      <!-- Banner Flotante Superior de Auto-Actualización del Launcher (Siempre Visible Encima de Todo) -->
+      <div class="update-banner" id="updateBanner" style="display: none;">
+        <div class="ub-row">
+          <div class="ub-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <div class="ub-text">
+            <span class="ub-title" id="ubTitle">Actualizando Web SMP Launcher</span>
+            <span class="ub-desc" id="ubDesc">Descargando e instalando la última actualización automáticamente...</span>
+          </div>
+          <div class="ub-actions">
+            <button class="ub-btn" id="btnUpdateLauncher">Actualizando...</button>
+          </div>
+        </div>
+        <div class="ub-progress-track" id="ubProgressTrack">
+          <div class="ub-progress-fill" id="ubProgressBar" style="width: 15%;"></div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 1: LOGIN (PREMIUM / NO PREMIUM)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen active" id="screenLogin">
+        <div class="login-showcase">
+          <!-- Columna Izquierda: Arte y Características del Servidor -->
+          <div class="login-Art-col">
+            <img src="../../assets/logo.png" class="login-hero-logo" alt="Web SMP" />
+            <h1 class="art-title">Explora el Mundo de <span class="text-gold">Web SMP</span></h1>
+            <p class="art-desc">Un ecosistema único con más de 1,500 emotes, shaders preconfigurados y soporte completo tanto para cuentas Premium como No Premium.</p>
+          </div>
+
+          <!-- Columna Derecha: Formulario de Acceso -->
+          <div class="login-box">
+            <div class="login-box-header">
+              <div>
+                <h2 class="login-title">Iniciar Sesión</h2>
+                <p class="login-subtitle">Selecciona tu tipo de cuenta para entrar a Web SMP</p>
+              </div>
+            </div>
+
+            <!-- Selector Premium / No Premium -->
+            <div class="auth-tabs">
+              <button class="auth-tab active" id="tabPremium" data-tab="premium">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Premium (Microsoft)
+              </button>
+              <button class="auth-tab" id="tabOffline" data-tab="offline">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                No Premium (Offline)
+              </button>
+            </div>
+
+            <!-- Panel Premium -->
+            <div class="auth-panel active" id="panelPremium">
+              <div class="auth-info-box premium-box">
+                <span class="aib-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                </span>
+                <p class="auth-desc">Conecta tu cuenta oficial de <strong>Minecraft Java Edition</strong> mediante Microsoft OAuth seguro. Sincroniza tu UUID, skin oficial y desbloquea el <strong>Selector de Capas</strong>.</p>
+              </div>
+              <button class="btn-microsoft" id="btnMicrosoft">
+                <svg width="20" height="20" viewBox="0 0 23 23" fill="none"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+                Iniciar sesión con Microsoft
+              </button>
+              <div class="auth-loading" id="premiumLoading">
+                <div class="spinner"></div>
+                <span id="premiumLoadingText">Conectando con Microsoft...</span>
+              </div>
+            </div>
+
+            <!-- Panel Offline (No Premium) -->
+            <div class="auth-panel" id="panelOffline">
+              <div class="auth-info-box offline-box">
+                <span class="aib-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-1h.01m2.99-2h.01"/></svg>
+                </span>
+                <p class="auth-desc">Accede sin cuenta oficial. Puedes personalizar tu Skin `.PNG` desde la pestaña <strong>Mi Skin</strong> del menú lateral.</p>
+              </div>
+              <div class="input-group">
+                <label class="input-label" for="inputNickname">Tu Nickname en Web SMP</label>
+                <input class="input-field" id="inputNickname" type="text" placeholder="Ej: Explorador_777" maxlength="16" spellcheck="false" autocomplete="off" />
+                <span class="input-error" id="nicknameError"></span>
+              </div>
+
+              <button class="btn-primary" id="btnOfflineLogin">
+                Entrar como No Premium →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 2: HOME / DASHBOARD PRINCIPAL (LIMPIO Y SIN DUPLICADOS)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenHome">
+
+        <!-- HERO BANNER SUPERIOR -->
+        <div class="hero-banner">
+          <div class="hero-content">
+            <h1 class="wb-title">¡Listo para la aventura, <span class="text-gold" id="wbUsername">Jugador</span>!</h1>
+            <p class="wb-subtitle">
+              Todo listo y sincronizado automáticamente para entrar al servidor.
+            </p>
+          </div>
+        </div>
+
+        <!-- GRID CENTRAL DEL DASHBOARD -->
+        <div class="dashboard-grid">
+
+          <!-- Columna Izquierda: Google Ads + Consola -->
+          <div class="dash-left-col">
+
+            <!-- ÚNICO BANNER DE MONETIZACIÓN GOOGLE ADS -->
+            <div class="ad-banner-home" id="adSlotHome">
+              <div class="ad-banner-top">
+                <span class="ad-badge" id="adHomeBadge">GOOGLE ADS • ESPACIO PATROCINADO</span>
+                <span class="ad-tag-pill">AdSense</span>
+              </div>
+              <div class="ad-banner-mount" id="adHomeMount">
+                <div class="ad-home-fallback" id="adHomeFallback">
+                  <div class="ahf-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><polygon points="6 3 18 3 22 9 12 22 2 9"/></svg>
+                  </div>
+                  <div class="ahf-text">
+                    <div class="ahf-title" id="adHomeTitle">Comunidad Oficial Web SMP • Eventos y Rangos</div>
+                    <div class="ahf-sub" id="adHomeSubtitle">Únete a nuestro Discord oficial para sorteos, soporte y novedades del servidor.</div>
+                  </div>
+                  <button class="ahf-cta" id="adHomeCta">Abrir Enlace</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONSOLA DE DEPURACIÓN -->
+            <div class="console-section">
+              <button class="console-toggle" id="consoleToggle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                <span>Consola de Registros en Vivo</span>
+                <span class="console-arrow" id="consoleArrow">▼</span>
+              </button>
+              <div class="console-box" id="consoleBox">
+                <div class="console-output" id="consoleOutput">
+                  <span class="console-line info">Consola de Web SMP Launcher lista.</span>
+                </div>
+                <div class="console-actions">
+                  <button class="console-clear" id="consoleClear">Limpiar registros</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Columna Derecha: Vista Previa Limpia del Personaje -->
+          <div class="dash-right-col">
+            <div class="glass-card skin-preview-card">
+              <div class="spc-header">
+                <span class="spc-title">Tu Personaje</span>
+                <span class="spc-badge" id="homeSkinBadge">Activo</span>
+              </div>
+              <div class="spc-canvas-wrap">
+                <canvas id="homeSkinCanvas" width="145" height="215"></canvas>
+                <div class="spc-platform"></div>
+              </div>
+              <span class="spc-footer-note" id="homeSkinNameLabel">Skin lista para jugar</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DOCK INFERIOR: ÚNICO BOTÓN JUGAR -->
+        <div class="launch-dock">
+          <div class="progress-section" id="progressSection" style="display:none">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-info">
+              <span id="progressText">Preparando entorno...</span>
+              <span id="progressPercent">0%</span>
+            </div>
+          </div>
+
+          <div class="play-row">
+            <button class="btn-play" id="btnPlay">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>¡JUGAR EN WEB SMP!</span>
+            </button>
+          </div>
+          <span class="play-hint" id="playHint">Desarrollado por SLuzzen</span>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 3: ESTUDIO PRO DE SKIN & CAPAS (v1.0.3.1)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenSkin">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Estudio Pro de <span class="text-gold">Skin & Capas</span>
+            </h2>
+            <p class="screen-sub">Personaliza poses, capas 3D por zona, iluminación del escenario, texturas <strong>.PNG (64×64)</strong> y tu <strong>Capa Oficial Premium</strong>.</p>
+          </div>
+          <div class="skin-header-badges">
+            <span class="sh-badge" id="skinFormatBadge">TEXTURA 64×64</span>
+            <span class="sh-badge sh-badge-gold" id="skinModelBadge">MODELO CLÁSICO (4PX)</span>
+          </div>
+        </div>
+
+        <div class="skin-studio-grid">
+          <!-- COLUMNA IZQUIERDA: ESCENARIO INTERACTIVO + CONTROLES DE POSE, PARTES Y TEXTURA -->
+          <div class="glass-card skin-viewer-panel">
+            <!-- Barra superior del visor: Nombre + Selector de Escenario -->
+            <div class="svp-top">
+              <div class="svp-title-group">
+                <span class="svp-status-dot"></span>
+                <span class="svp-label" id="skinCurrentName">Skin por defecto (Explorador)</span>
+              </div>
+              <div class="svp-scene-selector" id="skinSceneSelector" title="Cambiar ambiente del estudio">
+                <button class="scene-dot active" data-scene="emerald" title="Bosque Esmeralda"></button>
+                <button class="scene-dot" data-scene="gold" title="Santuario Dorado"></button>
+                <button class="scene-dot" data-scene="night" title="Noche Abisal"></button>
+                <button class="scene-dot" data-scene="grid" title="Cuadrícula Técnica"></button>
+              </div>
+            </div>
+
+            <!-- Barra de Poses y Animación -->
+            <div class="svp-pose-bar">
+              <span class="svp-bar-lbl">
+                <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                POSE:
+              </span>
+              <div class="pose-btn-group" id="skinPoseGroup">
+                <button class="pose-btn active" data-pose="idle">Estático</button>
+                <button class="pose-btn" data-pose="walk">Caminando</button>
+                <button class="pose-btn" data-pose="wave">Saludando</button>
+                <button class="pose-btn" data-pose="hero">Héroe</button>
+              </div>
+              <label class="toggle-label" style="margin-left:auto;">
+                <input type="checkbox" id="skinShowOuterLayer" class="toggle-input" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span>3D Global</span>
+              </label>
+            </div>
+
+            <!-- Escenario Principal con Pedestales Holográficos -->
+            <div class="svp-stage scene-emerald" id="skinDropZone">
+              <div class="svp-grid-floor"></div>
+
+              <div class="svp-char-col">
+                <span class="svp-view-tag">
+                  <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                  VISTA FRONTAL 3D
+                </span>
+                <div class="svp-canvas-wrap">
+                  <canvas id="studioSkinFront" width="175" height="255"></canvas>
+                  <div class="svp-pedestal"></div>
+                </div>
+              </div>
+
+              <div class="svp-char-col">
+                <span class="svp-view-tag">
+                  <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  ESPALDA + CAPA
+                </span>
+                <div class="svp-canvas-wrap">
+                  <canvas id="studioSkinBack" width="175" height="255"></canvas>
+                  <div class="svp-pedestal pedestal-gold"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selector de Capas 3D por Parte del Cuerpo -->
+            <div class="svp-parts-bar">
+              <span class="svp-parts-lbl">CAPAS 3D POR ZONA:</span>
+              <div class="svp-parts-chips" id="skinPartsChips">
+                <button class="part-chip active" data-part="hat" title="Sombrero / Casco 3D">Casco</button>
+                <button class="part-chip active" data-part="jacket" title="Chaqueta / Torso 3D">Chaqueta</button>
+                <button class="part-chip active" data-part="leftSleeve" title="Manga Izquierda 3D">Manga Izq</button>
+                <button class="part-chip active" data-part="rightSleeve" title="Manga Derecha 3D">Manga Der</button>
+                <button class="part-chip active" data-part="leftPants" title="Pantalón Izquierdo 3D">Pierna Izq</button>
+                <button class="part-chip active" data-part="rightPants" title="Pantalón Derecho 3D">Pierna Der</button>
+              </div>
+            </div>
+
+            <!-- Barra Inferior del Visor: Inspector de Textura 64x64 + Acciones Rápidas -->
+            <div class="svp-inspector-bar">
+              <div class="svp-tex-preview">
+                <canvas id="skinRawTextureCanvas" width="44" height="44" title="Mapa de textura UV 64×64"></canvas>
+                <div class="svp-tex-meta">
+                  <strong id="skinTexTitle">Mapa UV Activo</strong>
+                  <span id="skinTexDims">Arrastra un .PNG al visor para cambiar</span>
+                </div>
+              </div>
+              <div class="svp-tex-actions">
+                <button class="btn-mini-tool" id="btnExportSkinPng" title="Descargar copia .PNG de esta skin">
+                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Exportar .PNG
+                </button>
+                <button class="btn-mini-tool btn-mini-danger" id="btnResetSkin" title="Restablecer skin por defecto">
+                  <svg class="inline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  Restablecer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA: SUBIDA, MODELO, SELECTOR DE CAPAS PREMIUM Y GALERÍA/IMPORTADOR -->
+          <div class="skin-controls-col">
+
+            <!-- Tarjeta 1: Subir PNG + Selector de Modelo Integrado -->
+            <div class="glass-card skin-upload-card">
+              <div class="card-header-row">
+                <h3 class="card-subtitle">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Textura y Geometría del Personaje
+                </h3>
+              </div>
+              <p class="card-desc">Sube tu textura `.PNG` desde tu PC y elige el grosor de brazos para tu personaje.</p>
+
+              <div class="upload-and-model-row">
+                <button class="btn-primary" id="btnStudioSelectFile">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Subir Archivo .PNG de mi PC
+                </button>
+
+                <div class="model-selector">
+                  <button class="model-btn active" id="btnModelClassic" data-model="classic">
+                    <strong>Clásico (Steve)</strong>
+                    <span>Brazos anchos 4px</span>
+                  </button>
+                  <button class="model-btn" id="btnModelSlim" data-model="slim">
+                    <strong>Delgado (Alex)</strong>
+                    <span>Brazos finos 3px</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 2: SELECTOR DE CAPAS (BENEFICIO EXCLUSIVO PREMIUM) -->
+            <div class="glass-card cape-selector-card" id="capeSelectorCard">
+              <div class="cape-header-row">
+                <h3 class="card-subtitle">
+                  <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Guardarropa de Capas (Capes)
+                </h3>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <button class="btn-icon-mini" id="btnRefreshCapes" title="Sincronizar capas de tu cuenta Premium">↻</button>
+                  <span class="cape-premium-badge" id="capePremiumBadge">
+                    <svg class="inline-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                    BENEFICIO PREMIUM
+                  </span>
+                </div>
+              </div>
+
+              <!-- Aviso cuando la cuenta es No Premium -->
+              <div class="cape-locked-box" id="capeLockedBox" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <div style="flex:1;">
+                  <div class="cape-locked-title">Exclusivo para Cuentas Premium Microsoft</div>
+                  <div class="cape-locked-sub">Conecta tu cuenta oficial para ver y equipar las capas que posees en tu cuenta de Minecraft.</div>
+                </div>
+                <button class="btn-gold" id="btnUnlockCapesPremium" style="font-size:11px; padding:7px 12px;">
+                  Conectar Premium
+                </button>
+              </div>
+
+              <!-- Grid Dinámico de Capas de la Cuenta Premium -->
+              <div class="cape-options-wrap" id="capeOptionsWrap">
+                <div class="cape-grid" id="capeGrid"></div>
+                <div class="cape-empty-msg" id="capeEmptyMsg" style="display: none;"></div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 3: Buscador e Importador de Skins por Nickname -->
+            <div class="glass-card">
+              <h3 class="card-subtitle">
+                <svg class="inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Buscador de Skins por Nickname
+              </h3>
+              <p class="card-desc">Importa la skin de cualquier jugador de Minecraft por su nombre de usuario.</p>
+
+              <div class="import-nick-row">
+                <input type="text" class="input-field" id="inputSkinNick" placeholder="Escribe cualquier Nickname de Minecraft..." maxlength="16" />
+                <button class="btn-gold" id="btnImportSkinNick">Importar</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 4: AJUSTES DEL LAUNCHER (RESOLUCIÓN, PREMIUM, RAM)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenSettings">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Ajustes de <span class="text-gold">Web SMP Launcher</span>
+            </h2>
+            <p class="screen-sub">Configura la resolución del juego, tu cuenta Premium de Minecraft, la memoria RAM dedicada y las opciones de inicio.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+
+          <!-- TARJETA 1: GAME RESOLUTION (RESOLUCIÓN DEL JUEGO) -->
+          <div class="glass-card settings-card">
+            <div class="sc-title-row">
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-neon)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
+              <div>
+                <h3 class="card-subtitle">Game Resolution (Resolución del Juego)</h3>
+                <p class="card-desc">Define las dimensiones de la ventana de Minecraft o ejecuta el juego directamente en pantalla completa.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;">
+                <label class="input-label" for="selectResPreset" style="margin-bottom:0;">Preajustes de Resolución</label>
+                <span class="res-detected-note" id="maxMonitorResLabel" style="font-size:10.5px;color:var(--gold-light);font-weight:700;"></span>
+              </div>
+              <select class="select-field" id="selectResPreset">
+                <option value="854x480">854 × 480 (Estándar Minecraft)</option>
+                <option value="1280x720" selected>1280 × 720 (HD 720p - Recomendado)</option>
+                <option value="custom">Personalizada (Manual)</option>
+              </select>
+            </div>
+
+            <div class="res-dimensions-row">
+              <div class="input-group">
+                <label class="input-label" for="inputResWidth">Ancho (Width px)</label>
+                <input type="number" class="input-field" id="inputResWidth" min="640" max="7680" value="1280" />
+              </div>
+              <span class="res-x">×</span>
+              <div class="input-group">
+                <label class="input-label" for="inputResHeight">Alto (Height px)</label>
+                <input type="number" class="input-field" id="inputResHeight" min="480" max="4320" value="720" />
+              </div>
+            </div>
+
+            <div class="settings-switches">
+              <label class="toggle-row-card">
+                <div>
+                  <span class="trc-title">Modo Pantalla Completa (Fullscreen)</span>
+                  <span class="trc-sub">Inicia Minecraft ocupando todo el monitor automáticamente.</span>
+                </div>
+                <input type="checkbox" id="settingsFullscreen" class="toggle-input" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TARJETA 2: LAUNCHER SETTINGS (PREMIUM MINECRAFT & CUENTA) -->
+          <div class="glass-card settings-card">
+            <div class="sc-title-row">
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+              </span>
+              <div>
+                <h3 class="card-subtitle">Launcher Settings (Premium Minecraft)</h3>
+                <p class="card-desc">Gestiona tu autenticación oficial con Microsoft (Premium) y el comportamiento del launcher al iniciar.</p>
+              </div>
+            </div>
+
+            <div class="account-status-box" id="settingsAccountBox">
+              <div class="asb-info">
+                <span class="asb-label">CUENTA ACTIVA ACTUAL</span>
+                <strong class="asb-name" id="settingsAccountName">Sin sesión activa</strong>
+                <span class="asb-type" id="settingsAccountType">No autenticado</span>
+              </div>
+              <div class="asb-buttons">
+                <button class="btn-microsoft-mini" id="btnSettingsPremiumLogin">
+                  <svg width="16" height="16" viewBox="0 0 23 23" fill="none"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+                  <span>Vincular / Usar Cuenta Premium</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-switches">
+              <label class="toggle-row-card">
+                <div>
+                  <span class="trc-title">Auto-conectar al servidor Web SMP</span>
+                  <span class="trc-sub">Entra directamente a <code>enx-soc-12.enx.host:10037</code> al abrir el juego.</span>
+                </div>
+                <input type="checkbox" id="settingsAutoConnect" class="toggle-input" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+
+              <label class="toggle-row-card">
+                <div>
+                  <span class="trc-title">Minimizar launcher al iniciar el juego</span>
+                  <span class="trc-sub">Oculta la ventana en la barra de tareas mientras juegas y la restaura al salir.</span>
+                </div>
+                <input type="checkbox" id="settingsHideOnLaunch" class="toggle-input" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+
+              <label class="toggle-row-card">
+                <div>
+                  <span class="trc-title">Cerrar launcher completamente al iniciar</span>
+                  <span class="trc-sub">Cierra el proceso del launcher una vez que Minecraft se haya abierto.</span>
+                </div>
+                <input type="checkbox" id="settingsCloseOnLaunch" class="toggle-input" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TARJETA 3: MEMORIA RAM, JAVA 21 Y ARCHIVOS LOCALES (ÚNICO CONTROL DE RAM) -->
+          <div class="glass-card settings-card settings-card-wide">
+            <div class="sc-title-row">
+              <span class="sc-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
+              <div>
+                <h3 class="card-subtitle">Rendimiento, Memoria RAM y Archivos</h3>
+                <p class="card-desc">Los cambios de RAM, resolución y opciones se guardan automáticamente al ajustarlos.</p>
+              </div>
+            </div>
+
+            <div class="settings-perf-grid">
+              <div>
+                <div class="card-header-row">
+                  <span class="input-label">Memoria RAM Dedicada</span>
+                  <span class="ram-value" id="settingsRamValue">6 GB</span>
+                </div>
+                <div class="slider-wrap" style="margin: 10px 0;">
+                  <input type="range" class="ram-slider" id="settingsRamSlider" min="2048" max="16384" step="512" value="6144" />
+                </div>
+                <div class="ram-markers">
+                  <span>2 GB</span>
+                  <span class="text-green">Recomendado (6 GB - 8 GB)</span>
+                  <span id="ramMaxLabel">16 GB</span>
+                </div>
+                <div class="input-group" style="margin-top: 12px;">
+                  <label class="input-label" for="inputCustomJvm">Argumentos JVM Adicionales (Opcional)</label>
+                  <input type="text" class="input-field" id="inputCustomJvm" placeholder="Ej: -Dsun.rmi.dgc.server.gcInterval=2147483646" />
+                </div>
+              </div>
+
+              <div class="settings-utilities-box">
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Optimización Turbo JVM & Red</span>
+                    <span class="trc-sub">Activa flags GC avanzadas, conexiones Keep-Alive y caché rápido de Java 21.</span>
+                  </div>
+                  <input type="checkbox" id="settingsTurboOptimize" class="toggle-input" checked />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Modo Ligero de Interfaz (0% GPU)</span>
+                    <span class="trc-sub">Pausa animaciones ambientales del launcher para ahorrar recursos en PCs modestas.</span>
+                  </div>
+                  <input type="checkbox" id="settingsLowSpecUi" class="toggle-input" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <label class="toggle-row-card">
+                  <div>
+                    <span class="trc-title">Discord Rich Presence (Estado en Vivo)</span>
+                    <span class="trc-sub">Muestra en tu perfil de Discord cuando estás jugando en Web SMP.</span>
+                  </div>
+                  <input type="checkbox" id="settingsDiscordRpc" class="toggle-input" checked />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+
+                <button class="btn-primary" id="btnSettingsRepairInstall">
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  Reparar Instalación (Protege Controles y Mundos)
+                </button>
+                <button class="btn-gold" id="btnSettingsOptimizeLauncher">
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Optimizar y Liberar Caché del Launcher
+                </button>
+                <button class="btn-secondary-outline" id="btnSettingsOpenFolder">
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Abrir Carpeta de Datos (.websmp)
+                </button>
+                <button class="btn-secondary-outline" id="btnSettingsCheckUpdate">
+                  <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                  Buscar Actualizaciones del Launcher
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 5: PACKS DE TEXTURAS Y SHADERS
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenAddons">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              Centro de <span class="text-gold">Resource Packs & Shaders</span>
+            </h2>
+            <p class="screen-sub">Instala paquetes de texturas o shaders compatibles en un clic sin afectar la configuración base del servidor.</p>
+          </div>
+        </div>
+
+        <!-- Barra de Categorías y Acciones -->
+        <div class="addons-toolbar">
+          <div class="addons-tabs">
+            <button class="addon-tab active" data-addon-cat="resourcepack">
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              Resource Packs
+            </button>
+            <button class="addon-tab" data-addon-cat="shader">
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+              Shaders
+            </button>
+          </div>
+
+          <div class="addons-actions">
+            <div class="addon-search-box">
+              <input type="text" class="input-field" id="addonSearchInput" placeholder="Buscar Resource Packs compatibles..." />
+              <button class="btn-gold" id="btnAddonSearch">Buscar</button>
+            </div>
+            <button class="btn-primary" id="btnInstallLocalAddon" style="width:auto; padding:9px 14px; font-size:12px;">
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="btnInstallLocalAddonLabel">Instalar desde mi PC (.ZIP)</span>
+            </button>
+            <button class="btn-secondary-outline" id="btnOpenAddonFolder" style="width:auto; padding:9px 12px;">
+              <svg class="inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              Carpeta
+            </button>
+          </div>
+        </div>
+
+        <!-- Mis Complementos Personales Instalados -->
+        <div class="glass-card addons-installed-box">
+          <div class="card-header-row">
+            <h3 class="card-subtitle" id="installedAddonsTitle">Tus Resource Packs Instalados (0)</h3>
+            <span class="spc-badge">Protegidos por Auto-Sync</span>
+          </div>
+          <p class="card-desc">Aquí aparecen los paquetes visuales o shaders que tú has añadido manualmente.</p>
+          <div class="user-addons-list" id="userAddonsList">
+            <span class="empty-addon-note">No has instalado complementos adicionales en esta categoría todavía.</span>
+          </div>
+        </div>
+
+        <!-- Catálogo Compatible en 1 Clic -->
+        <div class="addons-catalog-section">
+          <div class="card-header-row" style="margin-bottom: 10px;">
+            <h3 class="card-subtitle" id="catalogAddonsTitle">Recomendados y Compatibles con Web SMP</h3>
+          </div>
+          <div class="addons-catalog-grid" id="catalogAddonsGrid"></div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           PANTALLA 6: CHANGELOG (NOVEDADES Y CONTENIDO)
+      ═════════════════════════════════════════════════════════ -->
+      <section class="screen" id="screenChangelog">
+        <div class="screen-header">
+          <div>
+            <h2 class="screen-title">
+              <svg class="inline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Registro de Cambios <span class="text-gold">(Changelog)</span>
+            </h2>
+            <p class="screen-sub">Conoce todas las novedades del Launcher, mejoras de rendimiento y contenido agregado, actualizado o retirado del servidor.</p>
+          </div>
+          <div class="changelog-filters">
+            <button class="cl-filter-btn active" data-cl-filter="all">Todo</button>
+            <button class="cl-filter-btn" data-cl-filter="launcher">Launcher</button>
+            <button class="cl-filter-btn" data-cl-filter="mods">Cambios del Servidor</button>
+          </div>
+        </div>
+
+        <!-- Detector Automático de Diferencias de Sincronización -->
+        <div id="autoModDiffContainer" style="display:none;"></div>
+
+        <!-- Línea de Tiempo de Versiones -->
+        <div class="changelog-timeline" id="changelogTimeline"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Asistente de Errores (Crash Helper) -->
+  <div class="crash-modal-backdrop" id="crashHelperModal" style="display: none;">
+    <div class="crash-modal-card">
+      <div class="crash-modal-header">
+        <div class="crash-icon-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div class="crash-kicker">ASISTENTE DE DIAGNÓSTICO</div>
+          <h3 class="crash-title" id="crashTitle">El juego se cerró inesperadamente</h3>
+        </div>
+        <button class="btn-icon-mini" id="btnCloseCrashModal" title="Cerrar">✕</button>
+      </div>
+      <div class="crash-body">
+        <p class="crash-cause" id="crashCause"></p>
+        <div class="crash-fix-box">
+          <strong>Solución recomendada:</strong>
+          <span id="crashFix"></span>
+        </div>
+        <pre class="crash-snippet" id="crashSnippet"></pre>
+      </div>
+      <div class="crash-actions">
+        <button class="btn-primary" id="btnCrashRepair" style="width:auto; padding:8px 14px; font-size:12px;">Reparar Instalación</button>
+        <button class="btn-gold" id="btnCrashCopy" style="padding:8px 14px; font-size:12px;">Copiar Diagnóstico</button>
+        <button class="btn-secondary-outline" id="btnCrashDiscord" style="width:auto; padding:8px 12px; font-size:12px;">Soporte Discord</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marca de integridad de autoría -->
+  <div id="__sluzzen_wm" aria-hidden="true" data-owner="Desarrollado por SLuzzen" style="position:fixed;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;user-select:none;">Desarrollado por SLuzzen</div>
+  <script src="app.js"></script>
+</body>
+</html>

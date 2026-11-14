@@ -1,0 +1,92 @@
+{
+  "name": "websmp-launcher",
+  "version": "1.0.0",
+  "description": "Launcher oficial del servidor Web SMP",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node launch.js",
+    "dev": "node launch.js --dev",
+    "manifest": "node generate-manifest.js",
+    "build": "node node_modules/electron-builder/out/cli/cli.js --win",
+    "build:portable": "node node_modules/electron-builder/out/cli/cli.js --win portable"
+  },
+  "keywords": [
+    "minecraft",
+    "launcher",
+    "websmp",
+    "web-smp",
+    "neoforge"
+  ],
+  "author": "Desarrollado por SLuzzen",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "electron-store": "^7.0.3",
+    "electron-updater": "^6.8.11",
+    "fs-extra": "^11.2.0",
+    "minecraft-launcher-core": "^3.14.0",
+    "msmc": "^4.1.0",
+    "node-fetch": "^2.7.0",
+    "uuid": "^9.0.1"
+  },
+  "build": {
+    "appId": "net.websmp.launcher",
+    "productName": "Web SMP Launcher",
+    "copyright": "Copyright © 2026 Web SMP • Desarrollado por SLuzzen",
+    "asar": false,
+    "icon": "assets/logo.png",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Sluzzen",
+        "repo": "Web-SMP-Launcher"
+      }
+    ],
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "launcher-config.json",
+      "mods-manifest.json"
+    ],
+    "extraResources": [
+      {
+        "from": "overrides",
+        "to": "overrides",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Web SMP Launcher",
+      "artifactName": "Web-SMP-Launcher-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "WebSMPLauncher-Portable.exe"
+    }
+  }
+}

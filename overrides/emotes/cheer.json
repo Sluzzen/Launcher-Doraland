@@ -1,0 +1,110 @@
+{
+    "name": "Emocionar | Cheer §5(§dAcción§5)",
+    "author": "Motschen",
+    "description": "Salta de emocion!",
+    "emote":{
+        "isLoop": true,
+        "returnTick": 10,
+        "beginTick": 10,
+        "endTick": 30,
+        "degrees":true,
+        "moves":[
+            {
+                "tick":10,
+                "easing": "EASEINOUTQUAD",
+                "turn": 0,
+                "head":{
+                    "pitch": 2.5
+                },
+                "body":{
+                    "y": 0
+                },
+                "rightArm":{
+                    "pitch": -142.5,
+                    "yaw": 30,
+                    "roll":0
+                },
+                "leftArm":{
+                    "pitch": -142.5,
+                    "yaw": -30,
+                    "roll":0
+                },
+                "rightLeg":{
+                    "pitch":0,
+                    "yaw":0,
+                    "roll":0
+                },
+                "leftLeg":{
+                    "pitch":0,
+                    "yaw":0,
+                    "roll":0
+                }
+
+            },
+            {
+                "tick":20,
+                "easing": "EASEINOUTQUAD",
+                "turn": 0,
+                "head":{
+                    "pitch": -5
+                },
+                "body":{
+                    "y": 0.4
+                },
+                "rightArm":{
+                    "pitch": -137.5,
+                    "yaw": 30,
+                    "roll": -5
+                },
+                "leftArm":{
+                    "pitch": -142.5,
+                    "yaw": -30,
+                    "roll": 5
+                },
+                "rightLeg":{
+                    "pitch":-7.64538,
+                    "yaw":0.48669,
+                    "roll":2.44725
+                },
+                "leftLeg":{
+                    "pitch":5,
+                    "yaw":0,
+                    "roll":-2.5
+                }
+
+            },
+            {
+                "tick":30,
+                "easing": "EASEINOUTQUAD",
+                "turn": 0,
+                "head":{
+                    "pitch": 2.5
+                },
+                "body":{
+                    "y": 0
+                },
+                "rightArm":{
+                    "pitch": -142.5,
+                    "yaw": 30,
+                    "roll":0
+                },
+                "leftArm":{
+                    "pitch": -142.5,
+                    "yaw": -30,
+                    "roll":0
+                },
+                "rightLeg":{
+                    "pitch":0,
+                    "yaw":0,
+                    "roll":0
+                },
+                "leftLeg":{
+                    "pitch":0,
+                    "yaw":0,
+                    "roll":0
+                }
+
+            }
+        ]
+    }
+}

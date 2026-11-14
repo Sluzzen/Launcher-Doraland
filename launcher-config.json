@@ -1,0 +1,132 @@
+{
+  "server": {
+    "name": "Web SMP",
+    "ip": "enx-soc-12.enx.host",
+    "port": 10037,
+    "autoConnect": true,
+    "description": "Servidor oficial de Web SMP"
+  },
+  "minecraft": {
+    "version": "1.21.1",
+    "loaders": {
+      "neoforge": "21.1.250",
+      "forge": "",
+      "fabric": "",
+      "quilt": "",
+      "liteloader": "",
+      "optifine": "",
+      "rift": "",
+      "arclight": "",
+      "mohist": "",
+      "magma": "",
+      "banner": "",
+      "ketting": "",
+      "youer": "",
+      "catserver": "",
+      "crucible": "",
+      "spongeforge": "",
+      "sponge": "",
+      "paper": "",
+      "purpur": "",
+      "pufferfish": "",
+      "folia": "",
+      "spigot": "",
+      "bukkit": "",
+      "craftbukkit": "",
+      "glowstone": "",
+      "velocity": "",
+      "bungeecord": "",
+      "waterfall": "",
+      "vanilla": ""
+    },
+    "recommendedRamMb": 6144,
+    "minRamMb": 4096,
+    "maxRamMb": 16384,
+    "jvmArgs": [
+      "-XX:+UseG1GC",
+      "-XX:+ParallelRefProcEnabled",
+      "-XX:MaxGCPauseMillis=200",
+      "-XX:+UnlockExperimentalVMOptions",
+      "-XX:+DisableExplicitGC",
+      "-XX:G1HeapWastePercent=5",
+      "-XX:G1MixedGCCountTarget=4",
+      "-XX:G1MixedGCLiveThresholdPercent=90",
+      "-XX:G1RSetUpdatingPauseTimePercent=5",
+      "-XX:SurvivorRatio=32",
+      "-XX:+PerfDisableSharedMem",
+      "-XX:MaxTenuringThreshold=1"
+    ]
+  },
+  "mods": {
+    "enabled": true,
+    "source": "auto",
+    "githubOwner": "Sluzzen",
+    "githubRepo": "mods-launcher",
+    "branch": "Web-SMP",
+    "remoteManifestUrl": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods-manifest.json",
+    "cleanOldMods": true,
+    "syncOverrides": true,
+    "list": []
+  },
+  "updates": {
+    "autoUpdateLauncher": true,
+    "githubOwner": "Sluzzen",
+    "githubRepo": "Web-SMP-Launcher"
+  },
+  "ui": {
+    "discordUrl": "https://discord.gg/VNfThdAcBX",
+    "discordClientId": "",
+    "websiteUrl": "https://sluzzen.github.io/",
+    "youtubeUrl": "",
+    "backgroundVideoUrl": ""
+  },
+  "ads": {
+    "enabled": true,
+    "provider": "google-adsense",
+    "clientId": "ca-pub-3117274501191063",
+    "slots": {
+      "homeHorizontal": "1234567890",
+      "sidebarBanner": "0987654321"
+    },
+    "adServerUrl": "https://sluzzen.github.io/ads.html",
+    "fallbackPromo": {
+      "badge": "PATROCINADO",
+      "title": "Comunidad Oficial Web SMP • Eventos y Rangos",
+      "subtitle": "Únete a nuestro Discord oficial para novedades y eventos del servidor.",
+      "ctaText": "Unirse al Discord",
+      "ctaUrl": "https://discord.gg/VNfThdAcBX"
+    }
+  },
+  "launcher": {
+    "version": "1.0.0",
+    "_signature": "Desarrollado por SLuzzen",
+    "allowPremium": true,
+    "allowOffline": true,
+    "gameDataFolder": ".websmp",
+    "closeOnLaunch": false,
+    "defaultResolution": {
+      "width": 1280,
+      "height": 720,
+      "fullscreen": false
+    }
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-14",
+      "title": "Lanzamiento Oficial Web SMP",
+      "summary": "Versión inicial 1.0.0 del Launcher oficial de Web SMP con conexión automática, sincronización de mods y soporte Premium y No Premium.",
+      "launcherChanges": [
+        "Lanzamiento inicial del Launcher oficial de Web SMP v1.0.0.",
+        "Conexión directa configurada a enx-soc-12.enx.host:10037.",
+        "Sincronización automática de mods y configuraciones oficiales.",
+        "Soporte completo para cuentas Microsoft Premium y cuentas Offline No Premium.",
+        "Estudio de skins 2D/3D con capas oficiales de Mojang.",
+        "Integración oficial con la comunidad de Discord de Web SMP."
+      ],
+      "modsAdded": [],
+      "modsUpdated": [],
+      "modsRemoved": []
+    }
+  ]
+}
