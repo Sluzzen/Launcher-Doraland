@@ -12,3 +12,5 @@ temp/
 mods/Flashback*
 mods/watermedia_binaries*
 
+
+*.lnk

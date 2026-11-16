@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-11-14T04:33:50.506Z",
+  "generatedAt": "2026-11-16T19:41:58.994Z",
   "server": {
     "name": "Web SMP",
     "ip": "enx-soc-12.enx.host",
@@ -46,7 +46,7 @@
       "vanilla": ""
     }
   },
-  "modsCount": 64,
+  "modsCount": 67,
   "overridesCount": 1777,
   "mods": [
     {
@@ -152,6 +152,12 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cpm-flashback-1.21-1.2.0.jar"
     },
     {
+      "name": "create-fly-1.21.11-6.0.9-5.jar",
+      "size": 20226630,
+      "sha1": "f73501555fc5c33d3075831fd4bf5b9e65bfe37b",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/create-fly-1.21.11-6.0.9-5.jar"
+    },
+    {
       "name": "CustomPlayerModels-Fabric-1.21.11-0.6.27a.jar",
       "size": 2867845,
       "sha1": "cd7e67126061a36d673174b7ad759201f8e9a96a",
@@ -230,6 +236,12 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/ForgeConfigAPIPort-v21.11.1-mc1.21.11-Fabric.jar"
     },
     {
+      "name": "framework-fabric-1.21.11-0.13.11.jar",
+      "size": 1715042,
+      "sha1": "5daa599fb6510ffb3d4d4b5e2569413dcff68ceb",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/framework-fabric-1.21.11-0.13.11.jar"
+    },
+    {
       "name": "g-tool-trims.jar",
       "size": 5709613,
       "sha1": "4242b7e43de3059590db8c88e6b4f9807eb29e94",
@@ -258,12 +270,6 @@
       "size": 2807718,
       "sha1": "acfbe6d065b6c35d85c14da04d35e073363f3acf",
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/iris-fabric-1.10.8%2Bmc1.21.11.jar"
-    },
-    {
-      "name": "jei-1.21.11-fabric-27.54.0.116.jar",
-      "size": 4856988,
-      "sha1": "e019cd29296933f6b0266adf9a045311bf97afe3",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/jei-1.21.11-fabric-27.54.0.116.jar"
     },
     {
       "name": "journeymap-fabric-1.21.11-6.0.0.jar",
@@ -350,6 +356,12 @@
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/redsky-1.0.0.jar"
     },
     {
+      "name": "refurbished_furniture-fabric-1.21.11-1.0.23.jar",
+      "size": 7129857,
+      "sha1": "439ef47864a0f8c5b625ffa697cec911ff0fda09",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/refurbished_furniture-fabric-1.21.11-1.0.23.jar"
+    },
+    {
       "name": "servercore-fabric-1.5.15+1.21.11.jar",
       "size": 932539,
       "sha1": "c3c6ec10b0ceddaa8f1ef53ffe57db57b4e8638f",
@@ -372,6 +384,12 @@
       "size": 1914874,
       "sha1": "5469cef6f5dddd72a1216d9a15393c90d8eb5f33",
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/sodium-fabric-0.8.15-beta.1%2Bmc1.21.11.jar"
+    },
+    {
+      "name": "staffplace-1.0.0.jar",
+      "size": 83083,
+      "sha1": "45cd824916a6987d0680dd0e034a3b5e7d7729f5",
+      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/staffplace-1.0.0.jar"
     },
     {
       "name": "TalkBalloons-fabric-1.6.6+1.21.11.jar",
