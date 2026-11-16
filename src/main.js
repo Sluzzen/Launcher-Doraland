@@ -3049,18 +3049,20 @@ async function syncRemoteModsList(remoteMods, targetModsPath, cfg, event, localI
     getStore().set('lastKnownModsSnapshot', nextSnapshot);
   } catch {}
 
-  if (cfg.mods?.cleanOldMods && remoteMods.length > 0) {
+  if (cfg.mods?.cleanOldMods !== false && remoteMods.length > 0) {
     const localFiles = await fs.readdir(targetModsPath);
     for (const file of localFiles) {
       const lower = file.toLowerCase();
-      // Proteger:
-      // 1. Mods de Cliente instalados por el jugador
-      // 2. Mods colocados localmente por el desarrollador en la carpeta mods/
+      // Proteger únicamente los mods de cliente opcionales que el jugador instaló manualmente desde Packs & Shaders
       const isClientMod = userClientModsSet.has(lower);
-      const isLocalMod = Boolean(localInfo?.jarsSet?.has(lower));
-      if (lower.endsWith('.jar') && !remoteNames.includes(lower) && !isClientMod && !isLocalMod) {
-        await fs.remove(path.join(targetModsPath, file));
-        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod antiguo retirado del servidor: ${file}` });
+      if (lower.endsWith('.jar') && !remoteNames.includes(lower) && !isClientMod) {
+        try {
+          await fs.remove(path.join(targetModsPath, file));
+          safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod retirado del modpack eliminado: ${file}` });
+          appendLauncherLog(`[Mods] Mod retirado del servidor eliminado del directorio de juego: ${file}`);
+        } catch (delErr) {
+          console.warn(`No se pudo eliminar mod retirado ${file}:`, delErr.message);
+        }
       }
     }
   }
@@ -3185,15 +3187,17 @@ async function syncLocalBundledMods(targetModsPath, cfg, event, cleanExtra = fal
 
   safeSend(event, 'launch-log', { type: 'info', msg: `📦 Verificando ${bundledJars.length} mods desde paquete local...` });
 
-  if (cleanExtra && cfg.mods?.cleanOldMods) {
+  if (cfg.mods?.cleanOldMods !== false) {
     const gameDir = path.dirname(targetModsPath);
     const userClientModsSet = getUserClientModsSet(gameDir);
     const currentFiles = await fs.readdir(targetModsPath);
     for (const file of currentFiles) {
       const lower = file.toLowerCase();
       if (lower.endsWith('.jar') && !jarsSet.has(lower) && !userClientModsSet.has(lower)) {
-        await fs.remove(path.join(targetModsPath, file));
-        safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod local retirado: ${file}` });
+        try {
+          await fs.remove(path.join(targetModsPath, file));
+          safeSend(event, 'launch-log', { type: 'warn', msg: `🗑️ Mod local retirado: ${file}` });
+        } catch {}
       }
     }
   }
