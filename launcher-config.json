@@ -99,7 +99,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,
