@@ -1,6 +1,6 @@
 {
   "name": "websmp-launcher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Launcher oficial del servidor Web SMP",
   "main": "src/main.js",
   "scripts": {

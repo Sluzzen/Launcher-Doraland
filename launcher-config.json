@@ -99,7 +99,7 @@
     }
   },
   "launcher": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "_signature": "Desarrollado por SLuzzen",
     "allowPremium": true,
     "allowOffline": true,
@@ -113,13 +113,24 @@
   },
   "changelog": [
     {
+      "version": "1.0.2",
+      "date": "2026-11-18",
+      "title": "Actualización del Servidor v1.0.2",
+      "summary": "Ajuste en la lista de mods oficiales del servidor Web SMP.",
+      "launcherChanges": [],
+      "modsAdded": [],
+      "modsUpdated": [],
+      "modsRemoved": [
+        "Create Fly (create-fly) - Retirado del modpack oficial del servidor."
+      ]
+    },
+    {
       "version": "1.0.1",
       "date": "2026-11-16",
       "title": "Actualización del Servidor v1.0.1",
       "summary": "Actualización oficial de los complementos y optimizaciones de rendimiento del servidor Web SMP.",
       "launcherChanges": [],
       "modsAdded": [
-        "Create Fly (create-fly) - Vuelo y propulsión técnica integrada con Create.",
         "Refurbished Furniture - Sistema de mobiliario y decoración interactiva para el servidor.",
         "Framework - Librería de utilidades requerida por los nuevos complementos.",
         "StaffPlace - Herramientas de asistencia y gestión de staff del servidor."

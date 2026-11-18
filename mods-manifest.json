@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-11-16T19:41:58.994Z",
+  "version": "1.0.1",
+  "generatedAt": "2026-11-18T19:15:22.260Z",
   "server": {
     "name": "Web SMP",
     "ip": "enx-soc-12.enx.host",
@@ -46,7 +46,7 @@
       "vanilla": ""
     }
   },
-  "modsCount": 67,
+  "modsCount": 66,
   "overridesCount": 1777,
   "mods": [
     {
@@ -150,12 +150,6 @@
       "size": 83023,
       "sha1": "a0b62859820fe7b530160f3e940f096785a7af4a",
       "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/cpm-flashback-1.21-1.2.0.jar"
-    },
-    {
-      "name": "create-fly-1.21.11-6.0.9-5.jar",
-      "size": 20226630,
-      "sha1": "f73501555fc5c33d3075831fd4bf5b9e65bfe37b",
-      "url": "https://raw.githubusercontent.com/Sluzzen/mods-launcher/Web-SMP/mods/create-fly-1.21.11-6.0.9-5.jar"
     },
     {
       "name": "CustomPlayerModels-Fabric-1.21.11-0.6.27a.jar",
